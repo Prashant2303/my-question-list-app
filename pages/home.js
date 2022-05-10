@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [questions, setQuestions] = useState([]);
     const [question, setQuestion] = useState('');
 
     const fetchQuestions = async () => {
         setLoading(true);
         const response = await fetch('/api/questions')
-        const data = await response.json();
-        setQuestions(data);
+        console.log('RESPONSE', response);
+        if(response.status === 200) {
+            const data = await response.json();
+            setQuestions(data);
+        }
         setLoading(false);
     }
+
+    useEffect(()=>{
+        fetchQuestions()
+    },[])
 
     const addQuestion = async () => {
         const response = await fetch('/api/questions', {
@@ -35,7 +42,6 @@ export default function Home() {
             }
             <input id="question" type="text" value={question} onChange={e=>setQuestion(e.target.value)} />
             <button onClick={addQuestion}>Add Question</button>
-            <button onClick={fetchQuestions}>Get Question</button>
         </div>
     );
 }
