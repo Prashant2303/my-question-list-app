@@ -1,8 +1,35 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Link from 'next/link'
+import { Container } from '@mui/material'
+import AddQuestion from '../components/AddQuestion'
+import List from '../components/List';
+import PrimarySearchAppBar from '../components/AppBar';
+import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
+import { questions } from '../data/questions';
 
 export default function Home() {
+
+  // const [list, setList] = useState(questions);
+
+  // const addQuestion = (question) => {
+  //   question.id = uuidv4();
+  //   question.date = new Date();
+  //   console.log(question);
+  //   setList([question, ...list]);
+  // }
+
+  // return (
+  //   <Container className="App" maxWidth="md">
+  //     <PrimarySearchAppBar />
+  //     <AddQuestion addQuestion={addQuestion} />
+  //     <List questions={list} />
+  //     <button onClick={()=>console.log('Array', list)}>List</button>
+  //   </Container>
+  // );
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,7 +47,11 @@ export default function Home() {
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
-
+        <Link href='/home' passHref>
+          <button>
+          <a>Home</a>
+          </button>
+        </Link>
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>
