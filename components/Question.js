@@ -1,9 +1,9 @@
-// import '../App.css';
 import React, { useState } from 'react';
-import { Grid, TextField, Button, MenuItem } from '@mui/material';
+import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
 
-const Question = ({ question }) => {
+const Question = ({ question, deleteQuestion }) => {
     const [showNotes, setShowNotes] = useState(false);
     const handleClick = () => {
         setShowNotes(prevShowNotes => !prevShowNotes);
@@ -16,7 +16,7 @@ const Question = ({ question }) => {
 
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
-            <Grid item xs={6}>
+            <Grid item xs={5.5}>
                 <a href={question.url} target='_blank' rel="noreferrer">{question.name}</a>
             </Grid>
             <Grid item xs={2}>
@@ -52,6 +52,11 @@ const Question = ({ question }) => {
             </Grid>
             <Grid item xs={2}>
                 <Button variant="outlined" fullWidth onClick={handleClick}>{question.notes === '' ? 'Add Notes' : 'Show Notes'}</Button>
+            </Grid>
+            <Grid style={{ 'display': 'flex', 'justifyContent': 'center' }} item xs={0.5}>
+                <IconButton color='error' onClick={() => deleteQuestion(question.id)}>
+                    <DeleteForeverIcon />
+                </IconButton>
             </Grid>
             {
                 showNotes && <Grid item xs={12}>

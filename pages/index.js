@@ -37,11 +37,22 @@ export default function Home() {
     setList([data, ...list]);
   }
 
+  const deleteQuestion = async (questionId) => {
+    const response = await fetch('/api/questions', {
+      method: 'DELETE',
+      body: JSON.stringify({ questionId })
+    });
+
+    const data = await response.json();
+    const newList = list.filter(question => question.id !== questionId)
+    setList(newList);
+  }
+
   return (
     <Container className={styles.App} maxWidth="md">
       <PrimarySearchAppBar />
       <AddQuestion addQuestion={addQuestion} />
-      <List questions={list} loading={loading} />
+      <List questions={list} loading={loading} deleteQuestion={deleteQuestion} />
       <button onClick={() => console.log('Array', list)}>List</button>
     </Container>
   );
