@@ -1,4 +1,4 @@
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Index.module.css'
 import Container from '@mui/material/Container'
 import PrimarySearchAppBar from '../components/AppBar';
 import AddQuestion from '../components/AddQuestion'

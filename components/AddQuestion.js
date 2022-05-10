@@ -145,7 +145,7 @@ const AddQuestion = ({addQuestion}) => {
                         size="small"
                     />
                 </Grid>
-                <Grid item direction="row-reverse" xs={12} sx={{ display: 'flex' }}>
+                <Grid item container direction="row-reverse" xs={12} sx={{ display: 'flex' }}>
                     <Button variant="contained" disableElevation type="submit" onClick={handleSubmit}>Add Question</Button>
                 </Grid>
             </Grid>
