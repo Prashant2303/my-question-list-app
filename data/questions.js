@@ -23,7 +23,7 @@ export const questions = [
         site: 'Leetcode',
         name: 'Game of Life',
         difficulty: 'Hard',
-        status: 'Not Attempted',
+        status: 'Todo',
         notes: '',
     },
 ];

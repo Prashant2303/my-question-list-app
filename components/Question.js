@@ -10,7 +10,18 @@ const Question = ({ question, deleteQuestion }) => {
     }
 
     const [state, setState] = useState(question);
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
+        const response = await fetch(`/api/questions/${question.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                [e.target.name]: e.target.value
+            }),
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+        const data = await response.json();
+        console.log('DATA', data);
         setState({ ...state, [e.target.name]: e.target.value });
     }
 
@@ -45,7 +56,7 @@ const Question = ({ question, deleteQuestion }) => {
                     fullWidth
                     size="small"
                 >
-                    <MenuItem value="Not Attempted">Todo</MenuItem>
+                    <MenuItem value="Todo">Todo</MenuItem>
                     <MenuItem value="Revise">Revise</MenuItem>
                     <MenuItem value="Done">Done</MenuItem>
                 </TextField>

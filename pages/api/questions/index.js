@@ -1,4 +1,4 @@
-import { questions } from "../../data/questions";
+import { questions } from "../../../data/questions";
 
 export default function handler(req, res) {
     const method = req.method;
@@ -24,6 +24,10 @@ export default function handler(req, res) {
                 questions.splice(index, 1);
                 res.status(200).json({ message: 'Deleted Succesfully' });
             }
+            break;
+        }
+        case 'PATCH': {
+            console.log(req.body);
         }
     }
 }
