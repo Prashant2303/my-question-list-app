@@ -1,6 +1,6 @@
 import styles from '../styles/Index.module.css'
 import Container from '@mui/material/Container'
-import PrimarySearchAppBar from '../components/AppBar';
+import NavBar from '../components/AppBar';
 import AddQuestion from '../components/AddQuestion'
 import List from '../components/List';
 import { useEffect, useState } from 'react';
@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <Container className={styles.App} maxWidth="md">
-      <PrimarySearchAppBar />
+      <NavBar />
       <AddQuestion addQuestion={addQuestion} />
       <List questions={list} loading={loading} deleteQuestion={deleteQuestion} />
       <button onClick={() => console.log('Array', list)}>List</button>
