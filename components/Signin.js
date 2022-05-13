@@ -10,6 +10,7 @@ import {
   Container,
 } from '@mui/material';
 import * as Yup from 'yup';
+import Link from 'next/link';
 
 const Signin = () => {
   const validationSchema = Yup.object().shape({
@@ -72,7 +73,7 @@ const Signin = () => {
               </Typography>
             </Grid>
           </Grid>
-          <Grid container my={3} direction="row-reverse">
+          <Grid container my={3}>
             <Button
               variant="contained"
               color="primary"
@@ -80,10 +81,23 @@ const Signin = () => {
               fullWidth
               size='large'
               disableElevation
-              sx={{'textTransform':'none', 'backgroundColor':'#1877f2'}}
+              sx={{ 'textTransform': 'none', 'backgroundColor': '#1877f2' }}
             >
               Sign In
             </Button>
+          </Grid>
+          <Grid container py={3} justifyContent='center' sx={{ 'borderTop': '1px solid #dadde1' }}>
+            <Link href='/signup' passHref>
+              <Button
+                variant="contained"
+                color="success"
+                size='large'
+                disableElevation
+                sx={{ 'textTransform': 'none', 'width':'150px' ,'backgroundColor': '#42b72a' }}
+              >
+                Sign Up
+              </Button>
+            </Link>
           </Grid>
         </Box>
       </Paper>
