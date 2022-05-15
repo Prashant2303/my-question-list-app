@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next -p 3002",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -14,6 +14,7 @@
     "@hookform/resolvers": "2.8.8",
     "@mui/icons-material": "5.6.2",
     "@mui/material": "5.6.4",
+    "mongodb": "4.6.0",
     "mongoose": "6.3.3",
     "next": "12.1.5",
     "react": "18.0.0",
