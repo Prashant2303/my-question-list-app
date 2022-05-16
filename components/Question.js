@@ -4,12 +4,11 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
 
 const Question = ({ question, deleteQuestion }) => {
-    const [showNotes, setShowNotes] = useState(false);
-    const handleClick = () => {
-        setShowNotes(prevShowNotes => !prevShowNotes);
-    }
 
     const [state, setState] = useState(question);
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [showNotes, setShowNotes] = useState(false);
+    
     const handleChange = async (e) => {
         const response = await fetch(`/api/questions/${question.id}`, {
             method: 'PATCH',
@@ -24,7 +23,17 @@ const Question = ({ question, deleteQuestion }) => {
         console.log('DATA', data);
         setState({ ...state, [e.target.name]: e.target.value });
     }
-
+    
+    const handleDelete = async () => {
+        setLoadingDelete(true);
+        await deleteQuestion(question.id);
+        setLoadingDelete(false);
+    }
+    
+    const handleClick = () => {
+        setShowNotes(prevShowNotes => !prevShowNotes);
+    }
+    
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
             <Grid item xs={5.5}>
@@ -65,7 +74,7 @@ const Question = ({ question, deleteQuestion }) => {
                 <Button variant="outlined" fullWidth onClick={handleClick}>{question.notes === '' ? 'Add Notes' : 'Show Notes'}</Button>
             </Grid>
             <Grid style={{ 'display': 'flex', 'justifyContent': 'center' }} item xs={0.5}>
-                <IconButton color='error' onClick={() => deleteQuestion(question.id)}>
+                <IconButton disabled={loadingDelete} color='error' onClick={handleDelete}>
                     <DeleteForeverIcon />
                 </IconButton>
             </Grid>
