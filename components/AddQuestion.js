@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Button, Paper, MenuItem } from '@mui/material';
-
-const AddQuestion = ({addQuestion}) => {
+import { Grid, TextField, Paper, MenuItem } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+const AddQuestion = ({ addQuestion }) => {
 
     const difficulties = ['Easy', 'Medium', 'Hard'];
     const statuses = ['Todo', 'Revise', 'Done'];
@@ -19,6 +19,7 @@ const AddQuestion = ({addQuestion}) => {
     };
 
     const [state, setState] = useState(initialState);
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(initialErrors);
 
     const handleUrlChange = (e) => {
@@ -49,18 +50,18 @@ const AddQuestion = ({addQuestion}) => {
         setState({ ...state, [e.target.name]: e.target.value });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         if (errors.url || errors.name)
             alert('Please fill all required fields');
-        else
-        {   
-            addQuestion(state);
+        else {
+            setLoading(true);
+            await addQuestion(state);
             setState(initialState);
+            setLoading(false);
         }
     }
 
     return (
-        // <Grid item>
         <Paper className="form" elevation={3} sx={{ padding: '15px' }}>
             <Grid container spacing={2}>    {/* Adding xs and spacing together causes component to shift left */}
                 <Grid item xs={6}>
@@ -141,16 +142,22 @@ const AddQuestion = ({addQuestion}) => {
                         value={state.notes}
                         onChange={handleChange}
                         fullWidth
-                        // margin="normal"
                         size="small"
                     />
                 </Grid>
                 <Grid item container direction="row-reverse" xs={12} sx={{ display: 'flex' }}>
-                    <Button variant="contained" disableElevation type="submit" onClick={handleSubmit}>Add Question</Button>
+                    <LoadingButton
+                        loading={loading}
+                        variant="contained"
+                        disableElevation
+                        type="submit"
+                        onClick={handleSubmit}
+                    >
+                        Add Question
+                    </LoadingButton>
                 </Grid>
             </Grid>
         </Paper>
-        // </Grid>
     )
 }
 

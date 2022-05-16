@@ -21,7 +21,7 @@ export default async function handler(req, res) {
             };
             case 'POST': {
                 const { question } = req.body;  //get question from req
-                const insertResult = await collection.updateOne(user, { $push: { questions: question } })
+                const insertResult = await collection.updateOne(user, { $push: { questions: { $each: [question], $position: 0 } } })
                 console.log('Insert ', insertResult);
                 res.status(200).json(question);//return question
                 break;
