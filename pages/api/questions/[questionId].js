@@ -1,7 +1,11 @@
 import { questions } from "../../../data/questions";
+import clientPromise from "../mongo";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     const method = req.method;
+    const client = await clientPromise
+    const db = client.db("myFirstDatabase")
+    const collection = db.collection('testuser');
     switch (method) {
         // case 'GET': {
         //     res.status(200).json(questions);
@@ -30,7 +34,10 @@ export default function handler(req, res) {
             const { questionId } = req.query;
             console.log(req.body);
             console.log('QID', questionId);
-            res.status(200).json({ 'message': "Got it" })
+            // Update fields of question in array   $set
+            const updateResult = await collection.updateOne({ username: "StrongestSorcerer", "questions.id": 3 }, { "$set": { "questions.$.site": "GfG" } })
+            console.log('Insert result', updateResult);
+            res.status(200).json({ 'message': updateResult })
         }
     }
 }
