@@ -38,12 +38,12 @@ export default function Home() {
   }
 
   const deleteQuestion = async (questionId) => {
-    const response = await fetch('/api/questions', {
-      method: 'DELETE',
-      body: JSON.stringify({ questionId })
+    const response = await fetch(`/api/questions/${questionId}`, {
+      method: 'DELETE'
     });
 
     const data = await response.json();
+    console.log('DELETE RESPONSE', data);
     const newList = list.filter(question => question.id !== questionId)
     setList(newList);
   }
