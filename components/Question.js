@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
@@ -7,9 +7,18 @@ const Question = ({ question, deleteQuestion }) => {
 
     const [state, setState] = useState(question);
     const [loadingDelete, setLoadingDelete] = useState(false);
+    const [loadingStatus, setLoadingStatus] = useState(false);
+    const [loadingDifficulty, setLoadingDifficulty] = useState(false);
     const [showNotes, setShowNotes] = useState(false);
     
     const handleChange = async (e) => {
+
+        if(e.target.name === 'status') {
+            setLoadingStatus(true);
+        } else {
+            setLoadingDifficulty(true);
+        }
+
         const response = await fetch(`/api/questions/${question.id}`, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -22,6 +31,12 @@ const Question = ({ question, deleteQuestion }) => {
         const data = await response.json();
         console.log('DATA', data);
         setState({ ...state, [e.target.name]: e.target.value });
+
+        if(e.target.name === 'status') {
+            setLoadingStatus(false);
+        } else {
+            setLoadingDifficulty(false);
+        }
     }
     
     const handleDelete = async () => {
@@ -48,6 +63,7 @@ const Question = ({ question, deleteQuestion }) => {
                     onChange={handleChange}
                     fullWidth
                     size="small"
+                    disabled={loadingDifficulty}
                     sx={{ backgroundColor: "white", borderRadius: "4px" }}
                 >
                     <MenuItem value="Easy">Easy</MenuItem>
@@ -64,6 +80,7 @@ const Question = ({ question, deleteQuestion }) => {
                     onChange={handleChange}
                     fullWidth
                     size="small"
+                    disabled={loadingStatus}
                 >
                     <MenuItem value="Todo">Todo</MenuItem>
                     <MenuItem value="Revise">Revise</MenuItem>
