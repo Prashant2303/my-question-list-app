@@ -16,11 +16,11 @@ export default async function handler(req, res) {
         }
         case 'PATCH': {
             const { questionId } = req.query;
-            console.log(req.body);
-            console.log('QID', questionId);
-            // Update fields of question in array   $set
-            const updateResult = await collection.updateOne({ username: "StrongestSorcerer", "questions.id": 3 }, { "$set": { "questions.$.site": "GfG" } })
-            console.log('Insert result', updateResult);
+            const [field] = Object.keys(req.body);
+            const target = "questions.$."+field;
+            const updateValue = req.body[field];
+            // const updateResult = await collection.updateOne({ username: "StrongestSorcerer", "questions.id": 3 }, { "$set": { "questions.$.site": "GfG" } })
+            const updateResult = await collection.updateOne({ ...user, "questions.id": questionId }, { "$set": { [target]: updateValue } })
             res.status(200).json({ 'message': updateResult })
         }
     }
