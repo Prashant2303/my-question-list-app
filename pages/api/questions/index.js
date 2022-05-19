@@ -1,8 +1,9 @@
 import clientPromise from "../mongo";
+import { ObjectId } from "mongodb";
 
-const user = { username: "StrongestSorcerer" }
 
 export default async function handler(req, res) {
+    const user = { _id: new ObjectId("62835aef57a59df4fbbfa9de") }
     const method = req.method;
     try {
         const client = await clientPromise

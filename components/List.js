@@ -12,8 +12,9 @@ const List = ({ questions, loading, deleteQuestion }) => {
                 <Grid item xs={2}>Action</Grid>
             </Grid>
             {
-                loading ? <div style={{ 'display': 'flex', 'justifyContent': 'center' }}> <CircularProgress /> </div> :
-                    questions.map((question) => <Question key={question.id} question={question} deleteQuestion={deleteQuestion} />)
+                loading ? <div style={{ 'display': 'flex', 'justifyContent': 'center' }}> <CircularProgress /> </div> 
+                        : !questions || questions.length === 0 ? <div style={{'textAlign': 'center'}}>No Questions</div>
+                        : questions.map((question) => <Question key={question.id} question={question} deleteQuestion={deleteQuestion} />)
             }
         </Paper>
     )

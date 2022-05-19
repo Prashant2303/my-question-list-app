@@ -36,8 +36,17 @@ const Signup = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(JSON.stringify(data, null, 2));
+  const onSubmit = async (newuser) => {
+    const response = await fetch('/api/users/signup', {
+      method: 'POST',
+      body: JSON.stringify({ newuser }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json();
+    console.log(data);
+    // console.log(JSON.stringify(newuser, null, 2));
   };
 
   return (

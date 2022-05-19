@@ -29,8 +29,17 @@ const Signin = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(JSON.stringify(data, null, 2));
+  const onSubmit = async (userCreds) => {
+    // console.log(JSON.stringify(userCreds, null, 2));
+    const response = await fetch('/api/users/signin', {
+      method: 'POST',
+      body: JSON.stringify({ userCreds }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json();
+    console.log(data);
   };
 
   return (
@@ -93,7 +102,7 @@ const Signin = () => {
                 color="success"
                 size='large'
                 disableElevation
-                sx={{ 'textTransform': 'none', 'width':'150px' ,'backgroundColor': '#42b72a' }}
+                sx={{ 'textTransform': 'none', 'width': '150px', 'backgroundColor': '#42b72a' }}
               >
                 Sign Up
               </Button>
