@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
-
+import { AppContext } from '../pages/_app';
+import { useContext } from 'react';
 const Question = ({ question, deleteQuestion }) => {
 
+    const globalState = useContext(AppContext);
     const [state, setState] = useState(question);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);

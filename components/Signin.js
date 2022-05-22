@@ -11,8 +11,27 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import Link from 'next/link';
+import { AppContext } from '../pages/_app';
+import { useContext } from 'react';
+import { useRouter } from 'next/router';
+import { loginService } from '../services/question.service';
 
 const Signin = () => {
+
+  const state = useContext(AppContext);
+  const router = useRouter();
+  
+  const onSubmit = async (userCreds) => {
+    // console.log(JSON.stringify(userCreds, null, 2));
+    const data = await loginService(userCreds)
+    console.log(data);
+    state.setQuestions(data.questions);
+    delete data.questions;
+    state.setUser(data)
+    state.setSignedIn(true);
+    router.push('/')
+  };
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -28,19 +47,6 @@ const Signin = () => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-
-  const onSubmit = async (userCreds) => {
-    // console.log(JSON.stringify(userCreds, null, 2));
-    const response = await fetch('/api/users/signin', {
-      method: 'POST',
-      body: JSON.stringify({ userCreds }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    const data = await response.json();
-    console.log(data);
-  };
 
   return (
     <Container maxWidth="xs">
