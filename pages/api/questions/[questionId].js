@@ -1,6 +1,7 @@
 import clientPromise from "../mongo";
+import { ObjectId } from "mongodb";
 
-const user = { username: "StrongestSorcerer" }
+const user = { _id: new ObjectId("627fa98a74c103d78cfd69c7") }
 
 export default async function handler(req, res) {
     const method = req.method;
@@ -10,7 +11,9 @@ export default async function handler(req, res) {
     switch (method) {
         case 'DELETE': {
             const { questionId } = req.query;
+            console.log(questionId);
             const removeResult = await collection.updateOne(user, { $pull: { questions: { id: questionId } } })
+            console.log(removeResult);
             res.status(200).json({ message: removeResult });
             break;
         }

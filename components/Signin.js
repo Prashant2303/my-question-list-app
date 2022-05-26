@@ -11,8 +11,17 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import Link from 'next/link';
+import { signin } from '../apiCalls';
+import { useSetRecoilState } from 'recoil';
+import { stateUser, stateQuestions } from '../atom';
+import { useRouter } from 'next/router';
 
 const Signin = () => {
+
+  const router = useRouter();
+  const setUser = useSetRecoilState(stateUser);
+  const setQuestions = useSetRecoilState(stateQuestions);
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -30,16 +39,10 @@ const Signin = () => {
   });
 
   const onSubmit = async (userCreds) => {
-    // console.log(JSON.stringify(userCreds, null, 2));
-    const response = await fetch('/api/users/signin', {
-      method: 'POST',
-      body: JSON.stringify({ userCreds }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    const data = await response.json();
-    console.log(data);
+    const data = await signin(userCreds);
+    setUser(data);
+    setQuestions(data.questions);
+    router.push('/');
   };
 
   return (

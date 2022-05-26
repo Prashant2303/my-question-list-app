@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
+import { deleteQuestion } from '../apiCalls';
+import { useRecoilState } from 'recoil';
+import { stateQuestions } from '../atom';
 
-const Question = ({ question, deleteQuestion }) => {
+const Question = ({ question }) => {
 
     const [state, setState] = useState(question);
     const [loadingDelete, setLoadingDelete] = useState(false);
@@ -39,10 +42,12 @@ const Question = ({ question, deleteQuestion }) => {
         }
     }
     
+    const [questions, setQuestions] = useRecoilState(stateQuestions);
     const handleDelete = async () => {
         setLoadingDelete(true);
-        await deleteQuestion(question.id);
-        setLoadingDelete(false);
+        const data = await deleteQuestion(question.id);
+        const newList = questions.filter(elem => elem.id !== question.id)
+        setQuestions(newList);
     }
     
     const handleClick = () => {
