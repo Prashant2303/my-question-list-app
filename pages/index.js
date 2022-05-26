@@ -14,38 +14,25 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
 
-  // const fetchQuestions = async () => {
-  //   const response = await fetch('/api/questions');
-  //   const data = await response.json();
-  //   setList(data);
-  //   setLoading(false);
-  // }
+  const fetchQuestions = async () => {
+    setLoading(true);
+    const response = await fetch('/api/questions');
+    const data = await response.json();
+    // setList(data);
+    setQuestions(data);
+    setLoading(false);
+  }
 
   // useEffect(() => {
   //   fetchQuestions();
   // }, [])  //will only run on intial render
 
-  const addQuestion = async (question) => {
-    question.id = uuidv4();
-    question.date = new Date();
-    const response = await fetch('/api/questions', {
-      method: 'POST',
-      body: JSON.stringify({ question }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const data = await response.json();
-    setList([data, ...list]);
-  }
-
   return (
     <Container className={styles.App} maxWidth="md">
       <NavBar />
-      <AddQuestion addQuestion={addQuestion} />
+      <AddQuestion />
       <List questions={questions} loading={loading} />
-      <button onClick={() => console.log('Array', list)}>List</button>
+      <button onClick={fetchQuestions}>Refresh</button>
     </Container>
   );
 }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
-import { deleteQuestion } from '../apiCalls';
+import { updateQuestion, deleteQuestion } from '../apiCalls';
 import { useRecoilState } from 'recoil';
 import { stateQuestions } from '../atom';
 
@@ -13,6 +13,7 @@ const Question = ({ question }) => {
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [loadingDifficulty, setLoadingDifficulty] = useState(false);
     const [showNotes, setShowNotes] = useState(false);
+    const [questions, setQuestions] = useRecoilState(stateQuestions);
     
     const handleChange = async (e) => {
 
@@ -22,17 +23,7 @@ const Question = ({ question }) => {
             setLoadingDifficulty(true);
         }
 
-        const response = await fetch(`/api/questions/${question.id}`, {
-            method: 'PATCH',
-            body: JSON.stringify({
-                [e.target.name]: e.target.value
-            }),
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-        const data = await response.json();
-        console.log('DATA', data);
+        const data = await updateQuestion(question.id, e)
         setState({ ...state, [e.target.name]: e.target.value });
 
         if(e.target.name === 'status') {
@@ -42,7 +33,6 @@ const Question = ({ question }) => {
         }
     }
     
-    const [questions, setQuestions] = useRecoilState(stateQuestions);
     const handleDelete = async () => {
         setLoadingDelete(true);
         const data = await deleteQuestion(question.id);

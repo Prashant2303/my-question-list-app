@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Grid, TextField, Paper, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-const AddQuestion = ({ addQuestion }) => {
+import { addQuestion } from '../apiCalls';
+import { stateQuestions } from '../atom';
+import { useRecoilState } from 'recoil';
+
+const AddQuestion = () => {
 
     const difficulties = ['Easy', 'Medium', 'Hard'];
     const statuses = ['Todo', 'Revise', 'Done'];
@@ -17,10 +21,11 @@ const AddQuestion = ({ addQuestion }) => {
         'url': false,
         'name': false
     };
-
+    
     const [state, setState] = useState(initialState);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(initialErrors);
+    const [questions, setQuestions] = useRecoilState(stateQuestions);
 
     const handleUrlChange = (e) => {
         setErrors({ ...errors, [e.target.name]: false })
@@ -50,12 +55,14 @@ const AddQuestion = ({ addQuestion }) => {
         setState({ ...state, [e.target.name]: e.target.value });
     }
 
-    const handleSubmit = async (e) => {
-        if (errors.url || errors.name)
+
+    const handleSubmit = async () => {
+        if ( errors.url || errors.name || state.url.length === 0 || state.name.length === 0 )
             alert('Please fill all required fields');
         else {
             setLoading(true);
-            await addQuestion(state);
+            const data = await addQuestion(state);
+            setQuestions([data, ...questions]);
             setState(initialState);
             setLoading(false);
         }
