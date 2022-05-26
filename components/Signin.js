@@ -11,8 +11,15 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import Link from 'next/link';
+import { AppContext } from '../pages/_app';
+import { useContext } from 'react';
+import { useRouter } from 'next/router';
 
 const Signin = () => {
+
+  const state = useContext(AppContext);
+  const router = useRouter();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -40,6 +47,11 @@ const Signin = () => {
     })
     const data = await response.json();
     console.log(data);
+    state.setQuestions(data?.questions);
+    delete data.questions;
+    state.setUser(data);
+    state.setSignedIn(true);
+    router.push('/');
   };
 
   return (

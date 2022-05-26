@@ -5,11 +5,14 @@ import AddQuestion from '../components/AddQuestion'
 import List from '../components/List';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { AppContext } from './_app';
+import { useContext } from 'react';
 
 export default function Home() {
 
-  const [loading, setLoading] = useState(true);
-  const [list, setList] = useState([]);
+  const state = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [list, setList] = useState(state?.questions);
 
   const fetchQuestions = async () => {
     const response = await fetch('/api/questions');
@@ -18,9 +21,9 @@ export default function Home() {
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchQuestions();
-  }, [])  //will only run on intial render
+  // useEffect(() => {
+  //   fetchQuestions();
+  // }, [])  //will only run on intial render
 
   const addQuestion = async (question) => {
     question.id = uuidv4();
@@ -34,6 +37,7 @@ export default function Home() {
     });
 
     const data = await response.json();
+    console.log('Add',data);
     setList([data, ...list]);
   }
 
