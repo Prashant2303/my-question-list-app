@@ -12,15 +12,11 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import Link from 'next/link';
-import { signup } from '../apiCalls';
-import { useSetRecoilState } from 'recoil';
-import { stateUser } from '../atom';
-import { useRouter } from 'next/router';
+import { useHooks } from '../apiCalls';
 
 export default function Signup() {
 
-    const router = useRouter();
-    const setUser = useSetRecoilState(stateUser);
+    const hooks = useHooks();
 
     const validationSchema = Yup.object().shape({
         username: Yup.string()
@@ -46,9 +42,7 @@ export default function Signup() {
     });
 
     const onSubmit = async (newuser) => {
-        const data = await signup(newuser);
-        setUser(data);
-        router.push('/');
+        hooks.signup(newuser);
     };
 
     return (

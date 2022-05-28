@@ -12,16 +12,11 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import Link from 'next/link';
-import { signin } from '../apiCalls';
-import { useSetRecoilState } from 'recoil';
-import { stateUser, stateQuestions } from '../atom';
-import { useRouter } from 'next/router';
+import { useHooks } from '../apiCalls';
 
 export default function Signin() {
 
-    const router = useRouter();
-    const setUser = useSetRecoilState(stateUser);
-    const setQuestions = useSetRecoilState(stateQuestions);
+    const hooks = useHooks();
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().required('Email is required').email('Email is invalid'),
@@ -39,11 +34,8 @@ export default function Signin() {
         resolver: yupResolver(validationSchema),
     });
 
-    const onSubmit = async (userCreds) => {
-        const data = await signin(userCreds);
-        setUser(data);
-        setQuestions(data.questions);
-        router.push('/');
+    const onSubmit = (userCreds) => {
+        hooks.signin(userCreds);
     };
 
     return (
