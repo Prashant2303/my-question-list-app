@@ -2,18 +2,16 @@ import { useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
-import { updateQuestion, deleteQuestion } from '../apiCalls';
-import { useRecoilState } from 'recoil';
-import { stateQuestions } from '../atom';
+import { useHooks } from '../apiCalls';
 
 const Question = ({ question }) => {
 
+    const hooks = useHooks();
     const [state, setState] = useState(question);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [loadingDifficulty, setLoadingDifficulty] = useState(false);
     const [showNotes, setShowNotes] = useState(false);
-    const [questions, setQuestions] = useRecoilState(stateQuestions);
     
     const handleChange = async (e) => {
 
@@ -23,7 +21,7 @@ const Question = ({ question }) => {
             setLoadingDifficulty(true);
         }
 
-        const data = await updateQuestion(question.id, e)
+        const data = await hooks.updateQuestion(question.id, e);
         setState({ ...state, [e.target.name]: e.target.value });
 
         if(e.target.name === 'status') {
@@ -35,9 +33,8 @@ const Question = ({ question }) => {
     
     const handleDelete = async () => {
         setLoadingDelete(true);
-        const data = await deleteQuestion(question.id);
-        const newList = questions.filter(elem => elem.id !== question.id)
-        setQuestions(newList);
+        hooks.deleteQuestion(question.id);
+        setLoadingDelete(false);
     }
     
     const handleClick = () => {

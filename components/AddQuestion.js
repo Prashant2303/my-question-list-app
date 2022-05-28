@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, TextField, Paper, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { addQuestion } from '../apiCalls';
-import { stateQuestions } from '../atom';
-import { useRecoilState } from 'recoil';
+import { useHooks } from '../apiCalls';
 
 const AddQuestion = () => {
 
@@ -22,10 +20,10 @@ const AddQuestion = () => {
         'name': false
     };
     
+    const hooks = useHooks();
     const [state, setState] = useState(initialState);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(initialErrors);
-    const [questions, setQuestions] = useRecoilState(stateQuestions);
 
     const handleUrlChange = (e) => {
         setErrors({ ...errors, [e.target.name]: false })
@@ -61,8 +59,7 @@ const AddQuestion = () => {
             alert('Please fill all required fields');
         else {
             setLoading(true);
-            const data = await addQuestion(state);
-            setQuestions([data, ...questions]);
+            const data = await hooks.addQuestion(state);
             setState(initialState);
             setLoading(false);
         }
