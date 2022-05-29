@@ -10,7 +10,7 @@ export const stateQuestions = atom({
     default: []
 })
 
-export const stateLoggedIn = atom({
-    key: 'stateLoggedIn',
-    default: false
+export const stateShouldFetch = atom({
+    key: 'stateShouldFetch',
+    default: true
 })
