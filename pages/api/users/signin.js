@@ -1,21 +1,18 @@
-import clientPromise from "../mongo";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
+import { connectToDatabase } from "../../../db";
 
 export default async function handler(req, res) {
     try {
-        const client = await clientPromise
-        const db = client.db(process.env.DB_NAME)
-        const collection = db.collection(process.env.COLLECTION_NAME);
-
+        const { collection } = await connectToDatabase();
         const { userCreds } = req.body;
 
         const existingUser = await collection.findOne({ email: userCreds.email })
-        if(!existingUser) return res.status(400).json({ message: "User not found" });
+        if (!existingUser) return res.status(400).json({ message: "User not found" });
 
         const isPasswordCorrect = await bcrypt.compare(userCreds.password, existingUser.password);
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
-        
+
         const token = jwt.sign({ id: existingUser._id }, 'test', { expiresIn: '7d' });
 
         const user = {

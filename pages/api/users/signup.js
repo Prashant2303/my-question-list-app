@@ -1,12 +1,10 @@
-import clientPromise from "../mongo";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from 'uuid';
+import { connectToDatabase } from "../../../db";
 
 export default async function handler(req, res) {
     try {
-        const client = await clientPromise
-        const db = client.db(process.env.DB_NAME)
-        const collection = db.collection(process.env.COLLECTION_NAME);
+        const { collection } = await connectToDatabase();
 
         const { newuser } = req.body;
         const exist = await collection.findOne({ email: newuser.email })

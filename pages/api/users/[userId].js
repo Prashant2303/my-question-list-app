@@ -1,16 +1,13 @@
-import clientPromise from "../mongo";
 import jwt from 'jsonwebtoken';
 import { ObjectId } from "mongodb";
+import { connectToDatabase } from "../../../db";
 
 export default async function handler(req, res) {
     try {
-        const client = await clientPromise
-        const db = client.db(process.env.DB_NAME)
-        const collection = db.collection(process.env.COLLECTION_NAME);
-        
+        const { collection } = await connectToDatabase();
         const token = req.headers.authorization.split(" ")[1];
         const existingUser = await collection.findOne({ _id: new ObjectId(req.query.userId) })
-    
+
         const user = {
             id: existingUser._id,
             email: existingUser.email,

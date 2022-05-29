@@ -1,14 +1,11 @@
-import clientPromise from "../mongo";
 import { ObjectId } from "mongodb";
-
+import { connectToDatabase } from "../../../db";
 
 export default async function handler(req, res) {
     const user = { _id: new ObjectId("627fa98a74c103d78cfd69c7") }
     const method = req.method;
     try {
-        const client = await clientPromise
-        const db = client.db(process.env.DB_NAME)
-        const collection = db.collection(process.env.COLLECTION_NAME);
+        const { collection } = await connectToDatabase();
 
         switch (method) {
             case 'GET': {
