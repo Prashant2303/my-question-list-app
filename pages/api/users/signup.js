@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import { connectToDatabase } from "../../../db";
 
@@ -21,7 +22,11 @@ export default async function handler(req, res) {
         }
 
         const insertResult = await collection.insertOne(newUser);
+
+        const token = jwt.sign({ id: insertResult.insertedId }, process.env.SECRET);
+
         newUser.id = insertResult.insertedId;
+        newUser.token = token;
         delete newUser.uuid;
         delete newUser.password;
         delete newUser._id;

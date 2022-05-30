@@ -23,6 +23,7 @@ export const useHooks = () => {
     }
 
     async function signinUsingSession(storedUser) {
+        console.log('user', user);
         const loggedInUser = JSON.parse(storedUser);
         const { id, token } = loggedInUser;
         const response = await fetch(`/api/users/${id}`, {
@@ -88,7 +89,8 @@ export const useHooks = () => {
             method: 'POST',
             body: JSON.stringify({ question }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         });
         const data = await response.json();
@@ -97,6 +99,7 @@ export const useHooks = () => {
     }
 
     async function updateQuestion(questionId, e) {
+        console.log('IN HOOK', user);
         const response = await fetch(`/api/questions/${questionId}`, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -104,6 +107,7 @@ export const useHooks = () => {
             }),
             headers: {
                 'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             },
         })
         const data = await response.json();
@@ -113,7 +117,11 @@ export const useHooks = () => {
 
     async function deleteQuestion(questionId) {
         const response = await fetch(`/api/questions/${questionId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
         });
 
         const data = await response.json();

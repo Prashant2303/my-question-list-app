@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         const isPasswordCorrect = await bcrypt.compare(userCreds.password, existingUser.password);
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
 
-        const token = jwt.sign({ id: existingUser._id }, 'test', { expiresIn: '7d' });
+        const token = jwt.sign({ id: existingUser._id }, process.env.SECRET);
 
         const user = {
             id: existingUser._id,

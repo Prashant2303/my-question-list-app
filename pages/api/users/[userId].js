@@ -1,23 +1,29 @@
-import jwt from 'jsonwebtoken';
 import { ObjectId } from "mongodb";
 import { connectToDatabase } from "../../../db";
+import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
     try {
-        const { collection } = await connectToDatabase();
         const token = req.headers.authorization.split(" ")[1];
-        const existingUser = await collection.findOne({ _id: new ObjectId(req.query.userId) })
+        const decodedUser = jwt.verify(token, process.env.SECRET);
+        const user = { _id: new ObjectId(decodedUser.id) };
 
-        const user = {
+        const { collection } = await connectToDatabase();
+
+        const existingUser = await collection.findOne(user);
+
+        const userData = {
             id: existingUser._id,
             email: existingUser.email,
             username: existingUser.username,
             questions: existingUser.questions,
             token
         }
-        return res.status(200).json(user)
-    } catch (e) {
-        console.error(e)
-        res.status(500).json({ message: 'Unable to connect with Database' })
+        return res.status(200).json(userData)
+    } catch (err) {
+        console.error(err)
+        if (typeof (err) === 'string')
+            return res.status(500).json({ message: err });
+        return res.status(500).json({ message: err });
     }
 }
