@@ -2,7 +2,7 @@ import { atom } from "recoil"
 
 export const stateUser = atom({
     key: 'stateUserKey',
-    default: {}
+    default: null
 })
 
 export const stateQuestions = atom({

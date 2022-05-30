@@ -1,15 +1,26 @@
 import { v4 as uuidv4 } from 'uuid';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { stateUser, stateQuestions, stateShouldFetch } from './atom';
 import { useRouter } from 'next/router';
 
 export const useHooks = () => {
+
+    const router = useRouter();
     const [user, setUser] = useRecoilState(stateUser);
     const [questions, setQuestions] = useRecoilState(stateQuestions);
     const [, setShouldFetch] = useRecoilState(stateShouldFetch);
-    const router = useRouter();
 
-    return { signinUsingSession, signin, signup, addQuestion, updateQuestion, deleteQuestion };
+    const resetUser = useResetRecoilState(stateUser);
+    const resetQuestions = useResetRecoilState(stateQuestions);
+    const resetShouldFetch = useResetRecoilState(stateShouldFetch);
+
+    return { user, redirectIfLoggedIn, signinUsingSession, signin, signup, logout, addQuestion, updateQuestion, deleteQuestion };
+    
+    function redirectIfLoggedIn() {
+        if(localStorage.getItem('user')) {
+            router.push('/');
+        }
+    }
 
     async function signinUsingSession(storedUser) {
         const loggedInUser = JSON.parse(storedUser);
@@ -60,6 +71,14 @@ export const useHooks = () => {
         setQuestions(data.questions);
         setShouldFetch(false);
         router.push('/');
+    }
+
+    function logout() {
+        resetUser();
+        resetQuestions();
+        resetShouldFetch();
+        localStorage.removeItem('user');
+        router.push('/signin');
     }
 
     async function addQuestion(question) {

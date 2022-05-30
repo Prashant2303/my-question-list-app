@@ -13,11 +13,15 @@ import {
 import * as Yup from 'yup';
 import Link from 'next/link';
 import { useHooks } from '../apiCalls';
+import { useEffect } from 'react';
 
 export default function Signup() {
 
     const hooks = useHooks();
-
+    useEffect(()=>{
+        hooks.redirectIfLoggedIn();
+    })
+    
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Username is required')
