@@ -17,13 +17,12 @@ if (!collectionName) {
 }
 
 // https://www.section.io/engineering-education/build-nextjs-with-mongodb-and-deploy-on-vercel/
-
+console.log('Restarted');
 let cachedClient = null;
 let cachedDb = null;
 let cachedCollection = null;
 
 export async function connectToDatabase() {
-    console.log('cachedCollection', cachedCollection);
     if (cachedClient && cachedDb && cachedCollection) {
         console.log('CACHE HIT');
         return {
@@ -33,9 +32,10 @@ export async function connectToDatabase() {
         }
     }
     
+    console.log('CACHE MISS');
     const client = new MongoClient(uri);
     await client.connect();
-    console.log('CACHE MISS - Connected to DB');
+    console.log('Connected to DB');
     const db = client.db(dbName)
     const collection = db.collection(collectionName);
 

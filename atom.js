@@ -1,16 +1,16 @@
 import { atom } from "recoil"
 
 export const stateUser = atom({
-    key: 'stateUser',
+    key: 'stateUserKey',
     default: {}
 })
 
 export const stateQuestions = atom({
-    key: 'stateQuestions',
+    key: 'stateQuestionsKey',
     default: []
 })
 
 export const stateShouldFetch = atom({
-    key: 'stateShouldFetch',
+    key: 'stateShouldFetchKey',
     default: true
 })
