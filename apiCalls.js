@@ -15,9 +15,9 @@ export const useHooks = () => {
     const resetShouldFetch = useResetRecoilState(stateShouldFetch);
 
     return { user, redirectIfLoggedIn, signinUsingSession, signin, signup, logout, addQuestion, updateQuestion, deleteQuestion };
-    
+
     function redirectIfLoggedIn() {
-        if(localStorage.getItem('user')) {
+        if (localStorage.getItem('user')) {
             router.push('/');
         }
     }
@@ -98,12 +98,11 @@ export const useHooks = () => {
         setQuestions([data, ...questions]);
     }
 
-    async function updateQuestion(questionId, e) {
-        console.log('IN HOOK', user);
+    async function updateQuestion(questionId, field, value) {
         const response = await fetch(`/api/questions/${questionId}`, {
             method: 'PATCH',
             body: JSON.stringify({
-                [e.target.name]: e.target.value
+                [field]: value
             }),
             headers: {
                 'Content-type': 'application/json',

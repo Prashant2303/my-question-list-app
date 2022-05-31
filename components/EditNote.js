@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { useHooks } from '../apiCalls';
 
-const EditNote = ({ question }) => {
+const EditNote = ({ question, setState }) => {
 
+    const hooks = useHooks();
     const [note, setNote] = useState(question.notes);
     const [loading, setLoading] = useState(false);
 
@@ -13,18 +15,9 @@ const EditNote = ({ question }) => {
 
     const handleSubmit = async () => {
         setLoading(true);
-        const response = await fetch(`/api/questions/${question.id}`, {
-            method: 'PATCH',
-            body: JSON.stringify({
-                notes: note
-            }),
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-        const data = await response.json();
+        const data = await hooks.updateQuestion(question.id, 'notes', note)
         console.log('DATA', data);
-        question.notes = note;
+        setState({ ...question, 'notes': note });
         setLoading(false);
     }
 

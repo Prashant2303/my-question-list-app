@@ -12,35 +12,36 @@ const Question = ({ question }) => {
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [loadingDifficulty, setLoadingDifficulty] = useState(false);
     const [showNotes, setShowNotes] = useState(false);
-    
+
     const handleChange = async (e) => {
 
-        if(e.target.name === 'status') {
+        if (e.target.name === 'status') {
             setLoadingStatus(true);
         } else {
             setLoadingDifficulty(true);
         }
 
-        const data = await hooks.updateQuestion(question.id, e);
+        const data = await hooks.updateQuestion(question.id, e.target.name, e.target.value);
+        console.log('DATA', data);
         setState({ ...state, [e.target.name]: e.target.value });
 
-        if(e.target.name === 'status') {
+        if (e.target.name === 'status') {
             setLoadingStatus(false);
         } else {
             setLoadingDifficulty(false);
         }
     }
-    
+
     const handleDelete = async () => {
         setLoadingDelete(true);
         hooks.deleteQuestion(question.id);
         setLoadingDelete(false);
     }
-    
+
     const handleClick = () => {
         setShowNotes(prevShowNotes => !prevShowNotes);
     }
-    
+
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
             <Grid item xs={5.5}>
@@ -89,7 +90,7 @@ const Question = ({ question }) => {
             </Grid>
             {
                 showNotes && <Grid item xs={12}>
-                    <EditNote question={question} />
+                    <EditNote question={state} setState={setState} />
                 </Grid>
             }
         </Grid>
