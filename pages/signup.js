@@ -10,18 +10,21 @@ import {
     Button,
     Container,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import Link from 'next/link';
 import { useHooks } from '../apiCalls';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Signup() {
 
     const hooks = useHooks();
-    useEffect(()=>{
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
         hooks.redirectIfLoggedIn();
     })
-    
+
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Username is required')
@@ -46,7 +49,10 @@ export default function Signup() {
     });
 
     const onSubmit = async (newuser) => {
-        hooks.signup(newuser);
+        setLoading(true);
+        const data = await hooks.signup(newuser);
+        setLoading(false);
+        console.log(data);
     };
 
     return (
@@ -121,17 +127,17 @@ export default function Signup() {
                         </Grid>
                     </Grid>
                     <Grid container my={3}>
-                        <Button
+                        <LoadingButton
                             variant="contained"
-                            color="primary"
+                            loading={loading}
                             onClick={handleSubmit(onSubmit)}
                             fullWidth
-                            size='large'
+                            size="large"
                             disableElevation
                             sx={{ 'textTransform': 'none', 'backgroundColor': '#1877f2' }}
                         >
                             Sign Up
-                        </Button>
+                        </LoadingButton>
                     </Grid>
                     <Grid container py={3} justifyContent='center' sx={{ 'borderTop': '1px solid #dadde1' }}>
                         <Link href='/signin' passHref>

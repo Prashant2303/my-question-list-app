@@ -10,15 +10,18 @@ import {
     Button,
     Container,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import Link from 'next/link';
 import { useHooks } from '../apiCalls';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Signin() {
 
     const hooks = useHooks();
-    useEffect(()=>{
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
         hooks.redirectIfLoggedIn();
     })
 
@@ -38,8 +41,11 @@ export default function Signin() {
         resolver: yupResolver(validationSchema),
     });
 
-    const onSubmit = (userCreds) => {
-        hooks.signin(userCreds);
+    const onSubmit = async (userCreds) => {
+        setLoading(true);
+        const data = await hooks.signin(userCreds);
+        setLoading(false);
+        console.log(data);
     };
 
     return (
@@ -83,17 +89,17 @@ export default function Signin() {
                         </Grid>
                     </Grid>
                     <Grid container my={3}>
-                        <Button
+                        <LoadingButton
                             variant="contained"
-                            color="primary"
                             onClick={handleSubmit(onSubmit)}
                             fullWidth
-                            size='large'
+                            size="large"
                             disableElevation
+                            loading={loading}
                             sx={{ 'textTransform': 'none', 'backgroundColor': '#1877f2' }}
                         >
                             Sign In
-                        </Button>
+                        </LoadingButton>
                     </Grid>
                     <Grid container py={3} justifyContent='center' sx={{ 'borderTop': '1px solid #dadde1' }}>
                         <Link href='/signup' passHref>

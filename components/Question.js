@@ -8,10 +8,10 @@ const Question = ({ question }) => {
 
     const hooks = useHooks();
     const [state, setState] = useState(question);
+    const [showNotes, setShowNotes] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [loadingDifficulty, setLoadingDifficulty] = useState(false);
-    const [showNotes, setShowNotes] = useState(false);
 
     const handleChange = async (e) => {
 
@@ -21,7 +21,7 @@ const Question = ({ question }) => {
             setLoadingDifficulty(true);
         }
 
-        const data = await hooks.updateQuestion(question.id, e.target.name, e.target.value);
+        const data = await hooks.updateQuestion(state.id, e.target.name, e.target.value);
         console.log('DATA', data);
         setState({ ...state, [e.target.name]: e.target.value });
 
@@ -34,8 +34,9 @@ const Question = ({ question }) => {
 
     const handleDelete = async () => {
         setLoadingDelete(true);
-        hooks.deleteQuestion(question.id);
+        const data = await hooks.deleteQuestion(state.id);
         setLoadingDelete(false);
+        console.log('DATA', data);
     }
 
     const handleClick = () => {
@@ -45,7 +46,7 @@ const Question = ({ question }) => {
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
             <Grid item xs={5.5}>
-                <a href={question.url} target='_blank' rel="noreferrer">{question.name}</a>
+                <a href={state.url} target='_blank' rel="noreferrer">{state.name}</a>
             </Grid>
             <Grid item xs={2}>
                 <TextField
@@ -81,7 +82,7 @@ const Question = ({ question }) => {
                 </TextField>
             </Grid>
             <Grid item xs={2}>
-                <Button variant="outlined" fullWidth onClick={handleClick}>{question.notes === '' ? 'Add Notes' : 'Show Notes'}</Button>
+                <Button variant="outlined" fullWidth onClick={handleClick}>{state.notes === '' ? 'Add Notes' : 'Show Notes'}</Button>
             </Grid>
             <Grid style={{ 'display': 'flex', 'justifyContent': 'center' }} item xs={0.5}>
                 <IconButton disabled={loadingDelete} color='error' onClick={handleDelete}>

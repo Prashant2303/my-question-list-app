@@ -26,11 +26,11 @@ export default function NavBar() {
                     {
                         user ?
                             <>
-                                <MenuItem>
+                                {/* <MenuItem>
                                     <Link href="/profile" passHref>
                                         <Typography textAlign="center">Profile</Typography>
                                     </Link>
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem onClick={hooks.logout}>
                                     <Typography textAlign="center">Log out</Typography>
                                 </MenuItem>
