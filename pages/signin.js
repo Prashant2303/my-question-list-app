@@ -43,9 +43,8 @@ export default function Signin() {
 
     const onSubmit = async (userCreds) => {
         setLoading(true);
-        const data = await hooks.signin(userCreds);
+        await hooks.signin(userCreds);
         setLoading(false);
-        console.log(data);
     };
 
     return (

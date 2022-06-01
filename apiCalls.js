@@ -49,12 +49,16 @@ export const useHooks = () => {
             }
         })
         const data = await response.json();
-        localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
-        console.log('SIGNIN HOOK', data);
-        setUser(data);
-        setQuestions(data.questions);
-        setShouldFetch(false);
-        router.push('/');
+        if(response.ok) {
+            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
+            console.log('SIGNIN SUCCESS', data);
+            setUser(data);
+            setQuestions(data.questions);
+            setShouldFetch(false);
+            router.push('/');
+        } else {
+            console.log('ERROR', data);
+        }
     }
 
     async function signup(newuser) {
