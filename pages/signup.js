@@ -50,9 +50,8 @@ export default function Signup() {
 
     const onSubmit = async (newuser) => {
         setLoading(true);
-        const data = await hooks.signup(newuser);
+        await hooks.signup(newuser);
         setLoading(false);
-        console.log(data);
     };
 
     return (

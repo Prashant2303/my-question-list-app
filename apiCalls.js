@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { stateUser, stateQuestions, stateShouldFetch } from './atom';
 import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 
 export const useHooks = () => {
 
@@ -50,6 +51,7 @@ export const useHooks = () => {
         })
         const data = await response.json();
         if(response.ok) {
+            toast.success('Signin Successful');
             localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
             console.log('SIGNIN SUCCESS', data);
             setUser(data);
@@ -57,10 +59,11 @@ export const useHooks = () => {
             setShouldFetch(false);
             router.push('/');
         } else {
+            toast.error(data.message);
             console.log('ERROR', data);
         }
     }
-
+    
     async function signup(newuser) {
         const response = await fetch('/api/users/signup', {
             method: 'POST',
@@ -70,12 +73,18 @@ export const useHooks = () => {
             }
         })
         const data = await response.json();
-        localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
-        console.log('SIGNUP HOOK', data);
-        setUser(data);
-        setQuestions(data.questions);
-        setShouldFetch(false);
-        router.push('/');
+        if(response.ok) {
+            toast.success('Signup Successful');
+            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
+            console.log('SIGNUP SUCCESS', data);
+            setUser(data);
+            setQuestions(data.questions);
+            setShouldFetch(false);
+            router.push('/');
+        } else {
+            toast.error(data.message);
+            console.log('ERROR', data);
+        }
     }
 
     function logout() {
@@ -83,6 +92,7 @@ export const useHooks = () => {
         resetQuestions();
         resetShouldFetch();
         localStorage.removeItem('user');
+        toast.success('Logged out successfully')
         router.push('/signin');
     }
 
