@@ -19,7 +19,7 @@ const AddQuestion = () => {
         'url': false,
         'name': false
     };
-    
+
     const hooks = useHooks();
     const [state, setState] = useState(initialState);
     const [loading, setLoading] = useState(false);
@@ -55,12 +55,12 @@ const AddQuestion = () => {
 
 
     const handleSubmit = async () => {
-        if ( errors.url || errors.name || state.url.length === 0 || state.name.length === 0 )
+        if (errors.url || errors.name || state.url.length === 0 || state.name.length === 0)
             alert('Please fill all required fields');
         else {
             setLoading(true);
             const result = await hooks.addQuestion(state);
-            if(result) {
+            if (result) {
                 setState(initialState);
             }
             setLoading(false);
@@ -68,7 +68,7 @@ const AddQuestion = () => {
     }
 
     return (
-        <Paper className="form" elevation={3} sx={{ padding: '15px' }}>
+        <Paper className="form" elevation={3} sx={{ padding: '15px', marginTop: '10px' }}>
             <Grid container spacing={2}>    {/* Adding xs and spacing together causes component to shift left */}
                 <Grid item xs={6}>
                     <TextField

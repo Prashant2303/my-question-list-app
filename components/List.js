@@ -19,14 +19,15 @@ const List = ({ loading }) => {
     const renderNoQuestions = () => {
         return <div style={{ 'textAlign': 'center' }}>No Questions</div>
     }
-    
+
     return (
-        <Paper className="form" elevation={3} sx={{ padding: '15px', marginTop: '15px' }}>
-            <Grid container spacing={1} alignItems="center" marginBottom="10px">
-                <Grid item xs={6}>Name</Grid>
+        <Paper className="form" elevation={3} sx={{ padding: '15px', marginTop: '10px' }}>
+            <Grid container spacing={1} paddingBottom="10px" marginBottom="10px" sx={{ textAlign: 'center', borderBottom: '1px solid lightgrey' }}>
+                <Grid item xs={5.5}>Name</Grid>
                 <Grid item xs={2}>Difficulty</Grid>
                 <Grid item xs={2}>Status</Grid>
                 <Grid item xs={2}>Action</Grid>
+                <Grid item xs={0.5}></Grid>
             </Grid>
             {
                 loading ? renderLoading()

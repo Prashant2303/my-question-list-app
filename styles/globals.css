@@ -4,7 +4,10 @@ body {
   margin: 0;
   font-family: Roboto;
   -webkit-font-smoothing: antialiased;
-  background-color:rgb(20, 33, 41);
+  background-color: rgb(20, 33, 41);
+  background-image: url('/bg-img.jpg');
+  background-size:cover;
+  background-attachment: fixed;
 }
 
 a {

@@ -41,6 +41,18 @@ const Question = ({ question }) => {
         setShowNotes(prevShowNotes => !prevShowNotes);
     }
 
+    const difficultyColor = () => {
+        if (state.difficulty === 'Easy') return "#bbfcc5";
+        if (state.difficulty === 'Medium') return "#c7f2fc";
+        if (state.difficulty === 'Hard') return "#fabebe";
+    }
+
+    const statusColor = () => {
+        if (state.status === 'Done') return "#bbfcc5";
+        if (state.status === 'Revise') return "#c7f2fc";
+        if (state.status === 'Todo') return "#fabebe";
+    }
+
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
             <Grid item xs={5.5}>
@@ -56,7 +68,7 @@ const Question = ({ question }) => {
                     fullWidth
                     size="small"
                     disabled={loadingDifficulty}
-                    sx={{ backgroundColor: "white", borderRadius: "4px" }}
+                    sx={{ backgroundColor: difficultyColor(), borderRadius: "4px" }}
                 >
                     <MenuItem value="Easy">Easy</MenuItem>
                     <MenuItem value="Medium">Medium</MenuItem>
@@ -73,6 +85,7 @@ const Question = ({ question }) => {
                     fullWidth
                     size="small"
                     disabled={loadingStatus}
+                    sx={{ backgroundColor: statusColor(), borderRadius: "4px" }}
                 >
                     <MenuItem value="Todo">Todo</MenuItem>
                     <MenuItem value="Revise">Revise</MenuItem>
