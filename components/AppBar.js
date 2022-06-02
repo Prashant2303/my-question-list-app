@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import { useHooks } from '../apiCalls';
+import { useHooks } from 'service/apiCalls';
 
 export default function NavBar() {
 

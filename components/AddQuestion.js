@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, TextField, Paper, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { useHooks } from '../apiCalls';
+import { useHooks } from 'service/apiCalls';
 
 const AddQuestion = () => {
 

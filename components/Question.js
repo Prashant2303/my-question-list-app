@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
-import { useHooks } from '../apiCalls';
+import { useHooks } from 'service/apiCalls';
 
 const Question = ({ question }) => {
 

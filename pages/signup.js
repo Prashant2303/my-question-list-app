@@ -13,7 +13,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import Link from 'next/link';
-import { useHooks } from '../apiCalls';
+import { useHooks } from 'service/apiCalls';
 import { useEffect, useState } from 'react';
 
 export default function Signup() {

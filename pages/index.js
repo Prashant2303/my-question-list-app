@@ -5,7 +5,7 @@ import AddQuestion from '../components/AddQuestion'
 import List from '../components/List';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useHooks } from '../apiCalls';
+import { useHooks } from 'service/apiCalls';
 import { useRecoilState } from 'recoil';
 import { stateShouldFetch } from '../atom';
 
