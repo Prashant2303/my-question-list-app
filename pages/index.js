@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilState } from 'recoil';
-import { stateShouldFetch } from '../atom';
+import { stateShouldFetch } from 'store/atoms';
 
 export default function Home() {
 

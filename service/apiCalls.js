@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { stateUser, stateQuestions, stateShouldFetch } from '../atom';
+import { stateUser, stateQuestions, stateShouldFetch } from 'store/atoms';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 

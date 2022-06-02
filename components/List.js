@@ -2,7 +2,7 @@ import React from 'react';
 import { CircularProgress, Grid, Paper } from '@mui/material';
 import Question from './Question';
 import { useRecoilState } from 'recoil';
-import { stateQuestions } from '../atom';
+import { stateQuestions } from 'store/atoms';
 
 const List = ({ loading }) => {
 
