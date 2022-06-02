@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { connectToDatabase } from "../../../db";
-import { apiHandler } from "../../../api-handler";
+import { apiHandler } from "helpers/api-handler";
 
 export default apiHandler({
     post: handler
