@@ -21,16 +21,13 @@ function apiHandler(handler) {
     return async (req, res) => {
         const method = req.method.toLowerCase();
 
-        // check handler supports HTTP method
+        // check if handler supports HTTP method of incoming request
         if (!handler[method])
             return res.status(405).end(`Method ${req.method} Not Allowed`);
 
         try {
-            // global middleware
-            // await jwtMiddleware(req, res);
-
-            // route handler
             const { collection } = await connectToDatabase();
+            // route handler
             await handler[method](req, res, collection);
         } catch (err) {
             // global error handler

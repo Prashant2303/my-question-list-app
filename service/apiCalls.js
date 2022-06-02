@@ -24,7 +24,6 @@ export const useHooks = () => {
     }
 
     async function signinUsingSession(storedUser) {
-        console.log('user', user);
         const loggedInUser = JSON.parse(storedUser);
         const { id, token } = loggedInUser;
         const response = await fetch(`/api/users/${id}`, {
@@ -56,14 +55,12 @@ export const useHooks = () => {
         if (response.ok) {
             toast.success('Signin Successful');
             localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
-            console.log('SIGNIN SUCCESS', data);
             setUser(data);
             setQuestions(data.questions);
             setShouldFetch(false);
             router.push('/');
         } else {
             toast.error(data.message);
-            console.log('ERROR', data);
         }
     }
 
@@ -79,14 +76,12 @@ export const useHooks = () => {
         if (response.ok) {
             toast.success('Signup Successful');
             localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
-            console.log('SIGNUP SUCCESS', data);
             setUser(data);
             setQuestions(data.questions);
             setShouldFetch(false);
             router.push('/');
         } else {
             toast.error(data.message);
-            console.log('ERROR', data);
         }
     }
 

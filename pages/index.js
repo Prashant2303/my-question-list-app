@@ -1,8 +1,8 @@
 import styles from '../styles/Index.module.css'
 import Container from '@mui/material/Container'
-import NavBar from '../components/AppBar';
-import AddQuestion from '../components/AddQuestion'
-import List from '../components/List';
+import NavBar from 'components/AppBar';
+import AddQuestion from 'components/AddQuestion'
+import List from 'components/List';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useHooks } from 'service/apiCalls';
@@ -27,7 +27,6 @@ export default function Home() {
       router.push('/signin');
     }
     else if (shouldFetch) {
-      console.log('FETCH INFO');
       fetchUserInfo();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
