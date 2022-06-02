@@ -1,6 +1,6 @@
-import { connectToDatabase } from "db";
 import jwt from 'jsonwebtoken';
 import { ObjectId } from "mongodb";
+import { connectToDatabase } from "helpers/db";
 
 export { apiHandler, getUserFromToken };
 
