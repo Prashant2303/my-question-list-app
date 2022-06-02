@@ -34,10 +34,13 @@ export const useHooks = () => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        const data = await response.json();
-        console.log('SIGNIN SESSION HOOK', data);
-        setUser(data);
-        setQuestions(data.questions);
+        if (response.ok) {
+            const data = await response.json();
+            setUser(data);
+            setQuestions(data.questions);
+        } else {
+            logout();
+        }
     }
 
     async function signin(userCreds) {
@@ -50,7 +53,7 @@ export const useHooks = () => {
             }
         })
         const data = await response.json();
-        if(response.ok) {
+        if (response.ok) {
             toast.success('Signin Successful');
             localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
             console.log('SIGNIN SUCCESS', data);
@@ -63,7 +66,7 @@ export const useHooks = () => {
             console.log('ERROR', data);
         }
     }
-    
+
     async function signup(newuser) {
         const response = await fetch('/api/users/signup', {
             method: 'POST',
@@ -73,7 +76,7 @@ export const useHooks = () => {
             }
         })
         const data = await response.json();
-        if(response.ok) {
+        if (response.ok) {
             toast.success('Signup Successful');
             localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
             console.log('SIGNUP SUCCESS', data);
@@ -123,9 +126,12 @@ export const useHooks = () => {
                 'Authorization': `Bearer ${user.token}`
             },
         })
-        const data = await response.json();
-        console.log('UPDATE API', data);
-        return data;
+        if (response.ok) {
+            toast.success('Updated Successfully');
+            return true;
+        }
+        toast.error('Something went wrong');
+        return false;
     }
 
     async function deleteQuestion(questionId) {
@@ -136,10 +142,13 @@ export const useHooks = () => {
                 'Authorization': `Bearer ${user.token}`
             },
         });
-
-        const data = await response.json();
-        console.log('DELETE HOOK', data);
-        const newList = questions.filter(question => question.id !== questionId)
-        setQuestions(newList);
+        if (response.ok) {
+            const newList = questions.filter(question => question.id !== questionId)
+            setQuestions(newList);
+            toast.success('Deleted Successfully');
+            return true;
+        }
+        toast.error('Something went wrong');
+        return false;
     }
 }

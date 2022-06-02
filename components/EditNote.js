@@ -16,8 +16,7 @@ const EditNote = ({ question, setState }) => {
     const handleSubmit = async () => {
         setLoading(true);
         const data = await hooks.updateQuestion(question.id, 'notes', note)
-        console.log('DATA', data);
-        setState({ ...question, 'notes': note });
+        if (data) setState({ ...question, 'notes': note });
         setLoading(false);
     }
 

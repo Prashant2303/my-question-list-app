@@ -1,29 +1,19 @@
-import { ObjectId } from "mongodb";
-import { connectToDatabase } from "../../../db";
-import jwt from 'jsonwebtoken';
+import { apiHandler, getUserFromToken } from "helpers/api-handler";
 
-export default async function handler(req, res) {
-    try {
-        const token = req.headers.authorization.split(" ")[1];
-        const decodedUser = jwt.verify(token, process.env.SECRET);
-        const user = { _id: new ObjectId(decodedUser.id) };
+export default apiHandler({
+    get: handler
+})
 
-        const { collection } = await connectToDatabase();
+async function handler(req, res, collection) {
+    const { user, token } = getUserFromToken(req);
+    const existingUser = await collection.findOne(user);
 
-        const existingUser = await collection.findOne(user);
-
-        const userData = {
-            id: existingUser._id,
-            email: existingUser.email,
-            username: existingUser.username,
-            questions: existingUser.questions,
-            token
-        }
-        return res.status(200).json(userData)
-    } catch (err) {
-        console.error(err)
-        if (typeof (err) === 'string')
-            return res.status(500).json({ message: err });
-        return res.status(500).json({ message: err });
+    const userData = {
+        id: existingUser._id,
+        email: existingUser.email,
+        username: existingUser.username,
+        questions: existingUser.questions,
+        token
     }
+    return res.status(200).json(userData)
 }

@@ -21,9 +21,8 @@ const Question = ({ question }) => {
             setLoadingDifficulty(true);
         }
 
-        const data = await hooks.updateQuestion(state.id, e.target.name, e.target.value);
-        console.log('DATA', data);
-        setState({ ...state, [e.target.name]: e.target.value });
+        const result = await hooks.updateQuestion(state.id, e.target.name, e.target.value);
+        if (result) setState({ ...state, [e.target.name]: e.target.value });
 
         if (e.target.name === 'status') {
             setLoadingStatus(false);
@@ -34,9 +33,8 @@ const Question = ({ question }) => {
 
     const handleDelete = async () => {
         setLoadingDelete(true);
-        const data = await hooks.deleteQuestion(state.id);
+        await hooks.deleteQuestion(state.id);
         setLoadingDelete(false);
-        console.log('DATA', data);
     }
 
     const handleClick = () => {
