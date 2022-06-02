@@ -1,15 +1,13 @@
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
-import { connectToDatabase } from "../../../db";
 import { apiHandler } from "helpers/api-handler";
 
 export default apiHandler({
     post: handler
 })
 
-async function handler(req, res) {
+async function handler(req, res, collection) {
 
-    const { collection } = await connectToDatabase();
     const { userCreds } = req.body;
 
     const existingUser = await collection.findOne({ email: userCreds.email })

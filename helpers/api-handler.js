@@ -1,6 +1,9 @@
+import { connectToDatabase } from "db";
+
 export { apiHandler };
 
 function apiHandler(handler) {
+    console.log('IN HANDLER');
     return async (req, res) => {
         const method = req.method.toLowerCase();
 
@@ -13,7 +16,8 @@ function apiHandler(handler) {
             // await jwtMiddleware(req, res);
 
             // route handler
-            await handler[method](req, res);
+            const { collection } = await connectToDatabase();
+            await handler[method](req, res, collection);
         } catch (err) {
             // global error handler
             console.log('SERVER ERROR', err);
