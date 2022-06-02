@@ -59,8 +59,10 @@ const AddQuestion = () => {
             alert('Please fill all required fields');
         else {
             setLoading(true);
-            const data = await hooks.addQuestion(state);
-            setState(initialState);
+            const result = await hooks.addQuestion(state);
+            if(result) {
+                setState(initialState);
+            }
             setLoading(false);
         }
     }

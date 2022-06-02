@@ -110,9 +110,14 @@ export const useHooks = () => {
                 'Authorization': `Bearer ${user.token}`
             }
         });
-        const data = await response.json();
-        console.log('ADD HOOK', data);
-        setQuestions([data, ...questions]);
+        if (response.ok) {
+            const data = await response.json();
+            setQuestions([data, ...questions]);
+            toast.success('Question added');
+            return true;
+        }
+        toast.error('Something went wrong');
+        return false;
     }
 
     async function updateQuestion(questionId, field, value) {
