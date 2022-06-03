@@ -63,12 +63,12 @@ const Question = ({ index, question }) => {
 
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
-            <Grid item xs={5.5} ref={nameRef} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <Grid item xs={6.1} ref={nameRef} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 <Tooltip title={state.name} placement='top-start' disableHoverListener={disableTooltip()} >
                     <a href={state.url} target='_blank' ref={anchorRef} rel="noreferrer">{index + 1}{'. '}{state.name}</a>
                 </Tooltip>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={1.7}>
                 <TextField
                     select
                     id="difficulty"
@@ -85,7 +85,7 @@ const Question = ({ index, question }) => {
                     <MenuItem value="Hard">Hard</MenuItem>
                 </TextField>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={1.7}>
                 <TextField
                     select
                     id="status"
