@@ -31,21 +31,26 @@ export async function connectToDatabase() {
             collection: cachedCollection
         }
     }
-    
+
     console.log('CACHE MISS');
     const client = new MongoClient(uri);
-    await client.connect();
-    console.log('Connected to DB...');
-    const db = client.db(dbName)
-    const collection = db.collection(collectionName);
 
-    cachedClient = client;
-    cachedDb = db;
-    cachedCollection = collection;
-
-    return {
-        client: cachedClient,
-        db: cachedDb,
-        collection: cachedCollection
+    try {
+        await client.connect();
+        console.log('Connected to DB...');
+        const db = client.db(dbName)
+        const collection = db.collection(collectionName);
+    
+        cachedClient = client;
+        cachedDb = db;
+        cachedCollection = collection;
+    
+        return {
+            client: cachedClient,
+            db: cachedDb,
+            collection: cachedCollection
+        }
+    } catch (err) {
+        console.log("COULDN'T CONNECT TO DATABASE", err);
     }
 }
