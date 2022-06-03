@@ -1,22 +1,18 @@
 import { apiHandler, getUserFromToken } from "helpers/api-handler";
+import { v4 as uuidv4 } from 'uuid';
 
 export default apiHandler({
-    get: handler().get,
     post: handler().post,
 })
 
 function handler() {
-    return { get, post };
-
-    async function get(req, res, collection) {
-        const { user } = getUserFromToken(req);
-        const findOneResult = await collection.findOne(user);
-        return res.status(200).json(findOneResult.questions);
-    }
+    return { post };
 
     async function post(req, res, collection) {
         const { user } = getUserFromToken(req);
         const { question } = req.body;
+        question.id = uuidv4();
+        question.date = new Date();
         await collection.updateOne(user, { $push: { questions: { $each: [question], $position: 0 } } })
         return res.status(200).json(question);
     }

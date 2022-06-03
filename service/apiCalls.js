@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { stateUser, stateQuestions, stateShouldFetch } from 'store/atoms';
 import { useRouter } from 'next/router';
@@ -95,8 +94,6 @@ export const useHooks = () => {
     }
 
     async function addQuestion(question) {
-        question.id = uuidv4();
-        question.date = new Date();
         const response = await fetch('/api/questions', {
             method: 'POST',
             body: JSON.stringify({ question }),
