@@ -52,7 +52,7 @@ export default function Signin() {
             <Paper elevation={3}>
                 <Box px={3} py={2}>
                     <Typography variant="h6" align="center" margin="dense">
-                        SignIn
+                        Sign In
                     </Typography>
                     <Grid container spacing={1}>
                         <Grid item xs={12} sm={12}>
