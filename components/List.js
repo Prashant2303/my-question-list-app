@@ -32,7 +32,7 @@ const List = ({ loading }) => {
             {
                 loading ? renderLoading()
                     : !questions || questions.length === 0 ? renderNoQuestions()
-                        : questions.map((question) => <Question key={question.id} question={question} />)
+                        : questions.map((question, index) => <Question key={question.id} index={index} question={question} />)
             }
         </Paper>
     )

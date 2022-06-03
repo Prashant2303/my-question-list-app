@@ -16,8 +16,8 @@ const AddQuestion = () => {
         'notes': ''
     };
     const initialErrors = {
-        'url': false,
-        'name': false
+        'url': '',
+        'name': ''
     };
 
     const hooks = useHooks();
@@ -26,12 +26,12 @@ const AddQuestion = () => {
     const [errors, setErrors] = useState(initialErrors);
 
     const handleUrlChange = (e) => {
-        setErrors({ ...errors, [e.target.name]: false })
+        setErrors({ url: '', name: '' })
         try {
             const url = new URL(e.target.value);
             setState({
                 ...state,
-                [e.target.name]: e.target.value,
+                url: e.target.value,
                 name: url.pathname.substring(10),
                 site: url.hostname
             });
@@ -40,24 +40,32 @@ const AddQuestion = () => {
                 ...state,
                 url: e.target.value
             })
-            setErrors({ ...errors, [e.target.name]: true })
+            setErrors({ ...errors, url: 'Invalid URL' })
         }
     }
 
     const handleChange = (e) => {
         if (e.target.name === 'name') {
-            setErrors({ ...errors, [e.target.name]: false })
+            setErrors({ ...errors, name: '' })
             if (e.target.value.trim() === '')
-                setErrors({ ...errors, [e.target.name]: true })
+                setErrors({ ...errors, name: 'Required' })
+            if (e.target.value.trim().length > 100)
+                setErrors({ ...errors, name: 'Must be less than 100 characters' })
         }
         setState({ ...state, [e.target.name]: e.target.value });
     }
 
 
     const handleSubmit = async () => {
-        if (errors.url || errors.name || state.url.length === 0 || state.name.length === 0)
-            alert('Please fill all required fields');
-        else {
+        if (!state.url.length || !state.name.length) {
+            if (state.name.length) {
+                setErrors({ ...errors, url: 'Required' })
+            } else if (state.url.length) {
+                setErrors({ ...errors, name: 'Required' })
+            } else {
+                setErrors({ url: 'Required', name: 'Required' })
+            }
+        } else {
             setLoading(true);
             const result = await hooks.addQuestion(state);
             if (result) {
@@ -82,8 +90,9 @@ const AddQuestion = () => {
                         onChange={handleUrlChange}
                         required
                         size="small"
-                        error={errors.url}
-                        helperText={errors.url ? "Invalid URL" : null}
+                        error={!!errors.url}
+                        helperText={errors.url}
+
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -97,8 +106,8 @@ const AddQuestion = () => {
                         onChange={handleChange}
                         required
                         size="small"
-                        error={errors.name}
-                        helperText={errors.name ? "Required" : null}
+                        error={!!errors.name}
+                        helperText={errors.name}
                     />
                 </Grid>
                 <Grid item xs={6}>

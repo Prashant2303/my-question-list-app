@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Grid, TextField, Button, MenuItem, IconButton } from '@mui/material';
+import { Grid, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
 import { useHooks } from 'service/apiCalls';
 
-const Question = ({ question }) => {
+const Question = ({ index, question }) => {
 
     const hooks = useHooks();
     const [state, setState] = useState(question);
@@ -55,8 +55,10 @@ const Question = ({ question }) => {
 
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
-            <Grid item xs={5.5}>
-                <a href={state.url} target='_blank' rel="noreferrer">{state.name}</a>
+            <Grid item xs={5.5} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <Tooltip title={state.name}>
+                    <a href={state.url} target='_blank' rel="noreferrer">{index+1}{'. '}{state.name}</a>
+                </Tooltip>
             </Grid>
             <Grid item xs={2}>
                 <TextField
