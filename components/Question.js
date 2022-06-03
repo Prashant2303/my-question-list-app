@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
@@ -12,6 +12,8 @@ const Question = ({ index, question }) => {
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [loadingDifficulty, setLoadingDifficulty] = useState(false);
+    const nameRef = useRef();
+    const anchorRef = useRef();
 
     const handleChange = async (e) => {
 
@@ -53,11 +55,17 @@ const Question = ({ index, question }) => {
         if (state.status === 'Todo') return "#fabebe";
     }
 
+    const disableTooltip = () => {
+        const textWidth = anchorRef.current?.offsetWidth;
+        const containerWidth = nameRef.current?.offsetWidth;
+        return textWidth < containerWidth ? true : false
+    }
+
     return (
         <Grid container spacing={1} alignItems="center" marginBottom="10px">
-            <Grid item xs={5.5} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                <Tooltip title={state.name}>
-                    <a href={state.url} target='_blank' rel="noreferrer">{index+1}{'. '}{state.name}</a>
+            <Grid item xs={5.5} ref={nameRef} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <Tooltip title={state.name} placement='top-start' disableHoverListener={disableTooltip()} >
+                    <a href={state.url} target='_blank' ref={anchorRef} rel="noreferrer">{index + 1}{'. '}{state.name}</a>
                 </Tooltip>
             </Grid>
             <Grid item xs={2}>
