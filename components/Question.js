@@ -1,3 +1,4 @@
+import styles from 'styles/Question.module.css';
 import { useRef, useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -62,13 +63,13 @@ const Question = ({ index, question }) => {
     }
 
     return (
-        <Grid container spacing={1} alignItems="center" marginBottom="10px">
-            <Grid item xs={6.1} ref={nameRef} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <Grid container className={styles.question} spacing={1} alignItems="center">
+            <Grid item className={styles.name} xs={12} sm={6.4} ref={nameRef}>
                 <Tooltip title={state.name} placement='top-start' disableHoverListener={disableTooltip()} >
                     <a href={state.url} target='_blank' ref={anchorRef} rel="noreferrer">{index + 1}{'. '}{state.name}</a>
                 </Tooltip>
             </Grid>
-            <Grid item xs={1.7}>
+            <Grid item xs={4} sm={1.7} >
                 <TextField
                     select
                     id="difficulty"
@@ -85,7 +86,7 @@ const Question = ({ index, question }) => {
                     <MenuItem value="Hard">Hard</MenuItem>
                 </TextField>
             </Grid>
-            <Grid item xs={1.7}>
+            <Grid item xs={4} sm={1.7} >
                 <TextField
                     select
                     id="status"
@@ -102,10 +103,10 @@ const Question = ({ index, question }) => {
                     <MenuItem value="Done">Done</MenuItem>
                 </TextField>
             </Grid>
-            <Grid item xs={2}>
-                <Button variant="outlined" fullWidth onClick={handleClick}>{state.notes === '' ? 'Add Notes' : 'Show Notes'}</Button>
+            <Grid item xs={3} sm={1.7} >
+                <Button variant="outlined" fullWidth onClick={handleClick}>{state.notes === '' ? 'Add' : 'View'}</Button>
             </Grid>
-            <Grid style={{ 'display': 'flex', 'justifyContent': 'center' }} item xs={0.5}>
+            <Grid item className={styles.delete} xs={1} sm={0.5} >
                 <IconButton disabled={loadingDelete} color='error' onClick={handleDelete}>
                     <DeleteForeverIcon />
                 </IconButton>
