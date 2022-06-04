@@ -51,6 +51,6 @@ export async function connectToDatabase() {
             collection: cachedCollection
         }
     } catch (err) {
-        console.log("COULDN'T CONNECT TO DATABASE", err);
+        console.log("COULDN'T CONNECT TO DATABASE");
     }
 }
