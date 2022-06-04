@@ -18,7 +18,7 @@ export const useHooks = () => {
 
     function redirectIfLoggedIn() {
         if (localStorage.getItem('user')) {
-            router.push('/');
+            router.replace('/');
         }
     }
 
@@ -57,7 +57,7 @@ export const useHooks = () => {
             setUser(data);
             setQuestions(data.questions);
             setShouldFetch(false);
-            router.push('/');
+            router.replace('/');
         } else {
             toast.error(data.message);
         }
@@ -78,7 +78,7 @@ export const useHooks = () => {
             setUser(data);
             setQuestions(data.questions);
             setShouldFetch(false);
-            router.push('/');
+            router.replace('/');
         } else {
             toast.error(data.message);
         }
