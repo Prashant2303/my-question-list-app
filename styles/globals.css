@@ -5,7 +5,7 @@ body {
   font-family: Roboto;
   -webkit-font-smoothing: antialiased;
   background-color: rgb(20, 33, 41);
-  background-image: url('/bg-img.jpg');
+  background-image: url('/bg-img.webp');
   background-size:cover;
   background-attachment: fixed;
 }
