@@ -3,6 +3,7 @@ import Container from '@mui/material/Container'
 import NavBar from 'components/AppBar';
 import AddQuestion from 'components/AddQuestion'
 import List from 'components/List';
+import Toolbar from 'components/Toolbar';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useHooks } from 'service/apiCalls';
@@ -36,6 +37,7 @@ export default function Home() {
     <Container className={styles.App} maxWidth="md">
       <NavBar />
       <AddQuestion />
+      <Toolbar />
       <List loading={loading} />
     </Container>
   );

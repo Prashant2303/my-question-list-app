@@ -2,6 +2,7 @@ import { useRecoilState, useResetRecoilState } from 'recoil';
 import { stateUser, stateQuestions, stateShouldFetch } from 'store/atoms';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
+import Fuse from 'fuse.js';
 
 export const useHooks = () => {
 
@@ -14,7 +15,20 @@ export const useHooks = () => {
     const resetQuestions = useResetRecoilState(stateQuestions);
     const resetShouldFetch = useResetRecoilState(stateShouldFetch);
 
-    return { user, redirectIfLoggedIn, signinUsingSession, signin, signup, logout, addQuestion, updateQuestion, deleteQuestion };
+    return {
+        user,
+        redirectIfLoggedIn,
+        signinUsingSession,
+        signin,
+        signup,
+        logout,
+        addQuestion,
+        updateQuestion,
+        deleteQuestion,
+        filter,
+        search,
+        reset,
+    };
 
     function redirectIfLoggedIn() {
         if (localStorage.getItem('user')) {
@@ -147,5 +161,34 @@ export const useHooks = () => {
         }
         toast.error('Something went wrong');
         return false;
+    }
+
+    function search(query) {
+        // console.log('QUERY', query);
+        const fuse = new Fuse(user?.questions, {
+            keys: ['name']
+        });
+
+        const result = fuse.search(query);
+        // console.log('RESULT', result);
+        // console.log('RESULT', result[0].item);
+        const renderArray = result.map(item => item.item);
+        console.log('RESULT', renderArray);
+        setQuestions(renderArray);
+    }
+
+    function filter(param, e) {
+        console.log(param, e.target.value);
+        // let params = ['status']
+        // const renderQuestions = questions.filter(question => {
+        //     params.
+        //     question[param] === e.target.value
+        // })
+        // setQuestions(renderQuestions);
+    }
+
+    function reset() {
+        // console.log('Clear');
+        setQuestions(user.questions);
     }
 }
