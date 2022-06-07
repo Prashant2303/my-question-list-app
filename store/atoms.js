@@ -17,10 +17,8 @@ export const stateShouldFetch = atom({
 
 export const stateFilter = atom({
     key: 'stateFilter',
-    default: false
-})
-
-export const stateFilteredQuestions = atom({
-    key: 'stateFilteredQuestions',
-    default: []
+    default: {
+        filter: false,
+        filteredQuestions: [],
+    }
 })

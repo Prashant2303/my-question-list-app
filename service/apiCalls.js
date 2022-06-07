@@ -1,5 +1,5 @@
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { stateUser, stateQuestions, stateShouldFetch, stateFilter, stateFilteredQuestions } from 'store/atoms';
+import { stateUser, stateQuestions, stateShouldFetch, stateFilter } from 'store/atoms';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
@@ -12,11 +12,11 @@ export const useHooks = () => {
     const [questions, setQuestions] = useRecoilState(stateQuestions);
     const [, setShouldFetch] = useRecoilState(stateShouldFetch);
     const [, setFilter] = useRecoilState(stateFilter);
-    const [, setFilteredQuestions] = useRecoilState(stateFilteredQuestions);
 
     const resetUser = useResetRecoilState(stateUser);
     const resetQuestions = useResetRecoilState(stateQuestions);
     const resetShouldFetch = useResetRecoilState(stateShouldFetch);
+    const resetFilter = useResetRecoilState(stateFilter);
 
     return {
         user,
@@ -172,9 +172,11 @@ export const useHooks = () => {
         });
 
         const result = fuse.search(query);
-        const renderArray = result.map(item => item.item);
-        setFilteredQuestions(renderArray)
-        setFilter(true);
+        const filtered = result.map(item => item.item);
+        setFilter({
+            filter: true,
+            filteredQuestions: filtered,
+        });
     }
 
     function filter(e) {
@@ -195,13 +197,14 @@ export const useHooks = () => {
             return flag;
         });
 
-        setFilteredQuestions(filtered)
-        setFilter(true);
+        setFilter({
+            filter: true,
+            filteredQuestions: filtered,
+        });
     }
 
     function reset() {
         params = {};
-        setFilter(false);
-        setFilteredQuestions([]);
+        resetFilter();
     }
 }

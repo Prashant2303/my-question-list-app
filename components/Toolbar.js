@@ -5,18 +5,17 @@ import { useHooks } from "service/apiCalls";
 
 const Toolbar = () => {
 
-    const hooks = useHooks();
-    const [query, setQuery] = useState('');
-    const [difficulty, setDifficulty] = useState('All');
-    const [status, setStatus] = useState('All');
-
-    const handleDifficulty = (e) => {
-        setDifficulty(e.target.value);
-        hooks.filter(e);
+    const initialState = {
+        difficulty: 'All',
+        status: 'All',
     }
 
-    const handleStatus = (e) => {
-        setStatus(e.target.value);
+    const hooks = useHooks();
+    const [query, setQuery] = useState('');
+    const [state, setState] = useState(initialState);
+
+    const handleChange = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value })
         hooks.filter(e);
     }
 
@@ -33,8 +32,7 @@ const Toolbar = () => {
     const handleReset = () => {
         hooks.reset();
         setQuery('');
-        setDifficulty('All');
-        setStatus('All');
+        setState(initialState);
     }
 
     return (
@@ -44,9 +42,9 @@ const Toolbar = () => {
                     <TextField
                         select
                         name="difficulty"
-                        value={difficulty}
+                        value={state.difficulty}
                         label="Difficulty"
-                        onChange={handleDifficulty}
+                        onChange={handleChange}
                         fullWidth
                         size="small"
                     >
@@ -60,9 +58,9 @@ const Toolbar = () => {
                     <TextField
                         select
                         name="status"
-                        value={status}
+                        value={state.status}
                         label="Status"
-                        onChange={handleStatus}
+                        onChange={handleChange}
                         fullWidth
                         size="small"
                     >
