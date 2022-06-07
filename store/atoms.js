@@ -14,3 +14,13 @@ export const stateShouldFetch = atom({
     key: 'stateShouldFetchKey',
     default: true
 })
+
+export const stateFilter = atom({
+    key: 'stateFilter',
+    default: false
+})
+
+export const stateFilteredQuestions = atom({
+    key: 'stateFilteredQuestions',
+    default: []
+})

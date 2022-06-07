@@ -1,15 +1,18 @@
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { stateUser, stateQuestions, stateShouldFetch } from 'store/atoms';
+import { stateUser, stateQuestions, stateShouldFetch, stateFilter, stateFilteredQuestions } from 'store/atoms';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
 
+let params = {};
 export const useHooks = () => {
 
     const router = useRouter();
     const [user, setUser] = useRecoilState(stateUser);
     const [questions, setQuestions] = useRecoilState(stateQuestions);
     const [, setShouldFetch] = useRecoilState(stateShouldFetch);
+    const [, setFilter] = useRecoilState(stateFilter);
+    const [, setFilteredQuestions] = useRecoilState(stateFilteredQuestions);
 
     const resetUser = useResetRecoilState(stateUser);
     const resetQuestions = useResetRecoilState(stateQuestions);
@@ -164,31 +167,41 @@ export const useHooks = () => {
     }
 
     function search(query) {
-        // console.log('QUERY', query);
         const fuse = new Fuse(user?.questions, {
             keys: ['name']
         });
 
         const result = fuse.search(query);
-        // console.log('RESULT', result);
-        // console.log('RESULT', result[0].item);
         const renderArray = result.map(item => item.item);
-        console.log('RESULT', renderArray);
-        setQuestions(renderArray);
+        setFilteredQuestions(renderArray)
+        setFilter(true);
     }
 
-    function filter(param, e) {
-        console.log(param, e.target.value);
-        // let params = ['status']
-        // const renderQuestions = questions.filter(question => {
-        //     params.
-        //     question[param] === e.target.value
-        // })
-        // setQuestions(renderQuestions);
+    function filter(e) {
+        if (e.target.value === "All") {
+            delete params[e.target.name];
+        } else {
+            params[e.target.name] = e.target.value;
+        }
+
+        const filtered = questions.filter((question) => {
+            let flag = true;
+            for (const key in params) {
+                if (question[key] !== params[key]) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        });
+
+        setFilteredQuestions(filtered)
+        setFilter(true);
     }
 
     function reset() {
-        // console.log('Clear');
-        setQuestions(user.questions);
+        params = {};
+        setFilter(false);
+        setFilteredQuestions([]);
     }
 }
