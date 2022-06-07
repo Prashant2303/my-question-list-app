@@ -3,11 +3,12 @@ import React from 'react';
 import { CircularProgress, Grid, Paper } from '@mui/material';
 import Question from './Question';
 import { useRecoilState } from 'recoil';
-import { stateQuestions } from 'store/atoms';
+import { stateFilter, stateQuestions } from 'store/atoms';
 
 const List = ({ loading }) => {
 
     const [questions,] = useRecoilState(stateQuestions);
+    const [filterState,] = useRecoilState(stateFilter);
 
     const renderLoading = () => {
         return (
@@ -21,6 +22,8 @@ const List = ({ loading }) => {
         return <div className={styles.emptyList}>No Questions</div>
     }
 
+    const renderQuestions = filterState.filter ? filterState.filteredQuestions : questions;
+
     return (
         <Paper className={styles.list} elevation={3}>
             <Grid container className={styles.headings} spacing={1}>
@@ -32,8 +35,8 @@ const List = ({ loading }) => {
             </Grid>
             {
                 loading ? renderLoading()
-                    : !questions || questions.length === 0 ? renderEmptyList()
-                        : questions.map((question, index) => <Question key={question.id} index={index} question={question} />)
+                    : !renderQuestions || renderQuestions.length === 0 ? renderEmptyList()
+                        : renderQuestions.map((question, index) => <Question key={question.id} index={index} question={question} />)
             }
         </Paper>
     )

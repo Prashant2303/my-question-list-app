@@ -1,20 +1,37 @@
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { stateUser, stateQuestions, stateShouldFetch } from 'store/atoms';
+import { stateUser, stateQuestions, stateShouldFetch, stateFilter } from 'store/atoms';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
+import Fuse from 'fuse.js';
 
+let params = {};
 export const useHooks = () => {
 
     const router = useRouter();
     const [user, setUser] = useRecoilState(stateUser);
     const [questions, setQuestions] = useRecoilState(stateQuestions);
     const [, setShouldFetch] = useRecoilState(stateShouldFetch);
+    const [, setFilter] = useRecoilState(stateFilter);
 
     const resetUser = useResetRecoilState(stateUser);
     const resetQuestions = useResetRecoilState(stateQuestions);
     const resetShouldFetch = useResetRecoilState(stateShouldFetch);
+    const resetFilter = useResetRecoilState(stateFilter);
 
-    return { user, redirectIfLoggedIn, signinUsingSession, signin, signup, logout, addQuestion, updateQuestion, deleteQuestion };
+    return {
+        user,
+        redirectIfLoggedIn,
+        signinUsingSession,
+        signin,
+        signup,
+        logout,
+        addQuestion,
+        updateQuestion,
+        deleteQuestion,
+        filter,
+        search,
+        reset,
+    };
 
     function redirectIfLoggedIn() {
         if (localStorage.getItem('user')) {
@@ -147,5 +164,47 @@ export const useHooks = () => {
         }
         toast.error('Something went wrong');
         return false;
+    }
+
+    function search(query) {
+        const fuse = new Fuse(user?.questions, {
+            keys: ['name']
+        });
+
+        const result = fuse.search(query);
+        const filtered = result.map(item => item.item);
+        setFilter({
+            filter: true,
+            filteredQuestions: filtered,
+        });
+    }
+
+    function filter(e) {
+        if (e.target.value === "All") {
+            delete params[e.target.name];
+        } else {
+            params[e.target.name] = e.target.value;
+        }
+
+        const filtered = questions.filter((question) => {
+            let flag = true;
+            for (const key in params) {
+                if (question[key] !== params[key]) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        });
+
+        setFilter({
+            filter: true,
+            filteredQuestions: filtered,
+        });
+    }
+
+    function reset() {
+        params = {};
+        resetFilter();
     }
 }
