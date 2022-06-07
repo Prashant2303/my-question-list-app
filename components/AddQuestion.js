@@ -7,12 +7,14 @@ const AddQuestion = () => {
 
     const difficulties = ['Easy', 'Medium', 'Hard'];
     const statuses = ['Todo', 'Revise', 'Done'];
+    const categories = ['Array', 'Linked List', 'Binary Tree', 'Binary Search Tree', 'Tree', 'Heap', 'Stack', 'Matrix', 'String', 'Queue', 'Graph', 'Trie', 'Others'];
     const initialState = {
         'url': '',
         'site': '',
         'name': '',
         'difficulty': 'Medium',
         'status': 'Revise',
+        'category': 'Others',
         'notes': ''
     };
     const initialErrors = {
@@ -110,7 +112,7 @@ const AddQuestion = () => {
                         helperText={errors.name}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <TextField
                         id="difficulty"
                         name="difficulty"
@@ -129,7 +131,7 @@ const AddQuestion = () => {
                         ))}
                     </TextField>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <TextField
                         id="status"
                         name="status"
@@ -142,6 +144,25 @@ const AddQuestion = () => {
                         size="small"
                     >
                         {statuses.map((option) => (
+                            <MenuItem id={option} key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        id="category"
+                        name="category"
+                        select
+                        label="Category"
+                        value={state.category}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                        size="small"
+                    >
+                        {categories.sort().map((option) => (
                             <MenuItem id={option} key={option} value={option}>
                                 {option}
                             </MenuItem>
