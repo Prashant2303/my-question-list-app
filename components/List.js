@@ -4,6 +4,7 @@ import { CircularProgress, Grid, Paper } from '@mui/material';
 import Question from './Question';
 import { useRecoilState } from 'recoil';
 import { stateFilter, stateQuestions } from 'store/atoms';
+import { Transition, TransitionGroup } from 'react-transition-group';
 
 const List = ({ loading }) => {
 
@@ -22,7 +23,41 @@ const List = ({ loading }) => {
         return <div className={styles.emptyList}>No Questions</div>
     }
 
-    const renderQuestions = filterState.filter ? filterState.filteredQuestions : questions;
+    const questionsToRender = filterState.filter ? filterState.filteredQuestions : questions;
+
+    const duration = 1000;
+
+    const defaultStyle = {
+        transition: `all ${duration}ms linear`,
+        opacity: 0,
+        maxHeight: '70px',
+        marginBottom: '10px',
+        overflow: 'hidden'
+    }
+
+    const transitionStyles = {
+        entering: { opacity: 1, maxHeight: '70px', marginBottom: '10px' },
+        entered: { opacity: 1, maxHeight: '70px', marginBottom: '10px' },
+        exiting: { opacity: 0, maxHeight: 0, marginBottom: 0 },
+        exited: { opacity: 0, maxHeight: 0, marginBottom: 0 },
+    };
+
+    const renderQuestions = () => (
+        <TransitionGroup>
+            {questionsToRender.map((question, index) => (
+                <Transition key={question.id} timeout={duration}>
+                    {state => (
+                        <div style={{
+                            ...defaultStyle,
+                            ...transitionStyles[state]
+                        }}>
+                            <Question key={question.id} index={index} question={question} />
+                        </div>
+                    )}
+                </Transition>
+            ))}
+        </TransitionGroup>
+    )
 
     return (
         <Paper className={styles.list} elevation={3}>
@@ -35,8 +70,8 @@ const List = ({ loading }) => {
             </Grid>
             {
                 loading ? renderLoading()
-                    : !renderQuestions || renderQuestions.length === 0 ? renderEmptyList()
-                        : renderQuestions.map((question, index) => <Question key={question.id} index={index} question={question} />)
+                    : !questionsToRender || questionsToRender.length === 0 ? renderEmptyList()
+                        : renderQuestions()
             }
         </Paper>
     )

@@ -63,7 +63,7 @@ const Question = ({ index, question }) => {
     }
 
     return (
-        <Grid container className={styles.question} spacing={1} alignItems="center">
+        <Grid container spacing={1} alignItems="center">
             <Grid item className={styles.name} xs={12} sm={6.4} ref={nameRef}>
                 <Tooltip title={state.name} placement='top-start' disableHoverListener={disableTooltip()} >
                     <a href={state.url} target='_blank' ref={anchorRef} rel="noreferrer">{index + 1}{'. '}{state.name}</a>
