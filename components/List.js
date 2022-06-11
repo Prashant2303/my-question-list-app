@@ -25,21 +25,31 @@ const List = ({ loading }) => {
 
     const questionsToRender = filterState.filter ? filterState.filteredQuestions : questions;
 
-    const duration = 1000;
+    const duration = 300;
 
     const defaultStyle = {
         transition: `all ${duration}ms linear`,
         opacity: 0,
-        maxHeight: '70px',
-        marginBottom: '10px',
-        overflow: 'hidden'
+        transform: 'scale(1)'
     }
 
     const transitionStyles = {
-        entering: { opacity: 1, maxHeight: '70px', marginBottom: '10px' },
-        entered: { opacity: 1, maxHeight: '70px', marginBottom: '10px' },
-        exiting: { opacity: 0, maxHeight: 0, marginBottom: 0 },
-        exited: { opacity: 0, maxHeight: 0, marginBottom: 0 },
+        entering: {
+            opacity: 1,
+            transform: 'scale(1)',
+        },
+        entered: {
+            opacity: 1,
+            transform: 'scale(1)',
+        },
+        exiting: {
+            opacity: 0,
+            transform: 'scale(0.9)',
+        },
+        exited: {
+            opacity: 0,
+            transform: 'scale(0.9)',
+        },
     };
 
     const renderQuestions = () => (

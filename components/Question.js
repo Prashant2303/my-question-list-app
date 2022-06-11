@@ -4,6 +4,7 @@ import { Grid, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/mat
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
 import { useHooks } from 'service/apiCalls';
+import { Transition } from 'react-transition-group';
 
 const Question = ({ index, question }) => {
 
@@ -62,8 +63,8 @@ const Question = ({ index, question }) => {
         return textWidth < containerWidth ? true : false
     }
 
-    return (
-        <Grid container spacing={1} alignItems="center">
+    const renderQuestion = () => (
+        <>
             <Grid item className={styles.name} xs={12} sm={6.4} ref={nameRef}>
                 <Tooltip title={state.name} placement='top-start' disableHoverListener={disableTooltip()} >
                     <a href={state.url} target='_blank' ref={anchorRef} rel="noreferrer">{index + 1}{'. '}{state.name}</a>
@@ -111,11 +112,51 @@ const Question = ({ index, question }) => {
                     <DeleteForeverIcon />
                 </IconButton>
             </Grid>
-            {
-                showNotes && <Grid item xs={12}>
+        </>
+    )
+
+    const duration = 300;
+
+    const defaultStyle = {
+        transition: `all ${duration}ms linear`,
+    }
+
+    const transitionStyles = {
+        entering: {
+            opacity: 0,
+            marginTop: '0px',
+        },
+        entered: {
+            opacity: 1,
+            marginTop: '0px'
+        },
+        exiting: {
+            opacity: 0,
+            marginTop: '-10px',
+        },
+        exited: {
+            opacity: 0,
+            marginTop: '-10px',
+        },
+    };
+
+    const renderNote = () => (
+        <Transition in={showNotes} timeout={duration} mountOnEnter unmountOnExit>
+            {animationstate => (
+                <Grid item xs={12} style={{
+                    ...defaultStyle,
+                    ...transitionStyles[animationstate],
+                }}>
                     <EditNote question={state} setState={setState} />
                 </Grid>
-            }
+            )}
+        </Transition>
+    )
+
+    return (
+        <Grid container className={styles.question} spacing={1} alignItems="center">
+            {renderQuestion()}
+            {renderNote()}
         </Grid>
     )
 }
