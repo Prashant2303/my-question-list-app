@@ -1,6 +1,7 @@
 import styles from 'styles/List.module.css';
 import { Container, Paper, Grid } from "@mui/material";
 import NavBar from "components/AppBar";
+import { connectToDatabase } from 'helpers/db';
 
 export default function PublicLists({ data }) {
     return (
@@ -18,8 +19,10 @@ export default function PublicLists({ data }) {
 }
 
 export async function getStaticProps() {
-    const response = await fetch('http://localhost:3000/api/lists/getPublicLists');
-    const data = await response.json();
+    const { listsCollection } = await connectToDatabase();
+    const cursor = await listsCollection.find({ access: 'public' }).project({ questions: 0 });
+    const lists = await cursor.toArray();
+    const data = JSON.parse(JSON.stringify(lists));
     return {
         props: {
             data
