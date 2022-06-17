@@ -1,7 +1,7 @@
 import styles from 'styles/List.module.css';
+import { connectToDatabase } from 'helpers/db';
 import { Container, Paper, Grid } from "@mui/material";
 import NavBar from "components/AppBar";
-import { connectToDatabase } from 'helpers/db';
 
 export default function PublicLists({ data }) {
     return (
@@ -27,5 +27,6 @@ export async function getStaticProps() {
         props: {
             data
         },
+        revalidate: 60
     }
 }

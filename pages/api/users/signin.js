@@ -6,11 +6,11 @@ export default apiHandler({
     post: handler
 })
 
-async function handler(req, res, collection) {
+async function handler({req, res, usersCollection}) {
 
     const { userCreds } = req.body;
 
-    const existingUser = await collection.findOne({ email: userCreds.email })
+    const existingUser = await usersCollection.findOne({ email: userCreds.email })
     if (!existingUser) throw "User not found";
 
     const isPasswordCorrect = await bcrypt.compare(userCreds.password, existingUser.password);
@@ -23,6 +23,7 @@ async function handler(req, res, collection) {
         email: existingUser.email,
         username: existingUser.username,
         questions: existingUser.questions,
+        defaultList: existingUser.defaultList,
         token
     }
     return res.status(200).json(user)

@@ -31,6 +31,7 @@ export const useHooks = () => {
         filter,
         search,
         reset,
+        fetchList
     };
 
     function redirectIfLoggedIn() {
@@ -70,14 +71,19 @@ export const useHooks = () => {
         const data = await response.json();
         if (response.ok) {
             toast.success('Signin Successful');
-            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
+            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token, defaultList: data.defaultList }));
             setUser(data);
-            setQuestions(data.questions);
             setShouldFetch(false);
             router.replace('/');
         } else {
             toast.error(data.message);
         }
+    }
+
+    async function fetchList() {
+        const response = await fetch(`/api/lists/${user?.defaultList}`)
+        const data = await response.json();
+        setQuestions(data);
     }
 
     async function signup(newuser) {

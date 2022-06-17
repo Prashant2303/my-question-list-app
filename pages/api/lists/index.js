@@ -8,6 +8,7 @@ function handler() {
     console.log('Inside getPublicListHandler');
     return { get };
 
+    //CHANGE TO PRIVATE LIST
     async function get({ res, listsCollection }) {
         console.log('Inside get function');
         const cursor = await listsCollection.find({ access: 'public' }).project({ questions: 0 });

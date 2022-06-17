@@ -10,7 +10,7 @@ function handler() {
 
     async function get({ req, res, listsCollection }) {
         const { listId } = req.query;
-        const result = await listsCollection.findOne({ _id: ObjectId(listId) }, { projection: { questions: 1 } });
-        return res.status(200).json(result);
+        const result = await listsCollection.findOne({ _id: ObjectId(listId) }, { projection: { questions: 1, _id: 0 } });
+        return res.status(200).json(result?.questions);
     }
 }

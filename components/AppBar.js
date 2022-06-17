@@ -23,6 +23,11 @@ export default function NavBar() {
                         MQL
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
+                    <MenuItem>
+                        <Link href="/lists" passHref>
+                            <Typography textAlign="center">Public Lists</Typography>
+                        </Link>
+                    </MenuItem>
                     {
                         user ?
                             <>
