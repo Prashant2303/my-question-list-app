@@ -32,3 +32,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+**Journey**
+18-June - Need to update signup to use multiList. 
+Problem - There is no default list while signing up, so what to render as list ?
+Solution - While signup, app will create the first list and add its id to defaultList and that will be rendered. Initially it will be private.
