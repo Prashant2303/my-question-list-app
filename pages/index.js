@@ -8,18 +8,19 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilState } from 'recoil';
-import { stateShouldFetch } from 'store/atoms';
+import { stateShouldFetch, stateUser } from 'store/atoms';
 
 export default function Home() {
 
   const hooks = useHooks();
   const router = useRouter();
-  const [shouldFetch, ] = useRecoilState(stateShouldFetch);
+  const [shouldFetch,] = useRecoilState(stateShouldFetch);
+  const [user,] = useRecoilState(stateUser);
   const [loading, setLoading] = useState(false);
 
-  const fetchUserInfo = async () => {
+  const fetchList = async () => {
     setLoading(true);
-    await hooks.signinUsingSession(localStorage.getItem('user'));
+    await hooks.fetchList();
     setLoading(false);
   }
 
@@ -28,10 +29,13 @@ export default function Home() {
       router.push('/signin');
     }
     else if (shouldFetch) {
-      fetchUserInfo();
+      hooks.setUserFromSession();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])  //will only run on intial render
+    if (user) {
+      fetchList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   return (
     <Container className={styles.App} maxWidth="md">

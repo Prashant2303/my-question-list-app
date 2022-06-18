@@ -21,7 +21,7 @@ export const useHooks = () => {
     return {
         user,
         redirectIfLoggedIn,
-        signinUsingSession,
+        setUserFromSession,
         signin,
         signup,
         logout,
@@ -40,23 +40,9 @@ export const useHooks = () => {
         }
     }
 
-    async function signinUsingSession(storedUser) {
-        const loggedInUser = JSON.parse(storedUser);
-        const { id, token } = loggedInUser;
-        const response = await fetch(`/api/users/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setUser(data);
-            setQuestions(data.questions);
-        } else {
-            logout();
-        }
+    async function setUserFromSession() {
+        setUser(JSON.parse(localStorage.getItem('user')));
+        setShouldFetch(false);
     }
 
     async function signin(userCreds) {
@@ -71,7 +57,7 @@ export const useHooks = () => {
         const data = await response.json();
         if (response.ok) {
             toast.success('Signin Successful');
-            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token, defaultList: data.defaultList }));
+            localStorage.setItem('user', JSON.stringify(data));
             setUser(data);
             setShouldFetch(false);
             router.replace('/');

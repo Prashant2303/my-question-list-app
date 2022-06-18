@@ -1,28 +1,14 @@
 import styles from 'styles/List.module.css';
-import React, { useEffect, useState } from 'react';
 import { CircularProgress, Grid, Paper } from '@mui/material';
 import Question from './Question';
 import { useRecoilState } from 'recoil';
 import { stateFilter, stateQuestions } from 'store/atoms';
 import { Transition, TransitionGroup } from 'react-transition-group';
-import { useHooks } from 'service/apiCalls';
 
-const List = () => {
+const List = ({loading}) => {
 
-    const hooks = useHooks();
-    const [loading, setLoading] = useState(false);
     const [questions,] = useRecoilState(stateQuestions);
     const [filterState,] = useRecoilState(stateFilter);
-
-    const fetchList = async () => {
-        setLoading(true);
-        await hooks.fetchList();
-        setLoading(false);
-    }
-
-    useEffect(() => {
-        fetchList()
-    }, [])
 
     const renderLoading = () => {
         return (
