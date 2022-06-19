@@ -120,7 +120,7 @@ export const useHooks = () => {
     async function addQuestion(question) {
         const response = await fetch('/api/questions', {
             method: 'POST',
-            body: JSON.stringify({ question }),
+            body: JSON.stringify({ selectedList, question }),
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
