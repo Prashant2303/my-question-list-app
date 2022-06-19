@@ -1,48 +1,65 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from '../styles/Index.module.css'
 import Container from '@mui/material/Container'
 import NavBar from 'components/AppBar';
 import AddQuestion from 'components/AddQuestion'
 import List from 'components/List';
 import Toolbar from 'components/Toolbar';
+import ListSelect from 'components/ListSelect';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useHooks } from 'service/apiCalls';
-import { useRecoilState } from 'recoil';
-import { stateShouldFetch, stateUser } from 'store/atoms';
+import { useRecoilValue } from 'recoil';
+import { stateSelectedList, stateUser } from 'store/atoms';
 
 export default function Home() {
 
   const hooks = useHooks();
   const router = useRouter();
-  const [shouldFetch,] = useRecoilState(stateShouldFetch);
-  const [user,] = useRecoilState(stateUser);
-  const [loading, setLoading] = useState(false);
+  const user = useRecoilValue(stateUser);
+  const selectedList = useRecoilValue(stateSelectedList);
+  const [loadingDefaultList, setLoadingDefaultList] = useState(false);
+  const [loadingPrivateLists, setLoadingPrivateLists] = useState(false);
 
-  const fetchList = async () => {
-    setLoading(true);
-    await hooks.fetchList();
-    setLoading(false);
+  const fetchSelectedList = async () => {
+    setLoadingDefaultList(true);
+    await hooks.fetchSelectedList();
+    setLoadingDefaultList(false);
   }
 
+  const fetchPrivateLists = async () => {
+    setLoadingPrivateLists(true);
+    await hooks.fetchPrivateLists();
+    setLoadingPrivateLists(false);
+  }
+
+  //FOR SESSION HANDLING
   useEffect(() => {
     if (!localStorage.getItem('user')) {
       router.push('/signin');
     }
-    else if (shouldFetch) {
+    else if (!user) {
       hooks.setUserFromSession();
     }
-    if (user) {
-      fetchList();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
+
+  //FOR FETCHING LISTS
+  useEffect(() => {
+    if (user) fetchPrivateLists();
+  }, [user])
+
+  //FOR FETCHING QUESTIONS
+  useEffect(() => {
+    if (user) fetchSelectedList();
+  }, [selectedList])
 
   return (
     <Container className={styles.App} maxWidth="md">
       <NavBar />
       <AddQuestion />
+      <ListSelect loading={loadingPrivateLists} />
       <Toolbar />
-      <List loading={loading} />
+      <List loading={loadingDefaultList} />
     </Container>
   );
 }

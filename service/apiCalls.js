@@ -1,5 +1,5 @@
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { stateUser, stateQuestions, stateShouldFetch, stateFilter } from 'store/atoms';
+import { stateUser, stateQuestions, stateFilter, statePrivateLists, stateSelectedList } from 'store/atoms';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
@@ -10,13 +10,15 @@ export const useHooks = () => {
     const router = useRouter();
     const [user, setUser] = useRecoilState(stateUser);
     const [questions, setQuestions] = useRecoilState(stateQuestions);
-    const [, setShouldFetch] = useRecoilState(stateShouldFetch);
     const [, setFilter] = useRecoilState(stateFilter);
+    const [, setPrivateLists] = useRecoilState(statePrivateLists);
+    const [selectedList, setSelectedlist] = useRecoilState(stateSelectedList);
 
     const resetUser = useResetRecoilState(stateUser);
     const resetQuestions = useResetRecoilState(stateQuestions);
-    const resetShouldFetch = useResetRecoilState(stateShouldFetch);
     const resetFilter = useResetRecoilState(stateFilter);
+    const resetPrivateLists = useResetRecoilState(statePrivateLists);
+    const resetSelectedList = useResetRecoilState(stateSelectedList);
 
     return {
         user,
@@ -31,7 +33,8 @@ export const useHooks = () => {
         filter,
         search,
         reset,
-        fetchList
+        fetchSelectedList,
+        fetchPrivateLists
     };
 
     function redirectIfLoggedIn() {
@@ -41,8 +44,9 @@ export const useHooks = () => {
     }
 
     async function setUserFromSession() {
-        setUser(JSON.parse(localStorage.getItem('user')));
-        setShouldFetch(false);
+        const sessionUser = JSON.parse(localStorage.getItem('user'));
+        setUser(sessionUser);
+        setSelectedlist(sessionUser.defaultList);
     }
 
     async function signin(userCreds) {
@@ -59,17 +63,28 @@ export const useHooks = () => {
             toast.success('Signin Successful');
             localStorage.setItem('user', JSON.stringify(data));
             setUser(data);
-            setShouldFetch(false);
+            setSelectedlist(data.defaultList);
             router.replace('/');
         } else {
             toast.error(data.message);
         }
     }
 
-    async function fetchList() {
-        const response = await fetch(`/api/lists/${user?.defaultList}`)
+    async function fetchSelectedList() {
+        const response = await fetch(`/api/lists/${selectedList}`)
         const data = await response.json();
         setQuestions(data);
+    }
+
+    async function fetchPrivateLists() {
+        const response = await fetch('api/lists', {
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+        })
+        const data = await response.json();
+        setPrivateLists(data);
     }
 
     async function signup(newuser) {
@@ -86,7 +101,6 @@ export const useHooks = () => {
             localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
             setUser(data);
             setQuestions(data.questions);
-            setShouldFetch(false);
             router.replace('/');
         } else {
             toast.error(data.message);
@@ -96,7 +110,8 @@ export const useHooks = () => {
     function logout() {
         resetUser();
         resetQuestions();
-        resetShouldFetch();
+        resetPrivateLists();
+        resetSelectedList();
         localStorage.removeItem('user');
         toast.success('Logged out successfully')
         router.push('/signin');
