@@ -17,3 +17,4 @@ async function handler(req, res, collection) {
     }
     return res.status(200).json(userData)
 }
+//THIS WAS CREATED TO FETCH USER DATA WHEN SIGNING IN USUNG SESSION

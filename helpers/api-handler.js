@@ -10,6 +10,7 @@ function getUserFromToken(req) {
         const decodedUser = jwt.verify(token, process.env.SECRET);
         return {
             user: { _id: new ObjectId(decodedUser.id) },
+            userString: decodedUser.id,
             token
         };
     } catch (err) {

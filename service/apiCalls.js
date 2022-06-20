@@ -118,9 +118,9 @@ export const useHooks = () => {
     }
 
     async function addQuestion(question) {
-        const response = await fetch('/api/questions', {
+        const response = await fetch(`/api/questions/${selectedList}`, {
             method: 'POST',
-            body: JSON.stringify({ selectedList, question }),
+            body: JSON.stringify({ question }),
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
@@ -137,7 +137,7 @@ export const useHooks = () => {
     }
 
     async function updateQuestion(questionId, field, value) {
-        const response = await fetch(`/api/questions/${questionId}`, {
+        const response = await fetch(`/api/questions/${selectedList}/${questionId}`, {
             method: 'PATCH',
             body: JSON.stringify({
                 [field]: value
@@ -156,7 +156,7 @@ export const useHooks = () => {
     }
 
     async function deleteQuestion(questionId) {
-        const response = await fetch(`/api/questions/${questionId}`, {
+        const response = await fetch(`/api/questions/${selectedList}/${questionId}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
