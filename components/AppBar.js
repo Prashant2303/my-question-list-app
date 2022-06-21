@@ -24,7 +24,7 @@ export default function NavBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <MenuItem>
-                        <Link href="/lists" passHref>
+                        <Link href="/public-lists" passHref>
                             <Typography textAlign="center">Public Lists</Typography>
                         </Link>
                     </MenuItem>

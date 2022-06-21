@@ -65,6 +65,7 @@ export async function connectToDatabase() {
             listsCollection: cachedListsCollection
         }
     } catch (err) {
-        console.log("COULDN'T CONNECT TO DATABASE");
+        console.log(err);
+        throw "COULDN'T CONNECT TO DATABASE"
     }
 }
