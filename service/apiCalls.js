@@ -11,7 +11,7 @@ export const useHooks = () => {
     const [user, setUser] = useRecoilState(stateUser);
     const [questions, setQuestions] = useRecoilState(stateQuestions);
     const [, setFilter] = useRecoilState(stateFilter);
-    const [, setPrivateLists] = useRecoilState(statePrivateLists);
+    const [privateLists, setPrivateLists] = useRecoilState(statePrivateLists);
     const [selectedList, setSelectedlist] = useRecoilState(stateSelectedList);
 
     const resetUser = useResetRecoilState(stateUser);
@@ -34,7 +34,8 @@ export const useHooks = () => {
         search,
         reset,
         fetchSelectedList,
-        fetchPrivateLists
+        fetchPrivateLists,
+        createList
     };
 
     function redirectIfLoggedIn() {
@@ -115,6 +116,30 @@ export const useHooks = () => {
         localStorage.removeItem('user');
         toast.success('Logged out successfully')
         router.push('/signin');
+    }
+
+    async function createList(listdata) {
+        const listBody = {
+            ...listdata,
+            ownerName: user.username,
+        }
+        const response = await fetch('/api/lists', {
+            method: 'POST',
+            body: JSON.stringify({ listBody }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            setPrivateLists([...privateLists, data]);
+            setSelectedlist(data._id);
+            return true;
+        } else {
+            toast.error(data.message);
+            return false;
+        }
     }
 
     async function addQuestion(question) {
