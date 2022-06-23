@@ -31,7 +31,7 @@ export default function CreateList({ setShowCreate }) {
     };
 
     return (
-        <Grid container spacing={1} sx={{marginTop: '10px'}}>
+        <Grid container spacing={1} sx={{ marginTop: '10px' }}>
             <Grid item xs={12} md={6}>
                 <TextField
                     id="name"
@@ -52,14 +52,14 @@ export default function CreateList({ setShowCreate }) {
                     name="access"
                     label="Access"
                     size="small"
-                    defaultValue="private"
+                    defaultValue="Private"
                     required
                     fullWidth
                     {...register('access')}
                     error={errors.access ? true : false}
                 >
-                    <MenuItem id="private" value="private">Private</MenuItem>
-                    <MenuItem id="public" value="public">Public</MenuItem>
+                    <MenuItem id="Private" value="Private">Private</MenuItem>
+                    <MenuItem id="Public" value="Public">Public</MenuItem>
                 </TextField>
             </Grid>
             <Grid item md={3}>

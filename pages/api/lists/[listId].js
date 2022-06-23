@@ -3,11 +3,12 @@ import { ObjectId } from 'mongodb';
 
 export default apiHandler({
     get: handler().get,
-    delete: handler()._delete
+    delete: handler()._delete,
+    patch: handler().patch
 })
 
 function handler() {
-    return { get, _delete };
+    return { get, _delete, patch };
 
     async function get({ req, res, listsCollection }) {
         const { listId } = req.query;
@@ -24,5 +25,20 @@ function handler() {
 
         const result = await listsCollection.deleteOne({ _id: ObjectId(listId) });
         return res.status(200).json(result);
+    }
+
+    async function patch({ req, res, listsCollection }) {
+        const { listId } = req.query;
+        const targetList = { _id: ObjectId(listId) }
+
+        const { ownerId } = await listsCollection.findOne(targetList, { projection: { ownerId: 1, _id: 0 } });
+        const ownerOfList = ownerId.toString();
+        const { userString } = getUserFromToken(req);
+        if (userString !== ownerOfList) throw 'Only the list owner can modify their list';
+
+        const [field] = Object.keys(req.body);
+        const updateValue = req.body[field];
+        const updateResult = await listsCollection.updateOne(targetList, { "$set": { [field]: updateValue } })
+        return res.status(200).json({ 'message': updateResult })
     }
 }

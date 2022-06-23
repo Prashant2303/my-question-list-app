@@ -37,6 +37,7 @@ export const useHooks = () => {
         fetchPrivateLists,
         createList,
         deleteList,
+        updateList
     };
 
     function redirectIfLoggedIn() {
@@ -161,7 +162,6 @@ export const useHooks = () => {
             }
         });
         if (response.ok) {
-            const data = await response.json();
             const newList = privateLists.filter(list => list.id !== selectedList)
             setPrivateLists(newList);
             setSelectedlist(user.defaultList);
@@ -170,6 +170,30 @@ export const useHooks = () => {
         } else {
             toast.error(data.message);
             return false;
+        }
+    }
+
+    async function updateList(field, value) {
+        const response = await fetch(`/api/lists/${selectedList}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                [field]: value
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            const targetIndex = privateLists.findIndex(list => list._id === selectedList);
+            const updatedEntry = { ...privateLists[targetIndex], [field]: value };
+            let updatedPrivateLists = [...privateLists];
+            updatedPrivateLists[targetIndex] = updatedEntry;
+            setPrivateLists(updatedPrivateLists);
+            toast.success('List Updated Successfully');
+        } else {
+            toast.error(data.message);
         }
     }
 

@@ -21,7 +21,7 @@ export default function PublicLists({ data }) {
 export async function getStaticProps() {
     // NEED TO HANDLE ERROR HERE
     const { listsCollection } = await connectToDatabase();
-    const cursor = await listsCollection.find({ access: 'public' }).project({ questions: 0 });
+    const cursor = await listsCollection.find({ access: 'Public' }).project({ questions: 0 });
     const lists = await cursor.toArray();
     const data = JSON.parse(JSON.stringify(lists));
     return {
