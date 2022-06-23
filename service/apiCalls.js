@@ -35,7 +35,8 @@ export const useHooks = () => {
         reset,
         fetchSelectedList,
         fetchPrivateLists,
-        createList
+        createList,
+        deleteList,
     };
 
     function redirectIfLoggedIn() {
@@ -73,8 +74,10 @@ export const useHooks = () => {
 
     async function fetchSelectedList() {
         const response = await fetch(`/api/lists/${selectedList}`)
-        const data = await response.json();
-        setQuestions(data);
+        if (response.ok) {
+            const data = await response.json();
+            setQuestions(data);
+        }
     }
 
     async function fetchPrivateLists() {
@@ -84,8 +87,10 @@ export const useHooks = () => {
                 'Authorization': `Bearer ${user.token}`
             },
         })
-        const data = await response.json();
-        setPrivateLists(data);
+        if (response.ok) {
+            const data = await response.json();
+            setPrivateLists(data);
+        }
     }
 
     async function signup(newuser) {
@@ -135,6 +140,32 @@ export const useHooks = () => {
         if (response.ok) {
             setPrivateLists([...privateLists, data]);
             setSelectedlist(data._id);
+            return true;
+        } else {
+            toast.error(data.message);
+            return false;
+        }
+    }
+
+    async function deleteList() {
+        if (selectedList === user.defaultList) {
+            toast.error('Cannot delete default list');
+            return;
+        }
+
+        const response = await fetch(`/api/lists/${selectedList}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            const newList = privateLists.filter(list => list.id !== selectedList)
+            setPrivateLists(newList);
+            setSelectedlist(user.defaultList);
+            toast.success('Deleted Successfully\n\nDefault list selected');
             return true;
         } else {
             toast.error(data.message);

@@ -39,7 +39,8 @@ function handler() {
 
         const questionId = params[1];
         const removeResult = await listsCollection.updateOne(targetList, { $pull: { questions: { id: questionId } } })
-        return res.status(200).json({ message: removeResult });
+        if(removeResult.modifiedCount) return res.status(200).json({ message: removeResult });
+        return res.status(400).json({ message: 'Item not found' })
     }
 
     async function patch({ req, res, listsCollection }) {
