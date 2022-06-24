@@ -73,31 +73,10 @@ export const useHooks = () => {
         }
     }
 
-    async function fetchSelectedList() {
-        const response = await fetch(`/api/lists/${selectedList}`)
-        if (response.ok) {
-            const data = await response.json();
-            setQuestions(data);
-        }
-    }
-
-    async function fetchPrivateLists() {
-        const response = await fetch('api/lists', {
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
-            },
-        })
-        if (response.ok) {
-            const data = await response.json();
-            setPrivateLists(data);
-        }
-    }
-
-    async function signup(newuser) {
+    async function signup(userCreds) {
         const response = await fetch('/api/users/signup', {
             method: 'POST',
-            body: JSON.stringify({ newuser }),
+            body: JSON.stringify({ userCreds }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -105,9 +84,9 @@ export const useHooks = () => {
         const data = await response.json();
         if (response.ok) {
             toast.success('Signup Successful');
-            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
+            localStorage.setItem('user', JSON.stringify(data));
             setUser(data);
-            setQuestions(data.questions);
+            setSelectedlist(data.defaultList);
             router.replace('/');
         } else {
             toast.error(data.message);
@@ -122,6 +101,30 @@ export const useHooks = () => {
         localStorage.removeItem('user');
         toast.success('Logged out successfully')
         router.push('/signin');
+    }
+
+    async function fetchSelectedList() {
+        const response = await fetch(`/api/lists/${selectedList}`)
+        if (response.ok) {
+            const data = await response.json();
+            setQuestions(data);
+        } else {
+            const data = await response.json();
+            toast.error(data.message);
+        }
+    }
+
+    async function fetchPrivateLists() {
+        const response = await fetch('api/lists', {
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+        })
+        if (response.ok) {
+            const data = await response.json();
+            setPrivateLists(data);
+        }
     }
 
     async function createList(listdata) {

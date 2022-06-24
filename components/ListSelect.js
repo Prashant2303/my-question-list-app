@@ -50,7 +50,7 @@ export default function ListSelect({ loading }) {
                 >
                     {privateLists.map(list =>
                         <MenuItem key={list._id} value={list._id} >
-                            {list.name} ({list.access}) {list._id === user.defaultList ? '(Default)' : null}
+                            {list.name} {list._id === user.defaultList ? '(Default)' : null} ({list.access})
                         </MenuItem>)}
                 </TextField>
             </Grid>

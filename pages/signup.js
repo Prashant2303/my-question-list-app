@@ -28,7 +28,7 @@ export default function Signup() {
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Username is required')
-            .min(6, 'Username must be at least 6 characters')
+            .min(2, 'Username must be at least 2 characters')
             .max(20, 'Username must not exceed 20 characters'),
         email: Yup.string().required('Email is required').email('Email is invalid'),
         password: Yup.string()
@@ -48,9 +48,9 @@ export default function Signup() {
         resolver: yupResolver(validationSchema),
     });
 
-    const onSubmit = async (newuser) => {
+    const onSubmit = async (userCreds) => {
         setLoading(true);
-        await hooks.signup(newuser);
+        await hooks.signup(userCreds);
         setLoading(false);
     };
 

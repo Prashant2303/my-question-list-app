@@ -22,7 +22,6 @@ async function handler({req, res, usersCollection}) {
         id: existingUser._id,
         email: existingUser.email,
         username: existingUser.username,
-        questions: existingUser.questions,
         defaultList: existingUser.defaultList,
         token
     }

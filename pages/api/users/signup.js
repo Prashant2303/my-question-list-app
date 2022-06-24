@@ -2,32 +2,44 @@ import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import { apiHandler } from "helpers/api-handler";
+import { ObjectId } from "mongodb";
 
 export default apiHandler({
     post: handler
 })
 
-async function handler(req, res, collection) {
+async function handler({ req, res, usersCollection, listsCollection }) {
+    const { userCreds } = req.body;
 
-    const { newuser } = req.body;
-
-    const exist = await collection.findOne({ email: newuser.email })
+    const exist = await usersCollection.findOne({ email: userCreds.email })
     if (exist) throw "User already exists";
 
-    const hashedPassword = await bcrypt.hash(newuser.password, 12);
+    const hashedPassword = await bcrypt.hash(userCreds.password, 12);
+    const userId = new ObjectId();
 
-    const newUser = {
-        uuid: uuidv4(),
-        username: newuser.username,
-        email: newuser.email,
-        password: hashedPassword,
-        questions: []
+    const newList = {
+        questions: [],
+        ownerId: userId,
+        name: 'My First List',
+        access: 'Private',
+        ownerName: userCreds.username,
+        likes: 0
     }
-    const insertResult = await collection.insertOne(newUser);
+    const insertList = await listsCollection.insertOne(newList);
+    
+    const newUser = {
+        _id: userId,
+        uuid: uuidv4(),
+        username: userCreds.username,
+        email: userCreds.email,
+        password: hashedPassword,
+        defaultList: insertList.insertedId.toString()
+    }
+    const insertUser = await usersCollection.insertOne(newUser);
 
-    const token = jwt.sign({ id: insertResult.insertedId }, process.env.SECRET);
+    const token = jwt.sign({ id: insertUser.insertedId }, process.env.SECRET);
 
-    newUser.id = insertResult.insertedId;
+    newUser.id = insertUser.insertedId;
     newUser.token = token;
     delete newUser.uuid;
     delete newUser.password;
