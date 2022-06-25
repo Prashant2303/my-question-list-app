@@ -1,19 +1,15 @@
-import { Container, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import { connectToDatabase } from "helpers/db";
 import { ObjectId } from "mongodb";
 
 export default function PublicListDetails({ list }) {
     return (
-        <Container maxWidth="md">
-            <Paper elevation={3} sx={{ 'padding': '15px', 'marginTop': '10px' }}>
-                <div>{list.name} by {list.ownerName}</div>
-                {
-                    list.questions.map(question => (
-                        <div key={question.id}>{question.name}</div>
-                    ))
-                }
-            </Paper>
-        </Container>
+        <Paper elevation={3} sx={{ 'padding': '15px', 'marginTop': '10px' }}>
+            <div>{list.name} by {list.ownerName}</div>
+            {list.questions.map(question => (
+                <div key={question.id}>{question.name}</div>
+            ))}
+        </Paper>
     )
 }
 

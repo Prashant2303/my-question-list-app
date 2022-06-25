@@ -1,7 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import styles from '../styles/Index.module.css'
-import Container from '@mui/material/Container'
-import NavBar from 'components/AppBar';
 import AddQuestion from 'components/AddQuestion'
 import List from 'components/List';
 import Toolbar from 'components/Toolbar';
@@ -54,12 +51,11 @@ export default function Home() {
   }, [selectedList])
 
   return (
-    <Container className={styles.App} maxWidth="md">
-      <NavBar />
+    <>
       <AddQuestion />
       <ListSelect loading={loadingPrivateLists} />
       <Toolbar />
       <List loading={loadingDefaultList} />
-    </Container>
+    </>
   );
 }

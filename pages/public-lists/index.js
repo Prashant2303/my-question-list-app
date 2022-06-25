@@ -1,7 +1,6 @@
 import styles from 'styles/PublicList.module.css';
-import { Container, Paper, Grid } from "@mui/material";
+import { Paper, Grid } from "@mui/material";
 import { connectToDatabase } from 'helpers/db';
-import NavBar from "components/AppBar";
 import Link from 'next/link';
 
 export default function PublicLists({ data }) {
@@ -20,21 +19,18 @@ export default function PublicLists({ data }) {
     )
 
     return (
-        <Container maxWidth="md">
-            <NavBar />
-            <Paper className={styles.list} elevation={3}>
-                {!data || data?.length === 0 ?
-                    <div className={styles.emptyList}>No Public Lists</div> :
-                    <>
-                        <Grid container textAlign="center" spacing={1}>
-                            <Grid item xs={8}>Title</Grid>
-                            <Grid item xs={4}>Author</Grid>
-                        </Grid>
-                        {data.map(list => ListItem(list))}
-                    </>
-                }
-            </Paper>
-        </Container>
+        <Paper className={styles.list} elevation={3}>
+            {!data || data?.length === 0 ?
+                <div className={styles.emptyList}>No Public Lists</div> :
+                <>
+                    <Grid container textAlign="center" spacing={1}>
+                        <Grid item xs={8}>Title</Grid>
+                        <Grid item xs={4}>Author</Grid>
+                    </Grid>
+                    {data.map(list => ListItem(list))}
+                </>
+            }
+        </Paper>
     )
 }
 

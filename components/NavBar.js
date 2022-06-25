@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { useHooks } from 'service/apiCalls';
 
 export default function NavBar() {
-
     const hooks = useHooks();
     const user = hooks.user;
 
@@ -15,13 +14,15 @@ export default function NavBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{ borderRadius: '5px' }}>
                 <Toolbar>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        sx={{ display: { sm: 'block' } }}
-                    >
-                        MQL
-                    </Typography>
+                    <Link href="/" passHref>
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ display: { sm: 'block' } }}
+                        >
+                            MQL
+                        </Typography>
+                    </Link>
                     <Box sx={{ flexGrow: 1 }} />
                     <MenuItem>
                         <Link href="/public-lists" passHref>
