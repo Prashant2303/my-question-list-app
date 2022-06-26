@@ -9,3 +9,17 @@
     font-weight: 500;
     margin-bottom: 5px;
 }
+
+.emptyList {
+    text-align: center;
+}
+
+.listItem {
+    height: 31px;
+    align-items: center;
+}
+
+.ownerName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

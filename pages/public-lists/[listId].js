@@ -1,14 +1,26 @@
-import { Paper } from "@mui/material";
+import styles from 'styles/PublicList.module.css';
+import { Paper, Grid, Typography } from "@mui/material";
 import { connectToDatabase } from "helpers/db";
 import { ObjectId } from "mongodb";
+import PublicQuestion from "components/PublicQuestion";
 
 export default function PublicListDetails({ list }) {
+
     return (
-        <Paper elevation={3} sx={{ 'padding': '15px', 'marginTop': '10px' }}>
-            <div>{list.name} by {list.ownerName}</div>
-            {list.questions.map(question => (
-                <div key={question.id}>{question.name}</div>
-            ))}
+        <Paper className={styles.container} elevation={3}>
+            <Typography variant="h6" component="div">
+                {list.name} by {list.ownerName}
+            </Typography>
+            <Grid container className={styles.rowHeadings}>
+                <Grid item xs={8} sm={9.5}>Name</Grid>
+                <Grid item xs={2.5} sm={1.5}>Difficulty</Grid>
+                <Grid item xs={1.5} sm={1} textAlign="center">Notes</Grid>
+            </Grid>
+            <Grid container>
+                {list.questions.map(question => (
+                    <PublicQuestion key={question.id} question={question} />
+                ))}
+            </Grid>
         </Paper>
     )
 }
