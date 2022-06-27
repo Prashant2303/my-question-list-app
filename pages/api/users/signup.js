@@ -26,14 +26,17 @@ async function handler({ req, res, usersCollection, listsCollection }) {
         likes: 0
     }
     const insertList = await listsCollection.insertOne(newList);
-    
+
     const newUser = {
         _id: userId,
         uuid: uuidv4(),
         username: userCreds.username,
         email: userCreds.email,
         password: hashedPassword,
-        defaultList: insertList.insertedId.toString()
+        defaultList: insertList.insertedId.toString(),
+        defaultStatus: 'Revise',
+        defaultDifficulty: 'Medium',
+        defaultCategory: 'Others'
     }
     const insertUser = await usersCollection.insertOne(newUser);
 

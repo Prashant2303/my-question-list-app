@@ -6,7 +6,7 @@ export default apiHandler({
     post: handler
 })
 
-async function handler({req, res, usersCollection}) {
+async function handler({ req, res, usersCollection }) {
 
     const { userCreds } = req.body;
 
@@ -18,11 +18,16 @@ async function handler({req, res, usersCollection}) {
 
     const token = jwt.sign({ id: existingUser._id }, process.env.SECRET);
 
+    const { email, username, defaultList, defaultStatus, defaultDifficulty, defaultCategory } = existingUser;
+
     const user = {
         id: existingUser._id,
-        email: existingUser.email,
-        username: existingUser.username,
-        defaultList: existingUser.defaultList,
+        email,
+        username,
+        defaultList,
+        defaultStatus,
+        defaultDifficulty,
+        defaultCategory,
         token
     }
     return res.status(200).json(user)
