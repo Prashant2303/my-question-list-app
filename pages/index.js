@@ -4,7 +4,6 @@ import List from 'components/List';
 import Toolbar from 'components/Toolbar';
 import ListSelect from 'components/ListSelect';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilValue } from 'recoil';
 import { stateSelectedList, stateUser } from 'store/atoms';
@@ -12,7 +11,6 @@ import { stateSelectedList, stateUser } from 'store/atoms';
 export default function Home() {
 
   const hooks = useHooks();
-  const router = useRouter();
   const user = useRecoilValue(stateUser);
   const selectedList = useRecoilValue(stateSelectedList);
   const [loadingDefaultList, setLoadingDefaultList] = useState(false);
@@ -29,16 +27,6 @@ export default function Home() {
     await hooks.fetchPrivateLists();
     setLoadingPrivateLists(false);
   }
-
-  //FOR SESSION HANDLING
-  useEffect(() => {
-    if (!localStorage.getItem('user')) {
-      router.push('/signin');
-    }
-    else if (!user) {
-      hooks.setUserFromSession();
-    }
-  }, [user])
 
   //FOR FETCHING LISTS
   useEffect(() => {
