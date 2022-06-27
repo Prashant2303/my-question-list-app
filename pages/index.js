@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import AddQuestion from 'components/AddQuestion'
+import styles from 'styles/Index.module.css';
+import AddQuestion from 'components/AddQuestion';
 import List from 'components/List';
 import Toolbar from 'components/Toolbar';
 import ListSelect from 'components/ListSelect';
@@ -7,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilValue } from 'recoil';
 import { stateSelectedList, stateUser } from 'store/atoms';
+import { CircularProgress } from '@mui/material';
 
 export default function Home() {
 
@@ -38,12 +40,22 @@ export default function Home() {
     if (user) fetchSelectedList();
   }, [selectedList])
 
-  return (
+  const renderLoading = () => (
+    <div className={styles.loadingScreen}>
+      <CircularProgress sx={{ 'color': 'white' }} />
+    </div>
+  )
+
+  const renderContent = () => (
     <>
       <AddQuestion />
-      <ListSelect loading={loadingPrivateLists} />
+      <ListSelect />
       <Toolbar />
-      <List loading={loadingDefaultList} />
+      <List />
     </>
+  )
+  return (
+    loadingDefaultList || loadingPrivateLists
+      ? renderLoading() : renderContent()
   );
 }

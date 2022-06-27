@@ -8,7 +8,7 @@ import { DeleteForever } from '@mui/icons-material';
 import { useHooks } from 'service/apiCalls';
 import { LoadingButton } from '@mui/lab';
 
-export default function ListSelect({ loading }) {
+export default function ListSelect() {
 
     const hooks = useHooks();
     const user = useRecoilValue(stateUser);
@@ -79,12 +79,8 @@ export default function ListSelect({ loading }) {
 
     return (
         <Paper className={styles.listSelect} elevation={3}>
-            {loading
-                ? <div>Loading...</div>
-                : !privateLists || privateLists?.length === 0
-                    ? <div>Empty List</div>
-                    : renderSelect()
-            }
+            {!privateLists || privateLists?.length === 0
+                ? <div>This is not possible</div> : renderSelect()}
             {showCreate ? <CreateList setShowCreate={setShowCreate} /> : null}
         </Paper>
     )

@@ -10,11 +10,6 @@
     margin-bottom: 10px;
 }
 
-.spinner {
-    display: flex;
-    justify-content: center;
-}
-
 .emptyList {
     text-align: center;
 }
