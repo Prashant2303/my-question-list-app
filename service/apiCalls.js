@@ -23,6 +23,7 @@ export const useHooks = () => {
     return {
         user,
         redirectIfLoggedIn,
+        redirectIfLoggedOut,
         setUserFromSession,
         signin,
         signup,
@@ -43,6 +44,12 @@ export const useHooks = () => {
     function redirectIfLoggedIn() {
         if (localStorage.getItem('user')) {
             router.replace('/');
+        }
+    }
+
+    function redirectIfLoggedOut() {
+        if (!localStorage.getItem('user')) {
+            router.push('/signin')
         }
     }
 

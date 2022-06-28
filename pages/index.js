@@ -30,6 +30,10 @@ export default function Home() {
     setLoadingPrivateLists(false);
   }
 
+  useEffect(() => {
+    hooks.redirectIfLoggedOut()
+  })
+
   //FOR FETCHING LISTS
   useEffect(() => {
     if (user) fetchPrivateLists();

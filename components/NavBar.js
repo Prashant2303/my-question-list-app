@@ -5,10 +5,20 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import { useHooks } from 'service/apiCalls';
+import { useRecoilValue } from 'recoil';
+import { stateUser } from 'store/atoms';
+import { useEffect } from 'react';
 
 export default function NavBar() {
     const hooks = useHooks();
-    const user = hooks.user;
+    const user = useRecoilValue(stateUser);
+
+    useEffect(() => {
+        if (localStorage.getItem('user') && !user) {
+            hooks.setUserFromSession();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
 
     return (
         <Box sx={{ flexGrow: 1 }}>
