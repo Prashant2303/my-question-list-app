@@ -42,7 +42,7 @@ export default function NavBar() {
             onClose={handleMobileMenuClick}
         >
             {user ?
-                <>
+                <div>
                     <MenuItem onClick={handleMobileMenuClick}>
                         <Link href="/profile" passHref>
                             <Typography textAlign="center">Profile</Typography>
@@ -51,8 +51,8 @@ export default function NavBar() {
                     <MenuItem onClick={()=>{hooks.logout(); handleMobileMenuClick()}}>
                         <Typography textAlign="center">Log out</Typography>
                     </MenuItem>
-                </> :
-                <>
+                </div> :
+                <div>
                     <MenuItem onClick={handleMobileMenuClick}>
                         <Link href="/signin" passHref>
                             <Typography textAlign="center">Login</Typography>
@@ -63,7 +63,7 @@ export default function NavBar() {
                             <Typography textAlign="center">Signup</Typography>
                         </Link>
                     </MenuItem>
-                </>}
+                </div>}
             <MenuItem onClick={handleMobileMenuClick}>
                 <Link href="/about" passHref>
                     <Typography textAlign="center">About</Typography>
@@ -93,7 +93,7 @@ export default function NavBar() {
                     </MenuItem>
                     <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                         {user ?
-                            <>
+                            <div style={{display:'flex'}}>
                                 <MenuItem>
                                     <Link href="/profile" passHref>
                                         <Typography textAlign="center">Profile</Typography>
@@ -102,8 +102,8 @@ export default function NavBar() {
                                 <MenuItem onClick={hooks.logout}>
                                     <Typography textAlign="center">Log out</Typography>
                                 </MenuItem>
-                            </> :
-                            <>
+                            </div> :
+                            <div>
                                 <MenuItem>
                                     <Link href="/signin" passHref>
                                         <Typography textAlign="center">Login</Typography>
@@ -114,7 +114,7 @@ export default function NavBar() {
                                         <Typography textAlign="center">Signup</Typography>
                                     </Link>
                                 </MenuItem>
-                            </>}
+                            </div>}
                         <MenuItem>
                             <Link href="/about" passHref>
                                 <Typography textAlign="center">About</Typography>
