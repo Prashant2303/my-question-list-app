@@ -1,12 +1,12 @@
 import { Paper, TextField, Typography, MenuItem, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useHooks } from "service/apiCalls";
 import { stateUser } from "store/atoms";
 
 export default function Profile() {
     const hooks = useHooks();
-    const [user, setUser] = useRecoilState(stateUser);
+    const user = useRecoilValue(stateUser);
     const [updatingStatus, setUpdatingStatus] = useState(false);
     const [updatingCategory, setUpdatingCategory] = useState(false);
     const [updatingDifficulty, setUpdatingDifficulty] = useState(false);
@@ -26,9 +26,6 @@ export default function Profile() {
         if (name === 'defaultDifficulty') setUpdatingDifficulty(true);
 
         const updateResult = await hooks.updateUserDetails(name, value);
-        if (updateResult) {
-            setUser({ ...user, [name]: value })
-        }
 
         if (name === 'defaultStatus') setUpdatingStatus(false);
         if (name === 'defaultCategory') setUpdatingCategory(false);

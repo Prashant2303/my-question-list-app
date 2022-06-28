@@ -266,8 +266,8 @@ export const useHooks = () => {
 
     async function updateUserDetails(field, value) {
         const response = await fetch(`/api/users/${user.id}`, {
-            method:'PATCH',
-            body:JSON.stringify({
+            method: 'PATCH',
+            body: JSON.stringify({
                 field, value
             }),
             headers: {
@@ -275,8 +275,13 @@ export const useHooks = () => {
                 'Authorization': `Bearer ${user.token}`
             },
         })
-        if(response.ok) return true;
-        return false;
+        if (response.ok) {
+            setUser({ ...user, [field]: value });
+            localStorage.setItem('user', JSON.stringify({ ...user, [field]: value }));
+            toast.success('Updated Successfully');
+        } else {
+            toast.error('Something went wrong');
+        }
     }
 
     function search(query) {
