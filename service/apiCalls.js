@@ -38,7 +38,8 @@ export const useHooks = () => {
         fetchPrivateLists,
         createList,
         deleteList,
-        updateList
+        updateList,
+        updateUserDetails
     };
 
     function redirectIfLoggedIn() {
@@ -260,6 +261,21 @@ export const useHooks = () => {
             return true;
         }
         toast.error('Something went wrong');
+        return false;
+    }
+
+    async function updateUserDetails(field, value) {
+        const response = await fetch(`/api/users/${user.id}`, {
+            method:'PATCH',
+            body:JSON.stringify({
+                field, value
+            }),
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+        })
+        if(response.ok) return true;
         return false;
     }
 
