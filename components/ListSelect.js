@@ -1,12 +1,15 @@
 import styles from 'styles/ListSelect.module.css';
-import { Paper, MenuItem, TextField, Button, Grid, IconButton } from "@mui/material";
+import { Paper, MenuItem, TextField, Grid, IconButton } from "@mui/material";
+import { LoadingButton } from '@mui/lab';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import CreateList from './CreateList';
+import EditList from './EditList';
+import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { statePrivateLists, stateSelectedList, stateUser } from "store/atoms";
-import { useState } from 'react';
-import CreateList from './CreateList';
-import { DeleteForever } from '@mui/icons-material';
 import { useHooks } from 'service/apiCalls';
-import { LoadingButton } from '@mui/lab';
 
 export default function ListSelect({loading}) {
 
@@ -15,6 +18,7 @@ export default function ListSelect({loading}) {
     const privateLists = useRecoilValue(statePrivateLists);
     const [selectedList, setSelectedlist] = useRecoilState(stateSelectedList);
     const [showCreate, setShowCreate] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [changing, setChanging] = useState(false);
     const listAccess = privateLists?.find(list => list._id === selectedList).access;
@@ -36,6 +40,20 @@ export default function ListSelect({loading}) {
         setChanging(false);
     }
 
+    const handleOpenEdit = () => {
+        setShowEdit(!showEdit)
+        if(showCreate) {
+            setShowCreate(false);
+        }
+    }
+    
+    const handleOpenCreate = () => {
+        setShowCreate(!showCreate)
+        if(showEdit) {
+            setShowEdit(false);
+        }
+    }
+
     const renderSelect = () => (
         <Grid container spacing={1} alignItems="center">
             <Grid item xs={12} sm={8}>
@@ -55,7 +73,7 @@ export default function ListSelect({loading}) {
                         </MenuItem>)}
                 </TextField>
             </Grid>
-            <Grid item xs={5} sm={2}>
+            <Grid item xs={4.6} sm={2} textAlign="center">
                 <LoadingButton
                     variant="text"
                     disableElevation
@@ -66,12 +84,19 @@ export default function ListSelect({loading}) {
                     {listAccess === 'Private' ? 'Set as Public' : 'Set as Private'}
                 </LoadingButton>
             </Grid>
-            <Grid item xs={4} sm={1.2}>
-                <Button size="small" onClick={() => setShowCreate(!showCreate)}>Create</Button>
+            <Grid item xs={2.4} sm={0.6} textAlign="center">
+                <IconButton color="primary" onClick={handleOpenEdit}>
+                    <EditIcon />
+                </IconButton>
             </Grid>
-            <Grid item xs={3} sm={0.8} textAlign="center">
+            <Grid item xs={2.4} sm={0.7} textAlign="center">
+                <IconButton color="primary" onClick={handleOpenCreate}>
+                    <AddIcon />
+                </IconButton>
+            </Grid>
+            <Grid item xs={2.4} sm={0.7} textAlign="center">
                 <IconButton disabled={deleting} color='error' onClick={handleDelete}>
-                    <DeleteForever />
+                    <DeleteForeverIcon />
                 </IconButton>
             </Grid>
         </Grid>
@@ -82,6 +107,7 @@ export default function ListSelect({loading}) {
             {!privateLists || privateLists?.length === 0
                 ? null : renderSelect()}
             {showCreate ? <CreateList setShowCreate={setShowCreate} /> : null}
+            {showEdit ? <EditList setShowEdit={setShowEdit} /> : null}
         </Paper>
     )
 }

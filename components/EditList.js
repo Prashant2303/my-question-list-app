@@ -1,18 +1,17 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Grid, TextField, MenuItem, Typography } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import { useHooks } from 'service/apiCalls';
 import { useState } from 'react';
 
-export default function CreateList({ setShowCreate }) {
+export default function EditList({ setShowEdit }) {
     const hooks = useHooks();
     const [loading, setLoading] = useState(false);
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required').min(3),
-        status: Yup.mixed().oneOf(['Private', 'Public'])
     });
 
     const {
@@ -25,23 +24,23 @@ export default function CreateList({ setShowCreate }) {
 
     const onSubmit = async (listdata) => {
         setLoading(true);
-        const result = await hooks.createList(listdata);
-        if (result) setShowCreate(false);
+        const result = await hooks.updateList('name', listdata.name.trim());
         setLoading(false);
+        if (result) setShowEdit(false);
     };
 
     return (
         <Grid container spacing={1} sx={{ marginTop: '10px' }} alignItems="center">
             <Grid item xs={12}>
                 <Typography variant="h6">
-                    Create new List
+                    Edit List name
                 </Typography>
             </Grid>
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} sm={10}>
                 <TextField
                     id="name"
                     name="name"
-                    label="List name"
+                    label="New name"
                     size="small"
                     required
                     fullWidth
@@ -50,24 +49,9 @@ export default function CreateList({ setShowCreate }) {
                     helperText={errors.name?.message}
                 />
             </Grid>
-            <Grid item xs={6} sm={2}>
-                <TextField
-                    select
-                    id="access"
-                    name="access"
-                    label="Access"
-                    size="small"
-                    defaultValue="Private"
-                    required
-                    fullWidth
-                    {...register('access')}
-                    error={errors.access ? true : false}
-                >
-                    <MenuItem id="Private" value="Private">Private</MenuItem>
-                    <MenuItem id="Public" value="Public">Public</MenuItem>
-                </TextField>
+            <Grid item xs={9} sx={{ display: { sm: 'none' } }}>
             </Grid>
-            <Grid item xs={6} sm={2}>
+            <Grid item xs={3} sm={2}>
                 <LoadingButton
                     loading={loading}
                     variant="contained"
@@ -75,7 +59,7 @@ export default function CreateList({ setShowCreate }) {
                     onClick={handleSubmit(onSubmit)}
                     fullWidth
                 >
-                    Create
+                    Update
                 </LoadingButton>
             </Grid>
         </Grid>

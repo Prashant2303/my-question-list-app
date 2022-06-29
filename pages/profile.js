@@ -37,92 +37,105 @@ export default function Profile() {
         if (name === 'defaultDifficulty') setUpdatingDifficulty(false);
     }
 
-    const renderContent = () => (
-        <Paper elevation={3} sx={{ marginTop: '10px', padding: '15px' }}>
-            <Typography variant="h6" component="div">
-                {user?.username}
-            </Typography>
-            <Grid py={1}>
-                Email : {user?.email}
+    const renderDefaults = () => (
+        <Grid container alignItems="center" spacing={2} my={1}>
+            <Grid item xs={12} padding={1}>
+                Default selections :-
             </Grid>
-            <Grid container alignItems="center" spacing={2}>
-                <Grid item xs={12} padding={1}>
-                    Default selections :-
-                </Grid>
-                <Grid item xs={4}>
-                    <TextField
-                        select
-                        id="defaultDifficulty"
-                        name="defaultDifficulty"
-                        label="Difficulty"
-                        value={user.defaultDifficulty}
-                        onChange={handleChange}
-                        fullWidth
-                        size="small"
-                        disabled={updatingDifficulty}
-                    >
-                        <MenuItem value="Easy">Easy</MenuItem>
-                        <MenuItem value="Medium">Medium</MenuItem>
-                        <MenuItem value="Hard">Hard</MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item xs={4}>
-                    <TextField
-                        select
-                        id="defaultStatus"
-                        name="defaultStatus"
-                        label="Status"
-                        value={user.defaultStatus}
-                        onChange={handleChange}
-                        fullWidth
-                        size="small"
-                        disabled={updatingStatus}
-                    >
-                        <MenuItem value="Todo">Todo</MenuItem>
-                        <MenuItem value="Revise">Revise</MenuItem>
-                        <MenuItem value="Done">Done</MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item xs={4}>
-                    <TextField
-                        select
-                        id="defaultCategory"
-                        name="defaultCategory"
-                        label="Category"
-                        value={user.defaultCategory}
-                        onChange={handleChange}
-                        fullWidth
-                        size="small"
-                        disabled={updatingCategory}
-                    >
-                        {categories.sort().map((option) => (
-                            <MenuItem id={option} key={option} value={option}>
-                                {option}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </Grid>
-                {!privateLists || privateLists.length === 0 ? null :
-                    <Grid item xs={12}>
-                        <TextField
-                            select
-                            name="defaultList"
-                            value={user?.defaultList}
-                            label="Default List"
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
-                            disabled={updatingList}
-                        >
-                            {privateLists.map(list =>
-                                <MenuItem key={list._id} value={list._id} >
-                                    {list.name} {list._id === user.defaultList ? '(Default)' : null} ({list.access})
-                                </MenuItem>)}
-                        </TextField>
-                    </Grid>}
+            <Grid item xs={4}>
+                <TextField
+                    select
+                    id="defaultDifficulty"
+                    name="defaultDifficulty"
+                    label="Difficulty"
+                    value={user.defaultDifficulty}
+                    onChange={handleChange}
+                    fullWidth
+                    size="small"
+                    disabled={updatingDifficulty}
+                >
+                    <MenuItem value="Easy">Easy</MenuItem>
+                    <MenuItem value="Medium">Medium</MenuItem>
+                    <MenuItem value="Hard">Hard</MenuItem>
+                </TextField>
             </Grid>
-        </Paper>
+            <Grid item xs={4}>
+                <TextField
+                    select
+                    id="defaultStatus"
+                    name="defaultStatus"
+                    label="Status"
+                    value={user.defaultStatus}
+                    onChange={handleChange}
+                    fullWidth
+                    size="small"
+                    disabled={updatingStatus}
+                >
+                    <MenuItem value="Todo">Todo</MenuItem>
+                    <MenuItem value="Revise">Revise</MenuItem>
+                    <MenuItem value="Done">Done</MenuItem>
+                </TextField>
+            </Grid>
+            <Grid item xs={4}>
+                <TextField
+                    select
+                    id="defaultCategory"
+                    name="defaultCategory"
+                    label="Category"
+                    value={user.defaultCategory}
+                    onChange={handleChange}
+                    fullWidth
+                    size="small"
+                    disabled={updatingCategory}
+                >
+                    {categories.sort().map((option) => (
+                        <MenuItem id={option} key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            </Grid>
+            {!privateLists || privateLists.length === 0 ? null :
+                <Grid item xs={12}>
+                    <TextField
+                        select
+                        name="defaultList"
+                        value={user?.defaultList}
+                        label="Default List"
+                        onChange={handleChange}
+                        fullWidth
+                        size="small"
+                        disabled={updatingList}
+                    >
+                        {privateLists.map(list =>
+                            <MenuItem key={list._id} value={list._id} >
+                                {list.name} {list._id === user.defaultList ? '(Default)' : null} ({list.access})
+                            </MenuItem>)}
+                    </TextField>
+                </Grid>}
+        </Grid>
     )
+
+    const renderContent = () => {
+        const publicListCount = privateLists.filter(list => list.access === 'Public').length;
+        return (
+            <Paper elevation={3} sx={{ marginTop: '10px', padding: '15px' }}>
+                <Typography variant="h6" component="div">
+                    {user?.username}
+                </Typography>
+                <Grid py={1}>
+                    Email : {user?.email}
+                </Grid>
+                <Grid py={1}>
+                    No. of Public Lists : {publicListCount}
+                </Grid>
+                <Grid py={1}>
+                    No. of Private Lists : {privateLists.length - publicListCount}
+                </Grid>
+                {renderDefaults()}
+            </Paper>
+        )
+    }
 
     return (
         !privateLists ? <Loading /> : renderContent()

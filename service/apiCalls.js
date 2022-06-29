@@ -203,8 +203,10 @@ export const useHooks = () => {
             updatedPrivateLists[targetIndex] = updatedEntry;
             setPrivateLists(updatedPrivateLists);
             toast.success('List Updated Successfully');
+            return true;
         } else {
             toast.error(data.message);
+            return false;
         }
     }
 
