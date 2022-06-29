@@ -3,19 +3,12 @@ import Link from 'next/link';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilValue } from 'recoil';
 import { stateUser } from 'store/atoms';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MoreVert } from '@mui/icons-material';
 
 export default function NavBar() {
     const hooks = useHooks();
     const user = useRecoilValue(stateUser);
-
-    useEffect(() => {
-        if (localStorage.getItem('user') && !user) {
-            hooks.setUserFromSession();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user])
 
     const [mobileAnchor, setMobileAnchor] = useState(null);
     const handleMobileMenuClick = (event) => {

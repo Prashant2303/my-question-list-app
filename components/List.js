@@ -1,11 +1,11 @@
 import styles from 'styles/List.module.css';
-import { Grid, Paper } from '@mui/material';
+import { CircularProgress, Grid, Paper } from '@mui/material';
 import Question from './Question';
 import { useRecoilState } from 'recoil';
 import { stateFilter, stateQuestions } from 'store/atoms';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
-const List = () => {
+const List = ({ loading }) => {
 
     const [questions,] = useRecoilState(stateQuestions);
     const [filterState,] = useRecoilState(stateFilter);
@@ -60,6 +60,12 @@ const List = () => {
         </TransitionGroup>
     )
 
+    const renderLoading = (
+        <Grid container justifyContent="center">
+            <CircularProgress />
+        </Grid>
+    )
+
     return (
         <Paper className={styles.list} elevation={3}>
             <Grid container className={styles.headings} spacing={1}>
@@ -69,8 +75,9 @@ const List = () => {
                 <Grid item xs={3} sm={1.7}>Notes</Grid>
                 <Grid item xs={1} sm={0.5}></Grid>
             </Grid>
-            {!questionsToRender || questionsToRender.length === 0
-                ? renderEmptyList() : renderQuestions()}
+            {loading ? renderLoading
+                : !questionsToRender || questionsToRender.length === 0
+                    ? renderEmptyList() : renderQuestions()}
         </Paper>
     )
 }

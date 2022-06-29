@@ -8,7 +8,7 @@ import { DeleteForever } from '@mui/icons-material';
 import { useHooks } from 'service/apiCalls';
 import { LoadingButton } from '@mui/lab';
 
-export default function ListSelect() {
+export default function ListSelect({loading}) {
 
     const hooks = useHooks();
     const user = useRecoilValue(stateUser);
@@ -47,6 +47,7 @@ export default function ListSelect() {
                     onChange={handleChange}
                     fullWidth
                     size="small"
+                    disabled={loading}
                 >
                     {privateLists.map(list =>
                         <MenuItem key={list._id} value={list._id} >
@@ -79,7 +80,7 @@ export default function ListSelect() {
     return (
         <Paper className={styles.listSelect} elevation={3}>
             {!privateLists || privateLists?.length === 0
-                ? <div>This is not possible</div> : renderSelect()}
+                ? null : renderSelect()}
             {showCreate ? <CreateList setShowCreate={setShowCreate} /> : null}
         </Paper>
     )
