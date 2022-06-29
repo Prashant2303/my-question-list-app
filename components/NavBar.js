@@ -103,7 +103,7 @@ export default function NavBar() {
                                     <Typography textAlign="center">Log out</Typography>
                                 </MenuItem>
                             </div> :
-                            <div>
+                            <div style={{display:'flex'}}>
                                 <MenuItem>
                                     <Link href="/signin" passHref>
                                         <Typography textAlign="center">Login</Typography>

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Grid, TextField, MenuItem } from '@mui/material';
+import { Grid, TextField, MenuItem, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import { useHooks } from 'service/apiCalls';
@@ -32,7 +32,12 @@ export default function CreateList({ setShowCreate }) {
 
     return (
         <Grid container spacing={1} sx={{ marginTop: '10px' }}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
+                <Typography variant="h6">
+                    Create new List
+                </Typography>
+            </Grid>
+            <Grid item xs={12} sm={8}>
                 <TextField
                     id="name"
                     name="name"
@@ -45,7 +50,7 @@ export default function CreateList({ setShowCreate }) {
                     helperText={errors.name?.message}
                 />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={6} sm={2}>
                 <TextField
                     select
                     id="access"
@@ -62,14 +67,13 @@ export default function CreateList({ setShowCreate }) {
                     <MenuItem id="Public" value="Public">Public</MenuItem>
                 </TextField>
             </Grid>
-            <Grid item md={3}>
+            <Grid item xs={6} sm={2}>
                 <LoadingButton
                     loading={loading}
                     variant="contained"
                     disableElevation
                     onClick={handleSubmit(onSubmit)}
                     fullWidth
-                    sx={{ 'textTransform': 'none', 'backgroundColor': '#1877f2' }}
                 >
                     Create
                 </LoadingButton>

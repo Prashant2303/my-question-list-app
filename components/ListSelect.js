@@ -38,7 +38,7 @@ export default function ListSelect() {
 
     const renderSelect = () => (
         <Grid container spacing={1} alignItems="center">
-            <Grid item sm={8}>
+            <Grid item xs={12} sm={8}>
                 <TextField
                     select
                     name="selectedList"
@@ -54,25 +54,24 @@ export default function ListSelect() {
                         </MenuItem>)}
                 </TextField>
             </Grid>
-            <Grid item sm={2}>
+            <Grid item xs={5} sm={2}>
                 <LoadingButton
-                    variant="contained"
+                    variant="text"
                     disableElevation
                     onClick={changeAccess}
                     size="medium"
                     loading={changing}
-                    sx={{ 'textTransform': 'none', 'backgroundColor': '#1877f2' }}
                 >
                     {listAccess === 'Private' ? 'Set as Public' : 'Set as Private'}
                 </LoadingButton>
             </Grid>
-            <Grid item sm={0.5}>
+            <Grid item xs={4} sm={1.2}>
+                <Button size="small" onClick={() => setShowCreate(!showCreate)}>Create</Button>
+            </Grid>
+            <Grid item xs={3} sm={0.8} textAlign="center">
                 <IconButton disabled={deleting} color='error' onClick={handleDelete}>
                     <DeleteForever />
                 </IconButton>
-            </Grid>
-            <Grid item sm={1.5}>
-                <Button size="small" onClick={() => setShowCreate(!showCreate)}>Create</Button>
             </Grid>
         </Grid>
     )
