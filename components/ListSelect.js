@@ -1,17 +1,17 @@
 import styles from 'styles/ListSelect.module.css';
 import { Paper, MenuItem, TextField, Grid, IconButton } from "@mui/material";
 import { LoadingButton } from '@mui/lab';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import CreateList from './CreateList';
 import EditList from './EditList';
+import ConfirmationModal from './ConfirmationModal';
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { statePrivateLists, stateSelectedList, stateUser } from "store/atoms";
 import { useHooks } from 'service/apiCalls';
 
-export default function ListSelect({loading}) {
+export default function ListSelect({ loading }) {
 
     const hooks = useHooks();
     const user = useRecoilValue(stateUser);
@@ -19,18 +19,11 @@ export default function ListSelect({loading}) {
     const [selectedList, setSelectedlist] = useRecoilState(stateSelectedList);
     const [showCreate, setShowCreate] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
-    const [deleting, setDeleting] = useState(false);
     const [changing, setChanging] = useState(false);
     const listAccess = privateLists?.find(list => list._id === selectedList).access;
 
     const handleChange = (event) => {
         setSelectedlist(event.target.value);
-    };
-
-    const handleDelete = async () => {
-        setDeleting(true);
-        await hooks.deleteList();
-        setDeleting(false);
     };
 
     const changeAccess = async () => {
@@ -42,16 +35,12 @@ export default function ListSelect({loading}) {
 
     const handleOpenEdit = () => {
         setShowEdit(!showEdit)
-        if(showCreate) {
-            setShowCreate(false);
-        }
+        if (showCreate) setShowCreate(false);
     }
-    
+
     const handleOpenCreate = () => {
         setShowCreate(!showCreate)
-        if(showEdit) {
-            setShowEdit(false);
-        }
+        if (showEdit) setShowEdit(false);
     }
 
     const renderSelect = () => (
@@ -95,9 +84,7 @@ export default function ListSelect({loading}) {
                 </IconButton>
             </Grid>
             <Grid item xs={2.4} sm={0.7} textAlign="center">
-                <IconButton disabled={deleting} color='error' onClick={handleDelete}>
-                    <DeleteForeverIcon />
-                </IconButton>
+                <ConfirmationModal deleteFunction={hooks.deleteList} />
             </Grid>
         </Grid>
     )
