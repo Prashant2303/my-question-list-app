@@ -62,7 +62,7 @@ export default function ListSelect({ loading }) {
                         </MenuItem>)}
                 </TextField>
             </Grid>
-            <Grid item xs={4.6} sm={2} textAlign="center">
+            <Grid item xs={4.8} sm={2} textAlign="center">
                 <LoadingButton
                     variant="text"
                     disableElevation

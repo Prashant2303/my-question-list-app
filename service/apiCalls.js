@@ -173,7 +173,7 @@ export const useHooks = () => {
             }
         });
         if (response.ok) {
-            const newList = privateLists.filter(list => list.id !== selectedList)
+            const newList = privateLists.filter(list => list._id !== selectedList)
             setPrivateLists(newList);
             setSelectedlist(user.defaultList);
             toast.success('Deleted Successfully\n\nDefault list selected');
