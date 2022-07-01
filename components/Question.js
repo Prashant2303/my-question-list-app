@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
-import ConfirmationModal from './ConfirmationModal';
+import CustomModal from './CustomModal';
 import { useHooks } from 'service/apiCalls';
 import { Transition } from 'react-transition-group';
 
@@ -114,7 +114,7 @@ const Question = ({ index, question }) => {
                 <Button variant="outlined" fullWidth onClick={handleClick}>{state.notes === '' ? 'Add' : 'View'}</Button>
             </Grid>
             <Grid item className={styles.delete} xs={1} sm={0.5} >
-                <ConfirmationModal
+                <CustomModal
                     open={modalState}
                     closeModal={closeModal}
                     passedFunction={handleDelete}
@@ -126,7 +126,7 @@ const Question = ({ index, question }) => {
                     <IconButton disabled={loadingDelete} color='error' onClick={openModal}>
                         <DeleteForeverIcon />
                     </IconButton>
-                </ConfirmationModal>
+                </CustomModal>
             </Grid>
         </>
     )

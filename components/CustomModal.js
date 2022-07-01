@@ -18,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function ConfirmationModal({ open, closeModal, passedFunction, children, content, confirm }) {
+export default function CustomModal({ open, closeModal, passedFunction, children, content, confirm }) {
 
   const CustomButton = styled(Button)(() => ({
     backgroundColor: '#c5c7c7',

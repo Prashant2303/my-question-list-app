@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import CreateList from './CreateList';
 import EditList from './EditList';
-import ConfirmationModal from './ConfirmationModal';
+import CustomModal from './CustomModal';
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { statePrivateLists, stateSelectedList, stateUser } from "store/atoms";
@@ -29,7 +29,13 @@ export default function ListSelect({ loading }) {
     };
 
     const changeAccess = async () => {
-        const value = listAccess === 'Private' ? 'Public' : 'Private';
+        let value;
+        if (listAccess === 'Private') {
+            value = 'Public';
+            closeModal();
+        } else {
+            value = 'Private';
+        }
         setChanging(true);
         await hooks.updateList('access', value);
         setChanging(false);
@@ -46,11 +52,15 @@ export default function ListSelect({ loading }) {
     }
 
     const handleDelete = async () => {
-        closeModal();
+        closeDeleteModal();
         setLoadingDelete(true);
         await hooks.deleteList();
         setLoadingDelete(false);
     }
+
+    const [deleteModalState, setDeleteModalState] = useState(false);
+    const openDeleteModal = () => setDeleteModalState(true);
+    const closeDeleteModal = () => setDeleteModalState(false);
 
     const [modalState, setModalState] = useState(false);
     const openModal = () => setModalState(true);
@@ -76,15 +86,36 @@ export default function ListSelect({ loading }) {
                 </TextField>
             </Grid>
             <Grid item xs={4.8} sm={2} textAlign="center">
-                <LoadingButton
-                    variant="text"
-                    disableElevation
-                    onClick={changeAccess}
-                    size="medium"
-                    loading={changing}
-                >
-                    {listAccess === 'Private' ? 'Set as Public' : 'Set as Private'}
-                </LoadingButton>
+                {listAccess === 'Private' ?
+                    <CustomModal
+                        open={modalState}
+                        closeModal={closeModal}
+                        passedFunction={changeAccess}
+                        confirm
+                        content={{
+                            'header': 'Make this list public ?',
+                            'body': 'All the questions, their difficulty and notes from this list will be available publicly. This action is reversible.'
+                        }}
+                    >
+                        <LoadingButton
+                            variant="text"
+                            disableElevation
+                            onClick={openModal}
+                            size="medium"
+                            loading={changing}
+                        >
+                            Set as Public
+                        </LoadingButton>
+                    </CustomModal> :
+                    <LoadingButton
+                        variant="text"
+                        disableElevation
+                        onClick={changeAccess}
+                        size="medium"
+                        loading={changing}
+                    >
+                        Set as Private
+                    </LoadingButton>}
             </Grid>
             <Grid item xs={2.4} sm={0.6} textAlign="center">
                 <IconButton color="primary" onClick={handleOpenEdit}>
@@ -97,19 +128,19 @@ export default function ListSelect({ loading }) {
                 </IconButton>
             </Grid>
             <Grid item xs={2.4} sm={0.7} textAlign="center">
-                <ConfirmationModal
-                    open={modalState}
-                    closeModal={closeModal}
+                <CustomModal
+                    open={deleteModalState}
+                    closeModal={closeDeleteModal}
                     passedFunction={handleDelete}
                     content={{
                         'header': 'Delete this list ?',
                         'body': 'This action is not reversible.'
                     }}
                 >
-                    <IconButton disabled={loadingDelete} color='error' onClick={openModal}>
+                    <IconButton disabled={loadingDelete} color='error' onClick={openDeleteModal}>
                         <DeleteForever />
                     </IconButton>
-                </ConfirmationModal>
+                </CustomModal>
             </Grid>
         </Grid>
     )
