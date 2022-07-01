@@ -1,5 +1,4 @@
 import styles from 'styles/List.module.css';
-import React from 'react';
 import { CircularProgress, Grid, Paper } from '@mui/material';
 import Question from './Question';
 import { useRecoilState } from 'recoil';
@@ -10,14 +9,6 @@ const List = ({ loading }) => {
 
     const [questions,] = useRecoilState(stateQuestions);
     const [filterState,] = useRecoilState(stateFilter);
-
-    const renderLoading = () => {
-        return (
-            <div className={styles.spinner}>
-                <CircularProgress />
-            </div>
-        )
-    }
 
     const renderEmptyList = () => {
         return <div className={styles.emptyList}>No Questions</div>
@@ -69,6 +60,12 @@ const List = ({ loading }) => {
         </TransitionGroup>
     )
 
+    const renderLoading = (
+        <Grid container justifyContent="center">
+            <CircularProgress />
+        </Grid>
+    )
+
     return (
         <Paper className={styles.list} elevation={3}>
             <Grid container className={styles.headings} spacing={1}>
@@ -78,11 +75,9 @@ const List = ({ loading }) => {
                 <Grid item xs={3} sm={1.7}>Notes</Grid>
                 <Grid item xs={1} sm={0.5}></Grid>
             </Grid>
-            {
-                loading ? renderLoading()
-                    : !questionsToRender || questionsToRender.length === 0 ? renderEmptyList()
-                        : renderQuestions()
-            }
+            {loading ? renderLoading
+                : !questionsToRender || questionsToRender.length === 0
+                    ? renderEmptyList() : renderQuestions()}
         </Paper>
     )
 }

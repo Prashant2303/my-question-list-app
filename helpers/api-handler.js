@@ -10,6 +10,7 @@ function getUserFromToken(req) {
         const decodedUser = jwt.verify(token, process.env.SECRET);
         return {
             user: { _id: new ObjectId(decodedUser.id) },
+            userString: decodedUser.id,
             token
         };
     } catch (err) {
@@ -18,6 +19,7 @@ function getUserFromToken(req) {
 }
 
 function apiHandler(handler) {
+    console.log('Inside handler');
     return async (req, res) => {
         const method = req.method.toLowerCase();
 
@@ -26,9 +28,9 @@ function apiHandler(handler) {
             return res.status(405).end(`Method ${req.method} Not Allowed`);
 
         try {
-            const { collection } = await connectToDatabase();
+            const { usersCollection, listsCollection } = await connectToDatabase();
             // route handler
-            await handler[method](req, res, collection);
+            await handler[method]({ req, res, usersCollection, listsCollection });
         } catch (err) {
             // global error handler
             console.log('SERVER ERROR', err);

@@ -1,44 +1,46 @@
-import styles from '../styles/Index.module.css'
-import Container from '@mui/material/Container'
-import NavBar from 'components/AppBar';
-import AddQuestion from 'components/AddQuestion'
+import AddQuestion from 'components/AddQuestion';
 import List from 'components/List';
 import Toolbar from 'components/Toolbar';
+import ListSelect from 'components/ListSelect';
+import Loading from 'components/Loading';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useHooks } from 'service/apiCalls';
-import { useRecoilState } from 'recoil';
-import { stateShouldFetch } from 'store/atoms';
+import { useRecoilValue } from 'recoil';
+import { statePrivateLists, stateSelectedList, stateUser } from 'store/atoms';
 
 export default function Home() {
 
   const hooks = useHooks();
-  const router = useRouter();
-  const [shouldFetch, ] = useRecoilState(stateShouldFetch);
-  const [loading, setLoading] = useState(false);
+  const user = useRecoilValue(stateUser);
+  const selectedList = useRecoilValue(stateSelectedList);
+  const privateLists = useRecoilValue(statePrivateLists);
+  const [loadingSelectedList, setLoadingSelectedList] = useState(false);
 
-  const fetchUserInfo = async () => {
-    setLoading(true);
-    await hooks.signinUsingSession(localStorage.getItem('user'));
-    setLoading(false);
+  const fetchSelectedList = async () => {
+    setLoadingSelectedList(true);
+    await hooks.fetchSelectedList();
+    setLoadingSelectedList(false);
   }
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
-      router.push('/signin');
-    }
-    else if (shouldFetch) {
-      fetchUserInfo();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])  //will only run on intial render
+    hooks.redirectIfLoggedOut()
+  })
+
+  useEffect(() => {
+    if (user) fetchSelectedList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedList])
+
+  const renderContent = (
+    <>
+      <AddQuestion />
+      <ListSelect loading={loadingSelectedList} />
+      <Toolbar />
+      <List loading={loadingSelectedList} />
+    </>
+  )
 
   return (
-    <Container className={styles.App} maxWidth="md">
-      <NavBar />
-      <AddQuestion />
-      <Toolbar />
-      <List loading={loading} />
-    </Container>
+    !privateLists ? <Loading /> : renderContent
   );
 }

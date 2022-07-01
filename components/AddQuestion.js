@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Grid, TextField, Paper, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useHooks } from 'service/apiCalls';
+import { useRecoilValue } from 'recoil';
+import { stateUser } from 'store/atoms';
 
 const AddQuestion = () => {
+    const user = useRecoilValue(stateUser);
 
     const difficulties = ['Easy', 'Medium', 'Hard'];
     const statuses = ['Todo', 'Revise', 'Done'];
@@ -12,9 +15,9 @@ const AddQuestion = () => {
         'url': '',
         'site': '',
         'name': '',
-        'difficulty': 'Medium',
-        'status': 'Revise',
-        'category': 'Others',
+        'difficulty': user?.defaultDifficulty,
+        'status': user?.defaultStatus,
+        'category': user?.defaultCategory,
         'notes': ''
     };
     const initialErrors = {
@@ -56,7 +59,6 @@ const AddQuestion = () => {
         }
         setState({ ...state, [e.target.name]: e.target.value });
     }
-
 
     const handleSubmit = async () => {
         if (!state.url.length || !state.name.length) {

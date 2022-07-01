@@ -1,19 +1,20 @@
 import { apiHandler, getUserFromToken } from "helpers/api-handler";
 
 export default apiHandler({
-    get: handler
+    patch: handler().patch
 })
 
-async function handler(req, res, collection) {
-    const { user, token } = getUserFromToken(req);
-    const existingUser = await collection.findOne(user);
+function handler() {
+    return { patch }
 
-    const userData = {
-        id: existingUser._id,
-        email: existingUser.email,
-        username: existingUser.username,
-        questions: existingUser.questions,
-        token
+    async function patch({ req, res, usersCollection }) {
+        const { userId } = req.query;
+        const { user, userString } = getUserFromToken(req);
+
+        if (userId !== userString) throw 'Not Authorized';
+
+        const { field, value } = req.body;
+        const updateResult = await usersCollection.updateOne(user, { "$set": { [field]: value } });
+        return res.status(200).json({ 'message': updateResult });
     }
-    return res.status(200).json(userData)
 }

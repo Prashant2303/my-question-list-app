@@ -1,0 +1,21 @@
+.question {
+    height: 31px;
+    align-items: center;
+}
+
+.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.icon {
+    margin: 0px;
+    padding: 0px;
+}
+
+.notes {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 5px;
+}

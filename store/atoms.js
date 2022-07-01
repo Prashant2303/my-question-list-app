@@ -5,14 +5,19 @@ export const stateUser = atom({
     default: null
 })
 
+export const statePrivateLists = atom({
+    key: 'statePrivateLists',
+    default: null
+})
+
+export const stateSelectedList = atom({
+    key: 'stateSelectedList',
+    default: null
+})
+
 export const stateQuestions = atom({
     key: 'stateQuestionsKey',
     default: []
-})
-
-export const stateShouldFetch = atom({
-    key: 'stateShouldFetchKey',
-    default: true
 })
 
 export const stateFilter = atom({

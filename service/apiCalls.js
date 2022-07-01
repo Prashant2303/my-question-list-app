@@ -1,5 +1,5 @@
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { stateUser, stateQuestions, stateShouldFetch, stateFilter } from 'store/atoms';
+import { stateUser, stateQuestions, stateFilter, statePrivateLists, stateSelectedList } from 'store/atoms';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
@@ -10,18 +10,21 @@ export const useHooks = () => {
     const router = useRouter();
     const [user, setUser] = useRecoilState(stateUser);
     const [questions, setQuestions] = useRecoilState(stateQuestions);
-    const [, setShouldFetch] = useRecoilState(stateShouldFetch);
     const [, setFilter] = useRecoilState(stateFilter);
+    const [privateLists, setPrivateLists] = useRecoilState(statePrivateLists);
+    const [selectedList, setSelectedlist] = useRecoilState(stateSelectedList);
 
     const resetUser = useResetRecoilState(stateUser);
     const resetQuestions = useResetRecoilState(stateQuestions);
-    const resetShouldFetch = useResetRecoilState(stateShouldFetch);
     const resetFilter = useResetRecoilState(stateFilter);
+    const resetPrivateLists = useResetRecoilState(statePrivateLists);
+    const resetSelectedList = useResetRecoilState(stateSelectedList);
 
     return {
         user,
         redirectIfLoggedIn,
-        signinUsingSession,
+        redirectIfLoggedOut,
+        setUserFromSession,
         signin,
         signup,
         logout,
@@ -31,6 +34,12 @@ export const useHooks = () => {
         filter,
         search,
         reset,
+        fetchSelectedList,
+        fetchPrivateLists,
+        createList,
+        deleteList,
+        updateList,
+        updateUserDetails
     };
 
     function redirectIfLoggedIn() {
@@ -39,23 +48,16 @@ export const useHooks = () => {
         }
     }
 
-    async function signinUsingSession(storedUser) {
-        const loggedInUser = JSON.parse(storedUser);
-        const { id, token } = loggedInUser;
-        const response = await fetch(`/api/users/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setUser(data);
-            setQuestions(data.questions);
-        } else {
-            logout();
+    function redirectIfLoggedOut() {
+        if (!localStorage.getItem('user')) {
+            router.push('/signin')
         }
+    }
+
+    async function setUserFromSession() {
+        const sessionUser = JSON.parse(localStorage.getItem('user'));
+        setUser(sessionUser);
+        setSelectedlist(sessionUser.defaultList);
     }
 
     async function signin(userCreds) {
@@ -70,20 +72,19 @@ export const useHooks = () => {
         const data = await response.json();
         if (response.ok) {
             toast.success('Signin Successful');
-            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
+            localStorage.setItem('user', JSON.stringify(data));
             setUser(data);
-            setQuestions(data.questions);
-            setShouldFetch(false);
+            setSelectedlist(data.defaultList);
             router.replace('/');
         } else {
             toast.error(data.message);
         }
     }
 
-    async function signup(newuser) {
+    async function signup(userCreds) {
         const response = await fetch('/api/users/signup', {
             method: 'POST',
-            body: JSON.stringify({ newuser }),
+            body: JSON.stringify({ userCreds }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -91,10 +92,9 @@ export const useHooks = () => {
         const data = await response.json();
         if (response.ok) {
             toast.success('Signup Successful');
-            localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, token: data.token }));
+            localStorage.setItem('user', JSON.stringify(data));
             setUser(data);
-            setQuestions(data.questions);
-            setShouldFetch(false);
+            setSelectedlist(data.defaultList);
             router.replace('/');
         } else {
             toast.error(data.message);
@@ -104,14 +104,114 @@ export const useHooks = () => {
     function logout() {
         resetUser();
         resetQuestions();
-        resetShouldFetch();
+        resetPrivateLists();
+        resetSelectedList();
         localStorage.removeItem('user');
         toast.success('Logged out successfully')
         router.push('/signin');
     }
 
+    async function fetchSelectedList() {
+        const response = await fetch(`/api/lists/${selectedList}`)
+        if (response.ok) {
+            const data = await response.json();
+            setQuestions(data);
+        } else {
+            const data = await response.json();
+            toast.error(data.message);
+        }
+    }
+
+    async function fetchPrivateLists() {
+        const response = await fetch('api/lists', {
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+        })
+        if (response.ok) {
+            const data = await response.json();
+            setPrivateLists(data);
+        }
+    }
+
+    async function createList(listdata) {
+        const listBody = {
+            ...listdata,
+            ownerName: user.username,
+        }
+        const response = await fetch('/api/lists', {
+            method: 'POST',
+            body: JSON.stringify({ listBody }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            setPrivateLists([...privateLists, data]);
+            setSelectedlist(data._id);
+            return true;
+        } else {
+            toast.error(data.message);
+            return false;
+        }
+    }
+
+    async function deleteList() {
+        if (selectedList === user.defaultList) {
+            toast.error('Cannot delete default list');
+            return;
+        }
+
+        const response = await fetch(`/api/lists/${selectedList}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+        if (response.ok) {
+            const newList = privateLists.filter(list => list._id !== selectedList)
+            setPrivateLists(newList);
+            setSelectedlist(user.defaultList);
+            toast.success('Deleted Successfully\n\nDefault list selected');
+            return true;
+        } else {
+            toast.error(data.message);
+            return false;
+        }
+    }
+
+    async function updateList(field, value) {
+        const response = await fetch(`/api/lists/${selectedList}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                [field]: value
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            const targetIndex = privateLists.findIndex(list => list._id === selectedList);
+            const updatedEntry = { ...privateLists[targetIndex], [field]: value };
+            let updatedPrivateLists = [...privateLists];
+            updatedPrivateLists[targetIndex] = updatedEntry;
+            setPrivateLists(updatedPrivateLists);
+            toast.success('List Updated Successfully');
+            return true;
+        } else {
+            toast.error(data.message);
+            return false;
+        }
+    }
+
     async function addQuestion(question) {
-        const response = await fetch('/api/questions', {
+        const response = await fetch(`/api/questions/${selectedList}`, {
             method: 'POST',
             body: JSON.stringify({ question }),
             headers: {
@@ -130,7 +230,7 @@ export const useHooks = () => {
     }
 
     async function updateQuestion(questionId, field, value) {
-        const response = await fetch(`/api/questions/${questionId}`, {
+        const response = await fetch(`/api/questions/${selectedList}/${questionId}`, {
             method: 'PATCH',
             body: JSON.stringify({
                 [field]: value
@@ -149,7 +249,7 @@ export const useHooks = () => {
     }
 
     async function deleteQuestion(questionId) {
-        const response = await fetch(`/api/questions/${questionId}`, {
+        const response = await fetch(`/api/questions/${selectedList}/${questionId}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
@@ -164,6 +264,26 @@ export const useHooks = () => {
         }
         toast.error('Something went wrong');
         return false;
+    }
+
+    async function updateUserDetails(field, value) {
+        const response = await fetch(`/api/users/${user.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                field, value
+            }),
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+        })
+        if (response.ok) {
+            setUser({ ...user, [field]: value });
+            localStorage.setItem('user', JSON.stringify({ ...user, [field]: value }));
+            toast.success('Updated Successfully');
+        } else {
+            toast.error('Something went wrong');
+        }
     }
 
     function search(query) {
