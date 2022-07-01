@@ -31,10 +31,10 @@ export default function Footer() {
                     </Typography>
                 </Grid>
                 <Grid container item sx={{'width':'136px'}} alignSelf="center" justifyContent="space-between" marginBottom={1}>
-                    <a href="https://mui.com/" target='_blank' rel="noreferrer">
+                    <a href="https://linkedin.com/in/prashant-kumar-jamshedpur" target='_blank' rel="noreferrer">
                         <LinkedInIcon />
                     </a>{' '}
-                    <a href="mailto: prashant1997.official@gmail.com">
+                    <a href="https://github.com/Prashant2303">
                         <GitHubIcon />
                     </a>{' '}
                     <a href="mailto: prashant1997.official@gmail.com">
