@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { Grid, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
+import ConfirmationModal from './ConfirmationModal';
 import { useHooks } from 'service/apiCalls';
 import { Transition } from 'react-transition-group';
 
@@ -36,6 +37,7 @@ const Question = ({ index, question }) => {
     }
 
     const handleDelete = async () => {
+        closeModal();
         setLoadingDelete(true);
         await hooks.deleteQuestion(state.id);
         setLoadingDelete(false);
@@ -62,6 +64,10 @@ const Question = ({ index, question }) => {
         const containerWidth = nameRef.current?.offsetWidth;
         return textWidth < containerWidth ? true : false
     }
+
+    const [modalState, setModalState] = useState(false);
+    const openModal = () => setModalState(true);
+    const closeModal = () => setModalState(false);
 
     const renderQuestion = () => (
         <>
@@ -108,9 +114,19 @@ const Question = ({ index, question }) => {
                 <Button variant="outlined" fullWidth onClick={handleClick}>{state.notes === '' ? 'Add' : 'View'}</Button>
             </Grid>
             <Grid item className={styles.delete} xs={1} sm={0.5} >
-                <IconButton disabled={loadingDelete} color='error' onClick={handleDelete}>
-                    <DeleteForeverIcon />
-                </IconButton>
+                <ConfirmationModal
+                    open={modalState}
+                    closeModal={closeModal}
+                    passedFunction={handleDelete}
+                    content={{
+                        'header': 'Delete this question ?',
+                        'body': 'This action is not reversible.'
+                    }}
+                >
+                    <IconButton disabled={loadingDelete} color='error' onClick={openModal}>
+                        <DeleteForeverIcon />
+                    </IconButton>
+                </ConfirmationModal>
             </Grid>
         </>
     )

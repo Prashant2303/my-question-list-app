@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { statePrivateLists, stateSelectedList, stateUser } from "store/atoms";
 import { useHooks } from 'service/apiCalls';
+import { DeleteForever } from '@mui/icons-material';
 
 export default function ListSelect({ loading }) {
 
@@ -18,6 +19,7 @@ export default function ListSelect({ loading }) {
     const privateLists = useRecoilValue(statePrivateLists);
     const [selectedList, setSelectedlist] = useRecoilState(stateSelectedList);
     const [showCreate, setShowCreate] = useState(false);
+    const [loadingDelete, setLoadingDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [changing, setChanging] = useState(false);
     const listAccess = privateLists?.find(list => list._id === selectedList).access;
@@ -42,6 +44,17 @@ export default function ListSelect({ loading }) {
         setShowCreate(!showCreate)
         if (showEdit) setShowEdit(false);
     }
+
+    const handleDelete = async () => {
+        closeModal();
+        setLoadingDelete(true);
+        await hooks.deleteList();
+        setLoadingDelete(false);
+    }
+
+    const [modalState, setModalState] = useState(false);
+    const openModal = () => setModalState(true);
+    const closeModal = () => setModalState(false);
 
     const renderSelect = () => (
         <Grid container spacing={1} alignItems="center">
@@ -84,7 +97,19 @@ export default function ListSelect({ loading }) {
                 </IconButton>
             </Grid>
             <Grid item xs={2.4} sm={0.7} textAlign="center">
-                <ConfirmationModal deleteFunction={hooks.deleteList} />
+                <ConfirmationModal
+                    open={modalState}
+                    closeModal={closeModal}
+                    passedFunction={handleDelete}
+                    content={{
+                        'header': 'Delete this list ?',
+                        'body': 'This action is not reversible.'
+                    }}
+                >
+                    <IconButton disabled={loadingDelete} color='error' onClick={openModal}>
+                        <DeleteForever />
+                    </IconButton>
+                </ConfirmationModal>
             </Grid>
         </Grid>
     )

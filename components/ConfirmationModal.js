@@ -4,9 +4,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Grid, IconButton, styled } from '@mui/material';
-import DeleteForever from '@mui/icons-material/DeleteForever';
-import { useState } from 'react';
+import { Grid, styled } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -20,17 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function ConfirmationModal({ deleteFunction }) {
-  const [deleting, setDeleting] = useState(false);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const executeFunction = async () => {
-    handleClose();
-    setDeleting(true);
-    await deleteFunction();
-    setDeleting(false);
-  }
+export default function ConfirmationModal({ open, closeModal, passedFunction, children, content, confirm }) {
 
   const CustomButton = styled(Button)(() => ({
     backgroundColor: '#c5c7c7',
@@ -41,14 +29,12 @@ export default function ConfirmationModal({ deleteFunction }) {
 
   return (
     <div>
-      <IconButton disabled={deleting} color="error" onClick={handleOpen}>
-        <DeleteForever />
-      </IconButton>
+      {children}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={handleClose}
+        onClose={closeModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -58,17 +44,18 @@ export default function ConfirmationModal({ deleteFunction }) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" textAlign="center">
-              Delete this list ?
+              {content.header}
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }} textAlign="center">
-              This action cannot be undone.
+              {content.body}
             </Typography>
             <Grid container marginTop={3} justifyContent="space-evenly">
               <Grid item>
-                <CustomButton disableElevation variant="contained" onClick={handleClose}>Cancel</CustomButton>
+                <CustomButton disableElevation variant="contained" onClick={closeModal}>Cancel</CustomButton>
               </Grid>
               <Grid item>
-                <Button disableElevation variant="contained" color="error" sx={{ 'backgroundColor': 'red' }} onClick={executeFunction}>Delete</Button>
+                {confirm ? <Button disableElevation variant="contained" onClick={passedFunction}>Confirm</Button>
+                  : <Button disableElevation variant="contained" color="error" sx={{ 'backgroundColor': 'red' }} onClick={passedFunction}>Delete</Button>}
               </Grid>
             </Grid>
           </Box>
