@@ -1,22 +1,22 @@
 .question {
     align-items: center;
-    margin: 5px 0px 5px 0px;
+    margin: 2.5px 0px 2.5px 0px;
 }
 
 .name {
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 24px;
 }
 
 .icon {
     margin: 0px;
     padding: 0px;
-    height: 19px;
 }
 
 .notes {
     border: 1px solid lightgray;
     border-radius: 5px;
     padding: 10px;
-    margin: 5px 0px 5px 0px;
+    margin: 2.5px 0px 2.5px 0px;
 }

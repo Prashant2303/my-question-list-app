@@ -34,7 +34,7 @@ export default function Footer() {
                     <a href="https://linkedin.com/in/prashant-kumar-jamshedpur" target='_blank' rel="noreferrer">
                         <LinkedInIcon />
                     </a>{' '}
-                    <a href="https://github.com/Prashant2303">
+                    <a href="https://github.com/Prashant2303" target='_blank' rel="noreferrer">
                         <GitHubIcon />
                     </a>{' '}
                     <a href="mailto: prashant1997.official@gmail.com">

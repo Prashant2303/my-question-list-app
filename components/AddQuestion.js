@@ -34,11 +34,18 @@ const AddQuestion = () => {
         setErrors({ url: '', name: '' })
         try {
             const url = new URL(e.target.value);
+            const site = url.hostname;
+            let name;
+            if(site === "leetcode.com" || site === "practice.geeksforgeeks.org") {
+                name = url.pathname.substring(10)
+            } else {
+                name = url.pathname.substring(1)
+            }
             setState({
                 ...state,
                 url: e.target.value,
-                name: url.pathname.substring(10),
-                site: url.hostname
+                name,
+                site
             });
         } catch (err) {
             setState({
