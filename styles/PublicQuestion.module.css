@@ -1,6 +1,6 @@
 .question {
-    height: 31px;
     align-items: center;
+    margin: 5px 0px 5px 0px;
 }
 
 .name {
@@ -11,11 +11,12 @@
 .icon {
     margin: 0px;
     padding: 0px;
+    height: 19px;
 }
 
 .notes {
     border: 1px solid lightgray;
     border-radius: 5px;
     padding: 10px;
-    margin-bottom: 5px;
+    margin: 5px 0px 5px 0px;
 }
