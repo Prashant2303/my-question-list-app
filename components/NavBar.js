@@ -67,7 +67,7 @@ export default function NavBar() {
 
     return (
         <Box>
-            <AppBar position="static" sx={{ borderRadius: '5px' }}>
+            <AppBar position="static" sx={{ borderRadius: '5px', marginTop: '10px' }}>
                 <Toolbar>
                     <Link href="/" passHref>
                         <Typography
