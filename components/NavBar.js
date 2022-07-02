@@ -41,7 +41,7 @@ export default function NavBar() {
                             <Typography textAlign="center">Profile</Typography>
                         </Link>
                     </MenuItem>
-                    <MenuItem onClick={()=>{hooks.logout(); handleMobileMenuClick()}}>
+                    <MenuItem onClick={() => { hooks.logout(); handleMobileMenuClick() }}>
                         <Typography textAlign="center">Log out</Typography>
                     </MenuItem>
                 </div> :
@@ -73,7 +73,16 @@ export default function NavBar() {
                         <Typography
                             variant="h6"
                             component="div"
-                            sx={{ display: { sm: 'block' }, cursor: 'pointer' }}
+                            sx={{ display: { xs: 'none', sm: 'block' }, cursor: 'pointer' }}
+                        >
+                            MyQuestionList
+                        </Typography>
+                    </Link>
+                    <Link href="/" passHref>
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ display: { xs: 'block', sm: 'none' }, cursor: 'pointer' }}
                         >
                             MQL
                         </Typography>
@@ -86,7 +95,7 @@ export default function NavBar() {
                     </MenuItem>
                     <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                         {user ?
-                            <div style={{display:'flex'}}>
+                            <div style={{ display: 'flex' }}>
                                 <MenuItem>
                                     <Link href="/profile" passHref>
                                         <Typography textAlign="center">Profile</Typography>
@@ -96,7 +105,7 @@ export default function NavBar() {
                                     <Typography textAlign="center">Log out</Typography>
                                 </MenuItem>
                             </div> :
-                            <div style={{display:'flex'}}>
+                            <div style={{ display: 'flex' }}>
                                 <MenuItem>
                                     <Link href="/signin" passHref>
                                         <Typography textAlign="center">Login</Typography>

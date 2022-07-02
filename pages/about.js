@@ -7,10 +7,10 @@ export default function About() {
                 About
             </Typography>
             <Grid py={1}>
-                MyQuestionList is your personal notebook for coding questions where users can create an account and create multiple lists and users can set those lists to be publicly accessible. Users can add URLs to any question you want
-                and set its Difficulty, Status and Category according to you. Users can also add/update notes for any question.
+                MyQuestionList is your personal notebook for coding questions where users can create an account and create multiple lists and users can set those lists to be publicly accessible. Users can add URLs to any question they want
+                and set its Difficulty, Status and Category according to them. Users can also add/update notes for any question.
                 It features filter and search functionality as well. All this can be achieved using a simple and easy to use
-                interface with the fewest clicks possible. Changes related to public lists will be reflected after a minute.<br /><br />
+                interface with the fewest clicks possible. Changes related to public lists are reflected after a minute.<br /><br />
                 Built using :- Next.js, Recoil, MUI and MongoDB <br />
                 Deployed on :- Vercel
             </Grid>
