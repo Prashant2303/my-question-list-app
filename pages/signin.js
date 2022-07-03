@@ -109,7 +109,7 @@ export default function Signin() {
                                 disableElevation
                                 sx={{ 'textTransform': 'none', 'backgroundColor': '#42b72a' }}
                             >
-                                Create new account
+                                Create New Account
                             </Button>
                         </Link>
                     </Grid>

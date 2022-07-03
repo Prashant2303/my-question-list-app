@@ -12,8 +12,12 @@ async function handler({ req, res, usersCollection, listsCollection }) {
     const { userCreds } = req.body;
     userCreds.email = userCreds.email.toLowerCase();
 
+    // const exist = await usersCollection.findOne({ $or: [{ email: userCreds.email }, { username: userCreds.username }] });
     const exist = await usersCollection.findOne({ email: userCreds.email })
     if (exist) throw "User already exists";
+
+    const userNameExists = await usersCollection.findOne({ username: userCreds.username })
+    if (userNameExists) throw "Username should be unique";
 
     const hashedPassword = await bcrypt.hash(userCreds.password, 12);
     const userId = new ObjectId();
