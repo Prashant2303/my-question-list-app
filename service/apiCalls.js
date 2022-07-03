@@ -185,6 +185,10 @@ export const useHooks = () => {
     }
 
     async function updateList(field, value) {
+        if(field === 'access' && value === 'Public' && questions.length === 0) {
+            toast.error('Cannot share empty list');
+            return false;
+        }
         const response = await fetch(`/api/lists/${selectedList}`, {
             method: 'PATCH',
             body: JSON.stringify({

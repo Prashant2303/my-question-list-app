@@ -143,6 +143,10 @@ export default function PublicListDetails({ list }) {
         </Grid>
     )
 
+    const renderEmptyList = () => {
+        return <div className={styles.emptyList}>No Questions</div>
+    }
+
     return (
         <Paper className={styles.container} elevation={3}>
             <Typography variant="h6" component="div">
@@ -155,9 +159,10 @@ export default function PublicListDetails({ list }) {
                 <Grid item xs={1.5} sm={1} textAlign="center">Notes</Grid>
             </Grid>
             <Grid container>
-                {renderQuestions.map(question => (
-                    <PublicQuestion key={question.id} question={question} />
-                ))}
+                {renderQuestions.length === 0 ? renderEmptyList()
+                    : renderQuestions.map(question => (
+                        <PublicQuestion key={question.id} question={question} />
+                    ))}
             </Grid>
         </Paper>
     )
