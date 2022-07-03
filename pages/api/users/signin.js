@@ -7,8 +7,8 @@ export default apiHandler({
 })
 
 async function handler({ req, res, usersCollection }) {
-
     const { userCreds } = req.body;
+    userCreds.email = userCreds.email.toLowerCase();
 
     const existingUser = await usersCollection.findOne({ email: userCreds.email })
     if (!existingUser) throw "User not found";

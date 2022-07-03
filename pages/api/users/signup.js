@@ -10,6 +10,7 @@ export default apiHandler({
 
 async function handler({ req, res, usersCollection, listsCollection }) {
     const { userCreds } = req.body;
+    userCreds.email = userCreds.email.toLowerCase();
 
     const exist = await usersCollection.findOne({ email: userCreds.email })
     if (exist) throw "User already exists";

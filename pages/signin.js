@@ -107,9 +107,9 @@ export default function Signin() {
                                 color="success"
                                 size='large'
                                 disableElevation
-                                sx={{ 'textTransform': 'none', 'width': '150px', 'backgroundColor': '#42b72a' }}
+                                sx={{ 'textTransform': 'none', 'backgroundColor': '#42b72a' }}
                             >
-                                Sign Up
+                                Create new account
                             </Button>
                         </Link>
                     </Grid>

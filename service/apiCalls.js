@@ -27,6 +27,7 @@ export const useHooks = () => {
         setUserFromSession,
         signin,
         signup,
+        deleteUser,
         logout,
         addQuestion,
         updateQuestion,
@@ -98,6 +99,22 @@ export const useHooks = () => {
             router.replace('/');
         } else {
             toast.error(data.message);
+        }
+    }
+
+    async function deleteUser() {
+        const response = await fetch(`/api/users/${user.id}`,{
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+        if(response.ok) {
+            toast.success('Account deleted successfully');
+            logout();
+        } else {
+            toast.error('Something went wrong');
         }
     }
 

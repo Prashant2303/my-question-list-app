@@ -1,9 +1,10 @@
 import { Paper, TextField, Typography, MenuItem, Grid } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import Loading from 'components/Loading';
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useHooks } from "service/apiCalls";
 import { statePrivateLists, stateUser } from "store/atoms";
-import Loading from 'components/Loading';
 
 export default function Profile() {
     const hooks = useHooks();
@@ -13,6 +14,7 @@ export default function Profile() {
     const [updatingStatus, setUpdatingStatus] = useState(false);
     const [updatingCategory, setUpdatingCategory] = useState(false);
     const [updatingDifficulty, setUpdatingDifficulty] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const categories = ['Array', 'Linked List', 'Binary Tree', 'Binary Search Tree', 'Tree', 'Heap', 'Stack', 'Matrix', 'String', 'Queue', 'Graph', 'Trie', 'Others'];
 
@@ -37,9 +39,15 @@ export default function Profile() {
         if (name === 'defaultDifficulty') setUpdatingDifficulty(false);
     }
 
+    const handleDelete = async () => {
+        setLoading(true);
+        await hooks.deleteUser();
+        setLoading(false);
+    }
+
     const renderDefaults = () => (
-        <Grid container alignItems="center" spacing={2} my={1}>
-            <Grid item xs={12} padding={1}>
+        <Grid container alignItems="center" spacing={1.5} my={1} marginBottom={4}>
+            <Grid item xs={12}>
                 Default selections :-
             </Grid>
             <Grid item xs={4}>
@@ -120,7 +128,7 @@ export default function Profile() {
         const publicListCount = privateLists.filter(list => list.access === 'Public').length;
         return (
             <Paper elevation={3} sx={{ marginTop: '10px', padding: '15px' }}>
-                <Typography variant="h6" component="div">
+                <Typography variant="h6" component="div" sx={{ 'overflow': 'hidden', 'textOverflow': 'ellipsis' }}>
                     {user?.username}
                 </Typography>
                 <Grid py={1}>
@@ -133,6 +141,14 @@ export default function Profile() {
                     No. of Private Lists : {privateLists.length - publicListCount}
                 </Grid>
                 {renderDefaults()}
+                <LoadingButton
+                    variant="contained"
+                    color="error"
+                    loading={loading}
+                    onClick={handleDelete}
+                >
+                    Delete account
+                </LoadingButton>
             </Paper>
         )
     }
