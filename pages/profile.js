@@ -1,5 +1,6 @@
 import { Paper, TextField, Typography, MenuItem, Grid } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import CustomModal from "components/CustomModal";
 import Loading from 'components/Loading';
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -39,7 +40,12 @@ export default function Profile() {
         if (name === 'defaultDifficulty') setUpdatingDifficulty(false);
     }
 
+    const [modalState, setModalState] = useState(false);
+    const openModal = () => setModalState(true);
+    const closeModal = () => setModalState(false);
+
     const handleDelete = async () => {
+        closeModal();
         setLoading(true);
         await hooks.deleteUser();
         setLoading(false);
@@ -124,6 +130,28 @@ export default function Profile() {
         </Grid>
     )
 
+    const renderDeleteButton = () => (
+        <Grid container justifyContent="center" marginBottom={1}>
+            <CustomModal
+                open={modalState}
+                closeModal={closeModal}
+                passedFunction={handleDelete}
+                content={{
+                    'header': 'Delete Account ?',
+                    'body': 'All your lists and associated questions will be deleted. This action is not reversible.'
+                }}>
+                <LoadingButton
+                    variant="contained"
+                    color="error"
+                    loading={loading}
+                    onClick={openModal}
+                >
+                    Delete account
+                </LoadingButton>
+            </CustomModal>
+        </Grid>
+    )
+
     const renderContent = () => {
         const publicListCount = privateLists.filter(list => list.access === 'Public').length;
         return (
@@ -141,14 +169,7 @@ export default function Profile() {
                     No. of Private Lists : {privateLists.length - publicListCount}
                 </Grid>
                 {renderDefaults()}
-                <LoadingButton
-                    variant="contained"
-                    color="error"
-                    loading={loading}
-                    onClick={handleDelete}
-                >
-                    Delete account
-                </LoadingButton>
+                {renderDeleteButton()}
             </Paper>
         )
     }

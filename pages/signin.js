@@ -57,7 +57,6 @@ export default function Signin() {
                     <Grid container spacing={1}>
                         <Grid item xs={12} sm={12}>
                             <TextField
-                                required
                                 id="email"
                                 name="email"
                                 label="Email"
@@ -72,7 +71,6 @@ export default function Signin() {
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             <TextField
-                                required
                                 id="password"
                                 name="password"
                                 label="Password"

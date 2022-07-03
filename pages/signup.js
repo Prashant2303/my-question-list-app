@@ -64,7 +64,6 @@ export default function Signup() {
                     <Grid container spacing={1}>
                         <Grid item xs={12} sm={12}>
                             <TextField
-                                required
                                 id="username"
                                 name="username"
                                 label="Username"
@@ -77,9 +76,11 @@ export default function Signup() {
                                 {errors.username?.message}
                             </Typography>
                         </Grid>
+                        <Typography variant="caption" align="center" paddingLeft={2}>
+                            * Username cannot be changed later.
+                        </Typography>
                         <Grid item xs={12} sm={12}>
                             <TextField
-                                required
                                 id="email"
                                 name="email"
                                 label="Email"
@@ -94,7 +95,6 @@ export default function Signup() {
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             <TextField
-                                required
                                 id="password"
                                 name="password"
                                 label="Password"
@@ -110,7 +110,6 @@ export default function Signup() {
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             <TextField
-                                required
                                 id="confirmPassword"
                                 name="confirmPassword"
                                 label="Confirm Password"
