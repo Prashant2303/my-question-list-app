@@ -18,7 +18,7 @@ export default function PublicQuestion({ question }) {
             <Grid item xs={2.5} sm={1.5}>{question.difficulty}</Grid>
             <Grid item xs={1.5} sm={1} textAlign="center" >
                 {question.notes ?
-                    <IconButton className={styles.icon} onClick={handleClick}>
+                    <IconButton onClick={handleClick} sx={{'padding':'0px'}}>
                         {showNotes ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                     </IconButton>
                     : <>N/A</>}
