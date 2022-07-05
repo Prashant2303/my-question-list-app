@@ -20,7 +20,7 @@ export default function PublicLists({ data }) {
         </Grid>
     )
 
-    const [query, setQuery] = useState(false);
+    const [query, setQuery] = useState('');
     const [filterState, setFilterState] = useState({
         filter: false,
         filteredQuestions: null
