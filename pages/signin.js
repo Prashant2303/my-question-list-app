@@ -79,6 +79,9 @@ export default function Signin() {
                                 margin="dense"
                                 {...register('password')}
                                 error={errors.password ? true : false}
+                                onKeyUp={(e)=>{
+                                    if(e.code === 'Enter') handleSubmit(onSubmit)();
+                                }}
                             />
                             <Typography variant="inherit" color="textSecondary">
                                 {errors.password?.message}
