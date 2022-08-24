@@ -75,6 +75,12 @@ const AddQuestion = () => {
         setState({ ...state, [e.target.name]: e.target.value });
     }
 
+    const handleEnter = (e) => {
+        if(e.key === 'Enter') {
+            handleSubmit();
+        }
+    }
+
     const handleSubmit = async () => {
         if (!state.url.length || !state.name.length) {
             if (state.name.length) {
@@ -107,11 +113,12 @@ const AddQuestion = () => {
                         fullWidth
                         value={state.url}
                         onChange={handleUrlChange}
+                        onKeyUp={handleEnter}
                         required
                         size="small"
                         error={!!errors.url}
                         helperText={errors.url}
-
+                        disabled={loading}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -123,10 +130,12 @@ const AddQuestion = () => {
                         fullWidth
                         value={state.name}
                         onChange={handleChange}
+                        onKeyUp={handleEnter}
                         required
                         size="small"
                         error={!!errors.name}
                         helperText={errors.name}
+                        disabled={loading}
                     />
                 </Grid>
                 <Grid item xs={4}>
@@ -140,6 +149,7 @@ const AddQuestion = () => {
                         fullWidth
                         required
                         size="small"
+                        disabled={loading}
                     >
                         {difficulties.map((option) => (
                             <MenuItem id={option} key={option} value={option}>
@@ -159,6 +169,7 @@ const AddQuestion = () => {
                         fullWidth
                         required
                         size="small"
+                        disabled={loading}
                     >
                         {statuses.map((option) => (
                             <MenuItem id={option} key={option} value={option}>
@@ -178,6 +189,7 @@ const AddQuestion = () => {
                         fullWidth
                         required
                         size="small"
+                        disabled={loading}
                     >
                         {categories.sort().map((option) => (
                             <MenuItem id={option} key={option} value={option}>
@@ -196,6 +208,7 @@ const AddQuestion = () => {
                         onChange={handleChange}
                         fullWidth
                         size="small"
+                        disabled={loading}
                     />
                 </Grid>
                 <Grid item container direction="row-reverse" xs={12} sx={{ display: 'flex' }}>
