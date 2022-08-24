@@ -111,7 +111,7 @@ const Question = ({ index, question }) => {
                 </TextField>
             </Grid>
             <Grid item xs={3} sm={1.7} >
-                <Button variant="outlined" fullWidth onClick={handleClick}>{state.notes === '' ? 'Add' : 'View'}</Button>
+                <Button variant="outlined" fullWidth onClick={handleClick}>{showNotes ? 'Hide' : state.notes === '' ? 'Add' : 'View'}</Button>
             </Grid>
             <Grid item className={styles.delete} xs={1} sm={0.5} >
                 <CustomModal
