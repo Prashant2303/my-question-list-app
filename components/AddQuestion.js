@@ -30,20 +30,28 @@ const AddQuestion = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(initialErrors);
 
+    const parseName = (url) => {
+        const site = url.hostname;
+        let name;
+        if (site === "leetcode.com" || site === "practice.geeksforgeeks.org") {
+            name = url.pathname.substring(10)
+        } else {
+            name = url.pathname.substring(1)
+        }
+        name = (name[0].toUpperCase() + name.substring(1)).replaceAll('-', ' ');
+        return name;
+    }
+
     const handleUrlChange = (e) => {
         setErrors({ url: '', name: '' })
         try {
-            const url = new URL(e.target.value);
-            const site = url.hostname;
-            let name;
-            if(site === "leetcode.com" || site === "practice.geeksforgeeks.org") {
-                name = url.pathname.substring(10)
-            } else {
-                name = url.pathname.substring(1)
-            }
+            const urlObject = new URL(e.target.value);
+            const url = urlObject.href;
+            const site = urlObject.hostname;
+            const name = parseName(urlObject);
             setState({
                 ...state,
-                url: e.target.value,
+                url,
                 name,
                 site
             });
