@@ -51,7 +51,7 @@ export const useHooks = () => {
 
     function redirectIfLoggedOut() {
         if (!localStorage.getItem('user')) {
-            router.push('/signin')
+            router.push('/public-lists')
         }
     }
 
