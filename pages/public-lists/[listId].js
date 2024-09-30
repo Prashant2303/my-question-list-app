@@ -177,6 +177,7 @@ export async function getStaticPaths() {
             }
         }
     })
+    console.log('PATHS', paths);
 
     return {
         paths,
@@ -188,6 +189,7 @@ export async function getStaticProps({ params }) {
     const { listId } = params;
     const res = await fetch(`${base_url}/api/public-lists/${listId}`);
     const data = await res.json();
+    console.log('LISTID', listId, data);
 
     return {
         props: {
