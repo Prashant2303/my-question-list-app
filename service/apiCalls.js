@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
 
-const base_url = 'https://my-question-list.onrender.com';
+export const base_url = 'https://my-question-list.onrender.com';
 let params = {};
 
 export const useHooks = () => {
@@ -65,7 +65,7 @@ export const useHooks = () => {
 
     async function signin(userCreds) {
         // console.log(JSON.stringify(userCreds, null, 2));
-        const response = await fetch(base_url+'/api/users/signin', {
+        const response = await fetch(base_url + '/api/users/signin', {
             method: 'POST',
             body: JSON.stringify({ userCreds }),
             headers: {
@@ -85,7 +85,7 @@ export const useHooks = () => {
     }
 
     async function signup(userCreds) {
-        const response = await fetch(base_url+'/api/users/signup', {
+        const response = await fetch(base_url + '/api/users/signup', {
             method: 'POST',
             body: JSON.stringify({ userCreds }),
             headers: {
@@ -105,14 +105,14 @@ export const useHooks = () => {
     }
 
     async function deleteUser() {
-        const response = await fetch(base_url+`/api/users/${user.id}`,{
+        const response = await fetch(base_url + `/api/users/${user.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
             }
         })
-        if(response.ok) {
+        if (response.ok) {
             toast.success('Account deleted successfully');
             logout();
         } else {
@@ -131,7 +131,7 @@ export const useHooks = () => {
     }
 
     async function fetchSelectedList() {
-        const response = await fetch(base_url+`/api/lists/${selectedList}`)
+        const response = await fetch(base_url + `/api/lists/${selectedList}`)
         if (response.ok) {
             const data = await response.json();
             setQuestions(data);
@@ -142,7 +142,7 @@ export const useHooks = () => {
     }
 
     async function fetchPrivateLists() {
-        const response = await fetch(base_url+'/api/lists', {
+        const response = await fetch(base_url + '/api/lists', {
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
@@ -159,7 +159,7 @@ export const useHooks = () => {
             ...listdata,
             ownerName: user.username,
         }
-        const response = await fetch(base_url+'/api/lists', {
+        const response = await fetch(base_url + '/api/lists', {
             method: 'POST',
             body: JSON.stringify({ listBody }),
             headers: {
@@ -184,7 +184,7 @@ export const useHooks = () => {
             return;
         }
 
-        const response = await fetch(base_url+`/api/lists/${selectedList}`, {
+        const response = await fetch(base_url + `/api/lists/${selectedList}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -204,11 +204,11 @@ export const useHooks = () => {
     }
 
     async function updateList(field, value) {
-        if(field === 'access' && value === 'Public' && questions.length === 0) {
+        if (field === 'access' && value === 'Public' && questions.length === 0) {
             toast.error('Cannot share empty list');
             return false;
         }
-        const response = await fetch(base_url+`/api/lists/${selectedList}`, {
+        const response = await fetch(base_url + `/api/lists/${selectedList}`, {
             method: 'PATCH',
             body: JSON.stringify({
                 [field]: value
@@ -234,7 +234,7 @@ export const useHooks = () => {
     }
 
     async function addQuestion(question) {
-        const response = await fetch(base_url+`/api/questions/${selectedList}`, {
+        const response = await fetch(base_url + `/api/questions/${selectedList}`, {
             method: 'POST',
             body: JSON.stringify({ question }),
             headers: {
@@ -253,7 +253,7 @@ export const useHooks = () => {
     }
 
     async function updateQuestion(questionId, field, value) {
-        const response = await fetch(base_url+`/api/questions/${selectedList}/${questionId}`, {
+        const response = await fetch(base_url + `/api/questions/${selectedList}/${questionId}`, {
             method: 'PATCH',
             body: JSON.stringify({
                 [field]: value
@@ -272,7 +272,7 @@ export const useHooks = () => {
     }
 
     async function deleteQuestion(questionId) {
-        const response = await fetch(base_url+`/api/questions/${selectedList}/${questionId}`, {
+        const response = await fetch(base_url + `/api/questions/${selectedList}/${questionId}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
@@ -290,7 +290,7 @@ export const useHooks = () => {
     }
 
     async function updateUserDetails(field, value) {
-        const response = await fetch(base_url+`/api/users/${user.id}`, {
+        const response = await fetch(base_url + `/api/users/${user.id}`, {
             method: 'PATCH',
             body: JSON.stringify({
                 field, value

@@ -2,8 +2,8 @@ import styles from 'styles/PublicLists.module.css';
 import { Paper, Grid, Typography, TextField, Button } from "@mui/material";
 import Fuse from 'fuse.js';
 import Link from 'next/link';
-import { connectToDatabase } from 'helpers/db';
 import { useState } from 'react';
+import { base_url } from 'service/apiCalls';
 
 export default function PublicLists({ data }) {
 
@@ -95,10 +95,8 @@ export default function PublicLists({ data }) {
 
 export async function getStaticProps() {
     try {
-        const { listsCollection } = await connectToDatabase();
-        const cursor = await listsCollection.find({ access: 'Public' }).project({ questions: 0 });
-        const lists = await cursor.toArray();
-        const data = JSON.parse(JSON.stringify(lists));
+        const result = await fetch(`${base_url}/api/public-lists`);
+        const data = await result.json();
         return {
             props: {
                 data
@@ -106,11 +104,9 @@ export async function getStaticProps() {
             revalidate: 60
         }
     } catch (err) {
-        console.log(err);
-        const data = [];
         return {
             props: {
-                data
+                data: []
             },
             revalidate: 60
         }

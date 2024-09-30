@@ -2,9 +2,8 @@ import styles from 'styles/PublicList.module.css';
 import { Paper, Grid, Typography, TextField, MenuItem, Button } from "@mui/material";
 import PublicQuestion from "components/PublicQuestion";
 import Fuse from 'fuse.js';
-import { connectToDatabase } from "helpers/db";
-import { ObjectId } from "mongodb";
 import { useState } from 'react';
+import { base_url } from 'service/apiCalls';
 
 export default function PublicListDetails({ list }) {
 
@@ -169,28 +168,27 @@ export default function PublicListDetails({ list }) {
 }
 
 export async function getStaticPaths() {
-    const { listsCollection } = await connectToDatabase();
-    const cursor = await listsCollection.find({ access: 'Public' }).project({ _id: 1 });
-    const lists = await cursor.toArray();
-    const data = JSON.parse(JSON.stringify(lists));
+    const res = await fetch(`${base_url}/api/public-lists`);
+    const data = await res.json();
     const paths = data.map(list => {
         return {
             params: {
-                listId: `${list._id}`
+                listId: list._id
             }
         }
     })
+
     return {
         paths,
         fallback: false
     }
 }
 
-export async function getStaticProps(context) {
-    const { listId } = context.params;
-    const { listsCollection } = await connectToDatabase();
-    const result = await listsCollection.findOne({ _id: ObjectId(listId), access: 'Public' }, { projection: { ownerId: 0 } });
-    const data = JSON.parse(JSON.stringify(result));
+export async function getStaticProps({ params }) {
+    const { listId } = params;
+    const res = await fetch(`${base_url}/api/public-lists/${listId}`);
+    const data = await res.json();
+
     return {
         props: {
             list: data
