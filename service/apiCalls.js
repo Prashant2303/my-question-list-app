@@ -3,9 +3,10 @@ import { stateUser, stateQuestions, stateFilter, statePrivateLists, stateSelecte
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
+import { chromeMessages } from './browserCalls';
 
 export const base_url = 'https://mql.onrender.com';
-const extensionId = 'iemohgfmjpnglpbpkkhlcananlofnfid';
+
 let params = {};
 
 export const useHooks = () => {
@@ -49,12 +50,7 @@ export const useHooks = () => {
     function redirectIfLoggedIn() {
         if (localStorage.getItem('user')) {
             const userData = JSON.parse(localStorage.getItem('user'));
-            chrome.runtime.sendMessage(extensionId, {
-                action: "LOGIN",
-                userData
-            }, function (res) {
-                console.log('MSG RESPONSE', res);
-            })
+            chromeMessages.loginUser(userData);
             router.replace('/');
         }
     }
@@ -133,11 +129,7 @@ export const useHooks = () => {
         resetQuestions();
         resetPrivateLists();
         resetSelectedList();
-        chrome.runtime.sendMessage(extensionId, {
-            action: "LOGOUT"
-        }, function (res) {
-            console.log('MSG RESPONSE', res);
-        })
+        chromeMessages.logoutUser();
         localStorage.removeItem('user');
         toast.success('Logged out successfully')
         router.push('/signin');
@@ -317,12 +309,7 @@ export const useHooks = () => {
             const updatedUser = { ...user, [field]: value };
             setUser(updatedUser);
             localStorage.setItem('user', JSON.stringify(updatedUser));
-            chrome.runtime.sendMessage(extensionId, {
-                action: "UPDATE",
-                userData: updatedUser
-            }, function (res) {
-                console.log('MSG RESPONSE', res);
-            })
+            chromeMessages.updateUser(updatedUser);
             toast.success('Updated Successfully');
         } else {
             toast.error('Something went wrong');
