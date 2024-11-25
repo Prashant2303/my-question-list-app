@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
 
-export const base_url = 'https://my-question-list.onrender.com';
+export const base_url = 'https://mql.onrender.com';
 const extensionId = 'iemohgfmjpnglpbpkkhlcananlofnfid';
 let params = {};
 
