@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
 
 export const base_url = 'https://my-question-list.onrender.com';
+const extensionId = 'iemohgfmjpnglpbpkkhlcananlofnfid';
 let params = {};
 
 export const useHooks = () => {
@@ -47,6 +48,13 @@ export const useHooks = () => {
 
     function redirectIfLoggedIn() {
         if (localStorage.getItem('user')) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            chrome.runtime.sendMessage(extensionId, {
+                action: "LOGIN",
+                userData
+            }, function (res) {
+                console.log('MSG RESPONSE', res);
+            })
             router.replace('/');
         }
     }
@@ -125,6 +133,11 @@ export const useHooks = () => {
         resetQuestions();
         resetPrivateLists();
         resetSelectedList();
+        chrome.runtime.sendMessage(extensionId, {
+            action: "LOGOUT"
+        }, function (res) {
+            console.log('MSG RESPONSE', res);
+        })
         localStorage.removeItem('user');
         toast.success('Logged out successfully')
         router.push('/signin');
@@ -301,8 +314,15 @@ export const useHooks = () => {
             },
         })
         if (response.ok) {
-            setUser({ ...user, [field]: value });
-            localStorage.setItem('user', JSON.stringify({ ...user, [field]: value }));
+            const updatedUser = { ...user, [field]: value };
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            chrome.runtime.sendMessage(extensionId, {
+                action: "UPDATE",
+                userData: updatedUser
+            }, function (res) {
+                console.log('MSG RESPONSE', res);
+            })
             toast.success('Updated Successfully');
         } else {
             toast.error('Something went wrong');
