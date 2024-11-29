@@ -118,12 +118,12 @@ export default function ListSelect({ loading }) {
                     </LoadingButton>}
             </Grid>
             <Grid item xs={2.4} sm={0.6} textAlign="center">
-                <IconButton color="primary" onClick={handleOpenEdit}>
+                <IconButton color="primary" title="Edit" onClick={handleOpenEdit}>
                     <EditIcon />
                 </IconButton>
             </Grid>
             <Grid item xs={2.4} sm={0.7} textAlign="center">
-                <IconButton color="primary" onClick={handleOpenCreate}>
+                <IconButton color="primary" title="Create new List" onClick={handleOpenCreate}>
                     <AddIcon />
                 </IconButton>
             </Grid>
@@ -137,7 +137,7 @@ export default function ListSelect({ loading }) {
                         'body': 'This action is not reversible.'
                     }}
                 >
-                    <IconButton disabled={loadingDelete} color='error' onClick={openDeleteModal}>
+                    <IconButton disabled={loadingDelete} title="Delete List" color='error' onClick={openDeleteModal}>
                         <DeleteForever />
                     </IconButton>
                 </CustomModal>

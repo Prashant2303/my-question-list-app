@@ -123,7 +123,7 @@ const Question = ({ index, question }) => {
                         'body': 'This action is not reversible.'
                     }}
                 >
-                    <IconButton disabled={loadingDelete} color='error' onClick={openModal}>
+                    <IconButton disabled={loadingDelete} color='error' title='Delete' onClick={openModal}>
                         <DeleteForeverIcon />
                     </IconButton>
                 </CustomModal>
