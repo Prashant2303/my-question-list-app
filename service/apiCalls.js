@@ -44,7 +44,8 @@ export const useHooks = () => {
         createList,
         deleteList,
         updateList,
-        updateUserDetails
+        updateUserDetails,
+        getSuggestions
     };
 
     function redirectIfLoggedIn() {
@@ -356,5 +357,21 @@ export const useHooks = () => {
     function reset() {
         params = {};
         resetFilter();
+    }
+
+    async function getSuggestions() {
+        const res = await fetch(`${base_url}/api/suggestions/${selectedList}`, {
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            return data;
+        } else {
+            toast.error('Something went wrong');
+        }
+        return [];
     }
 }

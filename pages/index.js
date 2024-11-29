@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilValue } from 'recoil';
 import { statePrivateLists, stateSelectedList, stateUser } from 'store/atoms';
+import { Suggestions } from 'components/Suggestions';
 
 export default function Home() {
 
@@ -35,6 +36,7 @@ export default function Home() {
     <>
       <AddQuestion />
       <ListSelect loading={loadingSelectedList} />
+      <Suggestions />
       <Toolbar />
       <List loading={loadingSelectedList} />
     </>
