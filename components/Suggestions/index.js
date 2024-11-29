@@ -8,7 +8,7 @@ export function Suggestions() {
     const hooks = useHooks();
 
     const [loading, setLoading] = useState(false);
-    const [suggestions, setSuggestions] = useState(qList);
+    const [suggestions, setSuggestions] = useState([]);
 
     async function getSuggestions() {
         setLoading(true);
