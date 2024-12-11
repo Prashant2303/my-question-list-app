@@ -93,11 +93,14 @@ export default function PublicListDetails({ list }) {
                     onChange={handleChange}
                     fullWidth
                     size="small"
+                    SelectProps={{
+                        native: true
+                    }}
                 >
-                    <MenuItem value="All">All</MenuItem>
-                    <MenuItem value="Easy">Easy</MenuItem>
-                    <MenuItem value="Medium">Medium</MenuItem>
-                    <MenuItem value="Hard">Hard</MenuItem>
+                    <option value="All">All</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
                 </TextField>
             </Grid>
             <Grid item xs={6} sm={3}>
@@ -109,11 +112,14 @@ export default function PublicListDetails({ list }) {
                     onChange={handleChange}
                     fullWidth
                     size="small"
+                    SelectProps={{
+                        native: true
+                    }}
                 >
                     {categories.sort().map(option => (
-                        <MenuItem key={option} value={option}>
+                        <option key={option} value={option}>
                             {option}
-                        </MenuItem>
+                        </option>
                     ))}
                 </TextField>
             </Grid>

@@ -1,5 +1,5 @@
 import styles from 'styles/ListSelect.module.css';
-import { Paper, MenuItem, TextField, Grid, IconButton } from "@mui/material";
+import { Paper, TextField, Grid, IconButton } from "@mui/material";
 import { LoadingButton } from '@mui/lab';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -78,11 +78,14 @@ export default function ListSelect({ loading }) {
                     fullWidth
                     size="small"
                     disabled={loading}
+                    SelectProps={{
+                        native: true
+                    }}
                 >
                     {privateLists.map(list =>
-                        <MenuItem key={list._id} value={list._id} >
+                        <option key={list._id} value={list._id} >
                             {list.name} {list._id === user.defaultList ? '(Default)' : null} ({list.access})
-                        </MenuItem>)}
+                        </option>)}
                 </TextField>
             </Grid>
             <Grid item xs={4.8} sm={2} textAlign="center">

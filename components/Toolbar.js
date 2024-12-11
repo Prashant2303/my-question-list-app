@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid, Paper, TextField, MenuItem } from "@mui/material";
+import { Button, Grid, Paper, TextField } from "@mui/material";
 import { useState } from "react";
 import { useHooks } from "service/apiCalls";
 
@@ -49,11 +49,14 @@ const Toolbar = () => {
                         onChange={handleChange}
                         fullWidth
                         size="small"
+                        SelectProps={{
+                            native: true
+                        }}
                     >
-                        <MenuItem value="All">All</MenuItem>
-                        <MenuItem value="Easy">Easy</MenuItem>
-                        <MenuItem value="Medium">Medium</MenuItem>
-                        <MenuItem value="Hard">Hard</MenuItem>
+                        <option value="All">All</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
                     </TextField>
                 </Grid>
                 <Grid item xs={4} sm={2.5}>
@@ -65,11 +68,14 @@ const Toolbar = () => {
                         onChange={handleChange}
                         fullWidth
                         size="small"
+                        SelectProps={{
+                            native: true
+                        }}
                     >
-                        <MenuItem value="All">All</MenuItem>
-                        <MenuItem value="Done">Done</MenuItem>
-                        <MenuItem value="Revise">Revise</MenuItem>
-                        <MenuItem value="Todo">Todo</MenuItem>
+                        <option value="All">All</option>
+                        <option value="Done">Done</option>
+                        <option value="Revise">Revise</option>
+                        <option value="Todo">Todo</option>
                     </TextField>
                 </Grid>
                 <Grid item xs={4} sm={2.5}>
@@ -81,11 +87,14 @@ const Toolbar = () => {
                         onChange={handleChange}
                         fullWidth
                         size="small"
+                        SelectProps={{
+                            native: true
+                        }}
                     >
                         {categories.sort().map(option => (
-                            <MenuItem key={option} value={option}>
+                            <option key={option} value={option}>
                                 {option}
-                            </MenuItem>
+                            </option>
                         ))}
                     </TextField>
                 </Grid>

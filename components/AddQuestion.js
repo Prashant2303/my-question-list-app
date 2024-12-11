@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Paper, MenuItem } from '@mui/material';
+import { Grid, TextField, Paper } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilValue } from 'recoil';
@@ -76,7 +76,7 @@ const AddQuestion = () => {
     }
 
     const handleEnter = (e) => {
-        if(e.key === 'Enter') {
+        if (e.key === 'Enter') {
             handleSubmit();
         }
     }
@@ -150,11 +150,14 @@ const AddQuestion = () => {
                         required
                         size="small"
                         disabled={loading}
+                        SelectProps={{
+                            native: true
+                        }}
                     >
                         {difficulties.map((option) => (
-                            <MenuItem id={option} key={option} value={option}>
+                            <option id={option} key={option} value={option}>
                                 {option}
-                            </MenuItem>
+                            </option>
                         ))}
                     </TextField>
                 </Grid>
@@ -170,11 +173,14 @@ const AddQuestion = () => {
                         required
                         size="small"
                         disabled={loading}
+                        SelectProps={{
+                            native: true
+                        }}
                     >
                         {statuses.map((option) => (
-                            <MenuItem id={option} key={option} value={option}>
+                            <option id={option} key={option} value={option}>
                                 {option}
-                            </MenuItem>
+                            </option>
                         ))}
                     </TextField>
                 </Grid>
@@ -190,11 +196,14 @@ const AddQuestion = () => {
                         required
                         size="small"
                         disabled={loading}
+                        SelectProps={{
+                            native: true
+                        }}
                     >
                         {categories.sort().map((option) => (
-                            <MenuItem id={option} key={option} value={option}>
+                            <option id={option} key={option} value={option}>
                                 {option}
-                            </MenuItem>
+                            </option>
                         ))}
                     </TextField>
                 </Grid>

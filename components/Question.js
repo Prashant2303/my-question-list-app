@@ -1,6 +1,6 @@
 import styles from 'styles/Question.module.css';
 import { useRef, useState } from 'react';
-import { Grid, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/material';
+import { Grid, TextField, Button, IconButton, Tooltip } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNote from './EditNote';
 import CustomModal from './CustomModal';
@@ -87,10 +87,13 @@ const Question = ({ index, question }) => {
                     size="small"
                     disabled={loadingDifficulty}
                     sx={{ backgroundColor: difficultyColor(), borderRadius: "4px" }}
+                    SelectProps={{
+                        native: true
+                    }}
                 >
-                    <MenuItem value="Easy">Easy</MenuItem>
-                    <MenuItem value="Medium">Medium</MenuItem>
-                    <MenuItem value="Hard">Hard</MenuItem>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
                 </TextField>
             </Grid>
             <Grid item xs={4} sm={1.7} >
@@ -104,10 +107,13 @@ const Question = ({ index, question }) => {
                     size="small"
                     disabled={loadingStatus}
                     sx={{ backgroundColor: statusColor(), borderRadius: "4px" }}
+                    SelectProps={{
+                        native: true
+                    }}
                 >
-                    <MenuItem value="Todo">Todo</MenuItem>
-                    <MenuItem value="Revise">Revise</MenuItem>
-                    <MenuItem value="Done">Done</MenuItem>
+                    <option value="Todo">Todo</option>
+                    <option value="Revise">Revise</option>
+                    <option value="Done">Done</option>
                 </TextField>
             </Grid>
             <Grid item xs={3} sm={1.7} >
