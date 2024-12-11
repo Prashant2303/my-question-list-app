@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import { Grid, TextField } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useHooks } from 'service/apiCalls';
+
+function getDate(ISODate) {
+    const date = new Date(ISODate);
+    return `Added: ${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
+}
 
 const EditNote = ({ question, setState }) => {
 
@@ -31,16 +36,19 @@ const EditNote = ({ question, setState }) => {
                 onChange={handleChange}
                 value={note}
             />
-            <LoadingButton
-                loading={loading}
-                variant="contained"
-                disableElevation
-                type="submit"
-                onClick={handleSubmit}
-                sx={{ marginTop: '10px' }}
-            >
-                Save
-            </LoadingButton>
+            <Grid container justifyContent="space-between" alignItems="center">
+                <Typography variant='caption' sx={{ marginTop: '10px' }}>{getDate(question.date)}</Typography>
+                <LoadingButton
+                    loading={loading}
+                    variant="contained"
+                    disableElevation
+                    type="submit"
+                    onClick={handleSubmit}
+                    sx={{ marginTop: '10px' }}
+                >
+                    Save
+                </LoadingButton>
+            </Grid>
         </Grid>
     )
 }
