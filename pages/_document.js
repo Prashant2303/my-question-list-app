@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
     return (
-        <Html style={{'backgroundColor':'#053e78'}}>
+        <Html style={{ 'backgroundColor': '#053e78', 'scrollbarGutter': 'stable' }}>
             <Head>
                 <link
                     rel="stylesheet"
