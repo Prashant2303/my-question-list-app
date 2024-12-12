@@ -6,7 +6,7 @@ import Loading from 'components/Loading';
 import { useState, useEffect } from 'react';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilValue } from 'recoil';
-import { statePrivateLists, stateSelectedList, stateUser } from 'store/atoms';
+import { statePrivateLists, stateQuestions, stateSelectedList, stateUser } from 'store/atoms';
 import { Suggestions } from 'components/Suggestions';
 
 export default function Home() {
@@ -15,6 +15,7 @@ export default function Home() {
   const user = useRecoilValue(stateUser);
   const selectedList = useRecoilValue(stateSelectedList);
   const privateLists = useRecoilValue(statePrivateLists);
+  const questions = useRecoilValue(stateQuestions);
   const [loadingSelectedList, setLoadingSelectedList] = useState(false);
 
   const fetchSelectedList = async () => {
@@ -28,7 +29,7 @@ export default function Home() {
   })
 
   useEffect(() => {
-    if (user) fetchSelectedList();
+    if (user && !questions.length) fetchSelectedList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedList])
 

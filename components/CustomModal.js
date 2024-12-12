@@ -40,6 +40,7 @@ export default function CustomModal({ open, closeModal, passedFunction, children
         BackdropProps={{
           timeout: 500,
         }}
+        disableScrollLock
       >
         <Fade in={open}>
           <Box sx={style}>
