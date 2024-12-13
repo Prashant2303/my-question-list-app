@@ -58,7 +58,7 @@ export default function PublicLists({ data }) {
             <Typography variant="h6" component="div">
                 Public Lists
             </Typography>
-            <Grid container>
+            <Grid container marginTop={1}>
                 <Grid item xs={10} sm={7.3}>
                     <TextField
                         name='query'

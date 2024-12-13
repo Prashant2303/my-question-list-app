@@ -37,7 +37,7 @@ const EditNote = ({ question, setState }) => {
                 value={note}
             />
             <Grid container justifyContent="space-between" alignItems="center">
-                <Typography variant='caption' sx={{ marginTop: '10px' }}>{getDate(question.date)}</Typography>
+                <Typography variant='subtitle2' sx={{ margin: '10px 0 0 14px' }}>{getDate(question.date)}</Typography>
                 <LoadingButton
                     loading={loading}
                     variant="contained"

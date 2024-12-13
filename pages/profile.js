@@ -156,13 +156,16 @@ export default function Profile() {
         const publicListCount = privateLists.filter(list => list.access === 'Public').length;
         return (
             <Paper elevation={3} sx={{ marginTop: '10px', padding: '15px' }}>
-                <Typography variant="h6" component="div" sx={{ 'overflow': 'hidden', 'textOverflow': 'ellipsis' }}>
-                    {user?.username}
+                <Typography variant="h6" component="div">
+                    Profile
                 </Typography>
+                <Grid py={1}>
+                    Username : {user?.username}
+                </Grid>
                 <Grid py={1}>
                     Email : {user?.email}
                 </Grid>
-                <Grid py={1}>
+                <Grid py={2}>
                     No. of Public Lists : {publicListCount}
                 </Grid>
                 <Grid py={1}>
