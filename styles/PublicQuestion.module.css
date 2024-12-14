@@ -1,12 +1,7 @@
-.question {
-    align-items: center;
-    margin: 2.5px 0px 2.5px 0px;
-}
-
 .name {
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 24px;
+    min-height: 24px;
 }
 
 .notes {

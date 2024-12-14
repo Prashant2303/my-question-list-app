@@ -160,10 +160,10 @@ export default function PublicListDetails({ list }) {
             {renderFilters()}
             <Grid container className={styles.rowHeadings}>
                 <Grid item xs={8} sm={9.5}>Name</Grid>
-                <Grid item xs={2.5} sm={1.5}>Difficulty</Grid>
-                <Grid item xs={1.5} sm={1} textAlign="center">Notes</Grid>
+                <Grid item xs={2.7} sm={1.5}>Difficulty</Grid>
+                <Grid item xs={1.3} sm={1} textAlign="center">Notes</Grid>
             </Grid>
-            <Grid container>
+            <Grid container gap={'10px'}>
                 {renderQuestions.length === 0 ? renderEmptyList()
                     : renderQuestions.map(question => (
                         <PublicQuestion key={question.id} question={question} />
