@@ -1,5 +1,5 @@
 import styles from 'styles/PublicList.module.css';
-import { Paper, Grid, Typography, TextField, MenuItem, Button } from "@mui/material";
+import { Paper, Grid, Typography, TextField, Button } from "@mui/material";
 import PublicQuestion from "components/PublicQuestion";
 import Fuse from 'fuse.js';
 import { useState } from 'react';
