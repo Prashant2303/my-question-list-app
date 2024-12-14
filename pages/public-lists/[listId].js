@@ -22,7 +22,6 @@ export default function PublicListDetails({ list }) {
     });
 
     const [filters, setFilters] = useState({});
-    console.log('FILTERS', filters);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
