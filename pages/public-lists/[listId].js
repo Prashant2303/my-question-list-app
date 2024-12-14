@@ -14,7 +14,6 @@ export default function PublicListDetails({ list }) {
         category: 'All',
     }
 
-    let params = {};
     const [query, setQuery] = useState('');
     const [state, setState] = useState(initialState);
     const [filterState, setFilterState] = useState({
@@ -22,21 +21,25 @@ export default function PublicListDetails({ list }) {
         filteredQuestions: null
     });
 
+    const [filters, setFilters] = useState({});
+    console.log('FILTERS', filters);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Update parameters
+        const newFilters = { ...filters };
+
         if (value === "All") {
-            delete params[name];
+            delete newFilters[name];
         } else {
-            params[name] = value;
+            newFilters[name] = value;
         }
 
         // Filter on parameters
         const filtered = list.questions.filter(question => {
             let flag = true;
-            for (const key in params) {
-                if (question[key] !== params[key]) {
+            for (const key in newFilters) {
+                if (question[key] !== newFilters[key]) {
                     flag = false;
                     break;
                 }
@@ -45,10 +48,12 @@ export default function PublicListDetails({ list }) {
         })
 
         // Set Result
+        setQuery('');
         setFilterState({
             filter: true,
             filteredQuestions: filtered
         })
+        setFilters(newFilters);
         setState({ ...state, [name]: value });
     }
 
@@ -78,6 +83,7 @@ export default function PublicListDetails({ list }) {
             filter: false,
             filteredQuestions: null
         });
+        setFilters({});
     }
 
     const renderQuestions = filterState.filter ? filterState.filteredQuestions : list.questions;
@@ -159,9 +165,9 @@ export default function PublicListDetails({ list }) {
             </Typography>
             {renderFilters()}
             <Grid container className={styles.rowHeadings}>
-                <Grid item xs={8} sm={9.5}>Name</Grid>
-                <Grid item xs={2.7} sm={1.5}>Difficulty</Grid>
-                <Grid item xs={1.3} sm={1} textAlign="center">Notes</Grid>
+                <Grid item xs={7.9} sm={9.5}>Name</Grid>
+                <Grid item xs={2.6} sm={1.5}>Difficulty</Grid>
+                <Grid item xs={1.5} sm={1} textAlign="center">Notes</Grid>
             </Grid>
             <Grid container gap={'10px'}>
                 {renderQuestions.length === 0 ? renderEmptyList()

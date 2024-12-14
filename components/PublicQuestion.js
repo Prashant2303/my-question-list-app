@@ -12,10 +12,10 @@ export default function PublicQuestion({ question }) {
 
     return (
         <Grid container>
-            <Grid item xs={8} sm={9.5} className={styles.name}>
+            <Grid item xs={7.9} sm={9.5} className={styles.name}>
                 <a href={question.url} target='_blank' rel="noreferrer">{question.name}</a>
             </Grid>
-            <Grid item xs={2.5} sm={1.5}>{question.difficulty}</Grid>
+            <Grid item xs={2.6} sm={1.5}>{question.difficulty}</Grid>
             <Grid item xs={1.5} sm={1} textAlign="center" >
                 {question.notes ?
                     <IconButton onClick={handleClick} sx={{ 'padding': '0px' }}>
