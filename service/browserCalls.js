@@ -1,4 +1,4 @@
-const extensionId = 'iemohgfmjpnglpbpkkhlcananlofnfid';
+const extensionId = 'khgcpljhlkiljndnfbijcjdkolhgocic';
 
 export const chromeMessages = {
     loginUser: (userData) => {
