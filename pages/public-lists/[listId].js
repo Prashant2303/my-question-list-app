@@ -170,8 +170,8 @@ export default function PublicListDetails({ list }) {
             </Grid>
             <Grid container gap={'10px'}>
                 {renderQuestions.length === 0 ? renderEmptyList()
-                    : renderQuestions.map(question => (
-                        <PublicQuestion key={question.id} question={question} />
+                    : renderQuestions.map((question, index) => (
+                        <PublicQuestion key={question.id} question={question} index={index} />
                     ))}
             </Grid>
         </Paper>

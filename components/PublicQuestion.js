@@ -4,7 +4,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useState } from "react";
 
-export default function PublicQuestion({ question }) {
+export default function PublicQuestion({ question, index }) {
     const [showNotes, setShowNotes] = useState(false);
     const handleClick = () => {
         setShowNotes(!showNotes);
@@ -13,7 +13,7 @@ export default function PublicQuestion({ question }) {
     return (
         <Grid container>
             <Grid item xs={7.9} sm={9.5} className={styles.name}>
-                <a href={question.url} target='_blank' rel="noreferrer">{question.name}</a>
+                <a href={question.url} target='_blank' rel="noreferrer">{index + 1}. {question.name}</a>
             </Grid>
             <Grid item xs={2.6} sm={1.5}>{question.difficulty}</Grid>
             <Grid item xs={1.5} sm={1} textAlign="center" >

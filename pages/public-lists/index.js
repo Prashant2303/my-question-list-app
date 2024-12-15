@@ -7,9 +7,10 @@ import { base_url } from 'service/apiCalls';
 
 export default function PublicLists({ data }) {
 
-    const ListItem = (list) => (
+    const ListItem = (list, index) => (
         <Grid className={styles.listItem} container key={list._id}>
             <Grid item xs={8}>
+                {index + 1}.{' '}
                 <Link href={`/public-lists/${list._id}`}>
                     {list.name}
                 </Link>
@@ -88,7 +89,7 @@ export default function PublicLists({ data }) {
             </Grid>
             {!renderQuestions || renderQuestions?.length === 0 ?
                 <div className={styles.emptyList}>No Public Lists</div> :
-                renderQuestions.map(list => ListItem(list))}
+                renderQuestions.map((list, index) => ListItem(list, index))}
         </Paper>
     )
 }
