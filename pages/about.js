@@ -1,5 +1,6 @@
 import { Grid, Paper, Typography, Button } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import Link from 'next/link';
 
 export default function About() {
     return (
@@ -15,6 +16,7 @@ export default function About() {
                 Built using :- Next.js, Recoil, MUI and MongoDB <br />
                 Deployed on :- Vercel
             </p>
+            <Link href='/privacy-policy'>Privacy Policy</Link>
             <Grid container justifyContent="center" my={1}>
                 <a target='_blank' rel='noreferrer' href='https://github.com/Prashant2303/mql-extension#readme'>
                     <Button
