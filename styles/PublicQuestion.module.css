@@ -1,6 +1,5 @@
 .name {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: flex;
     min-height: 24px;
 }
 

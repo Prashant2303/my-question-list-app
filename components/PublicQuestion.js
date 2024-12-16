@@ -12,8 +12,10 @@ export default function PublicQuestion({ question, index }) {
 
     return (
         <Grid container>
-            <Grid item xs={7.9} sm={9.5} className={styles.name}>
-                <a href={question.url} target='_blank' rel="noreferrer">{index + 1}. {question.name}</a>
+            <Grid item xs={7.9} sm={9.5}>
+                <a className={styles.name} href={question.url} target='_blank' rel="noreferrer">
+                    <div>{index + 1}.&nbsp;</div> <div>{question.name}</div>
+                </a>
             </Grid>
             <Grid item xs={2.6} sm={1.5}>{question.difficulty}</Grid>
             <Grid item xs={1.5} sm={1} textAlign="center" >
