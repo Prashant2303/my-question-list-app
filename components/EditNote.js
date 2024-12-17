@@ -43,6 +43,7 @@ const EditNote = ({ question, setState }) => {
                     variant="contained"
                     disableElevation
                     type="submit"
+                    disabled={note === question.notes}
                     onClick={handleSubmit}
                     sx={{ marginTop: '10px' }}
                 >

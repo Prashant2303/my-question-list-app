@@ -26,8 +26,12 @@ const Question = ({ index, question }) => {
             setLoadingDifficulty(true);
         }
 
-        const result = await hooks.updateQuestion(state.id, e.target.name, e.target.value);
-        if (result) setState({ ...state, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        const result = await hooks.updateQuestion(state.id, name, value);
+
+        if (result) {
+            setState({ ...state, [name]: value });
+        }
 
         if (e.target.name === 'status') {
             setLoadingStatus(false);
