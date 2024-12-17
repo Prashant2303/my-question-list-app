@@ -18,7 +18,7 @@ export default function About() {
             </p>
             <Link href='/privacy-policy'>Privacy Policy</Link>
             <Grid container justifyContent="center" my={1}>
-                <a target='_blank' rel='noreferrer' href='https://github.com/Prashant2303/mql-extension#readme'>
+                <a target='_blank' rel='noreferrer' href='https://chromewebstore.google.com/detail/mql-extensions/khgcpljhlkiljndnfbijcjdkolhgocic'>
                     <Button
                         variant="contained"
                         startIcon={<GitHubIcon />}
