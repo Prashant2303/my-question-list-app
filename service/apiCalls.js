@@ -177,6 +177,7 @@ export const useHooks = () => {
         if (response.ok) {
             setPrivateLists([...privateLists, data]);
             setSelectedlist(data._id);
+            toast.success('List created successfully');
             return true;
         } else {
             toast.error(data.message);
@@ -201,7 +202,7 @@ export const useHooks = () => {
             const newList = privateLists.filter(list => list._id !== selectedList)
             setPrivateLists(newList);
             setSelectedlist(user.defaultList);
-            toast.success('Deleted Successfully\n\nDefault list selected');
+            toast.success('List Deleted Successfully');
             return true;
         } else {
             toast.error(data.message);
