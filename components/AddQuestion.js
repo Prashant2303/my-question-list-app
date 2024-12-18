@@ -31,15 +31,13 @@ const AddQuestion = () => {
     const [errors, setErrors] = useState(initialErrors);
 
     const parseName = (url) => {
-        const site = url.hostname;
         let name;
-        if (site === "leetcode.com" || site === "practice.geeksforgeeks.org") {
-            name = url.pathname.substring(10)
+        if (url.hostname === "leetcode.com") {
+            name = url.pathname.substring(10);
+            return (name[0].toUpperCase() + name.substring(1, name.length - 13)).replaceAll('-', ' ');
         } else {
-            name = url.pathname.substring(1)
+            return '';
         }
-        name = (name[0].toUpperCase() + name.substring(1)).replaceAll('-', ' ');
-        return name;
     }
 
     const handleUrlChange = (e) => {
