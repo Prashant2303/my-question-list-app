@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import Fuse from 'fuse.js';
 import { chromeMessages } from './browserCalls';
 
-export const base_url = 'https://mql.onrender.com';
+export const base_url = 'https://mql-6u04.onrender.com';
 
 let params = {};
 
