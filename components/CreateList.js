@@ -39,8 +39,8 @@ export default function CreateList({ setShowCreate }) {
             </Grid>
             <Grid item xs={12} sm={8}>
                 <TextField
-                    id="name"
-                    name="name"
+                    id="list-name"
+                    name="list-name"
                     label="List name"
                     size="small"
                     required
