@@ -1,4 +1,4 @@
-<div align="center"><img src="/public/mql.webp" /></div>
+<div align="center"><img src="/public/favicon.ico" /></div>
 <h1 align="center">MyQuestionList</h1>
 
 MyQuestionList is a web application which lets users sign up and create lists. Each list can be shared publicly or kept private. Built using [Next.js](https://nextjs.org/).
@@ -20,12 +20,12 @@ MyQuestionList is a web application which lets users sign up and create lists. E
 ## Developed using
 
 <ul>
-<li>NextJS</li>
-<li>Material UI</li>
-<li>Recoil</li>
-<li>NodeJS</li>
-<li>ExpressJS</li>
-<li>MongoDB</li>
+<li><a href="https://nextjs.org/">Next.js</a></li>
+<li><a href="https://mui.com/">Material UI</a></li>
+<li><a href="https://recoiljs.org/">Recoil</a></li>
+<li><a href="https://nodejs.org/en">Node.js</a></li>
+<li><a href="https://expressjs.com/">Express</a></li>
+<li><a href="https://www.mongodb.com/">MongoDB</a></li>
 </ul>
 
 <br />
