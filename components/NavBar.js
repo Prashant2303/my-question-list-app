@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography, MenuItem, IconButton, Menu } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography, MenuItem, IconButton, Menu, Link as MUILink } from '@mui/material';
 import Link from 'next/link';
 import { useHooks } from 'service/apiCalls';
 import { useRecoilValue } from 'recoil';
@@ -70,13 +70,15 @@ export default function NavBar() {
             <AppBar position="static" sx={{ borderRadius: '5px', marginTop: '10px' }}>
                 <Toolbar>
                     <Link href="/" passHref>
-                        <Typography
-                            variant="h6"
-                            component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' }, cursor: 'pointer' }}
-                        >
-                            MyQuestionList
-                        </Typography>
+                        <MUILink color="inherit" underline='none'>
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                sx={{ display: { xs: 'none', sm: 'block' }, cursor: 'pointer' }}
+                            >
+                                MyQuestionList
+                            </Typography>
+                        </MUILink>
                     </Link>
                     <Link href="/" passHref>
                         <Typography
@@ -90,7 +92,7 @@ export default function NavBar() {
                     <Box sx={{ flexGrow: 1 }} />
                     <MenuItem>
                         <Link href="/public-lists" passHref>
-                            <Typography textAlign="center">Public Lists</Typography>
+                            <MUILink color="inherit" underline='none'>Public Lists</MUILink>
                         </Link>
                     </MenuItem>
                     <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
@@ -98,28 +100,30 @@ export default function NavBar() {
                             <div style={{ display: 'flex' }}>
                                 <MenuItem>
                                     <Link href="/profile" passHref>
-                                        <Typography textAlign="center">Profile</Typography>
+                                        <MUILink color="inherit" underline='none'>Profile</MUILink>
                                     </Link>
                                 </MenuItem>
-                                <MenuItem onClick={hooks.logout}>
+                                <MenuItem onClick={hooks.logout} tabIndex={0}>
                                     <Typography textAlign="center">Log out</Typography>
                                 </MenuItem>
                             </div> :
                             <div style={{ display: 'flex' }}>
                                 <MenuItem>
                                     <Link href="/signin" passHref>
-                                        <Typography textAlign="center">Login</Typography>
+                                        <MUILink color="inherit" underline='none'>Login</MUILink>
                                     </Link>
                                 </MenuItem>
                                 <MenuItem>
                                     <Link href="/signup" passHref>
-                                        <Typography textAlign="center">Signup</Typography>
+                                        <MUILink color="inherit" underline='none'>Signup</MUILink>
                                     </Link>
                                 </MenuItem>
                             </div>}
                         <MenuItem>
                             <Link href="/about" passHref>
-                                <Typography textAlign="center">About</Typography>
+                                <MUILink color="inherit" underline='none'>
+                                    About
+                                </MUILink>
                             </Link>
                         </MenuItem>
                     </Box>

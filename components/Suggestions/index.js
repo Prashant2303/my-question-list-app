@@ -16,7 +16,7 @@ export function Suggestions() {
             const data = await hooks.getSuggestions();
             setSuggestions(data);
         } catch (error) {
-            console.log(error);
+            throw error;
         } finally {
             setLoading(false);
         }

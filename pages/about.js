@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function About() {
     return (
         <Paper className="form" elevation={3} sx={{ padding: '15px', marginTop: '10px' }}>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="h6">
                 About
             </Typography>
             <p>

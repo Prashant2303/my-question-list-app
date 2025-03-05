@@ -56,7 +56,7 @@ export default function PublicLists({ data }) {
 
     return (
         <Paper className={styles.container} elevation={3}>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="h6">
                 Public Lists
             </Typography>
             <Grid container marginTop={1}>

@@ -159,7 +159,7 @@ export default function PublicListDetails({ list }) {
 
     return (
         <Paper className={styles.container} elevation={3}>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="h6">
                 {list.name} by {list.ownerName}
             </Typography>
             {renderFilters()}
