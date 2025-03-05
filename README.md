@@ -1,4 +1,5 @@
-<h1 align="center"><img src="/public/favicon.ico" />MyQuestionList</h1>
+<div align="center"><img src="/public/mql.webp" /></div>
+<h1 align="center">MyQuestionList</h1>
 
 MyQuestionList is a web application which lets users sign up and create lists. Each list can be shared publicly or kept private. Built using [Next.js](https://nextjs.org/).
 
